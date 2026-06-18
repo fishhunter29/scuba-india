@@ -195,23 +195,25 @@ export default function DepthExplorer() {
               <rect x="-2" y="-13" width="44" height="26" rx="13" fill="#C8472E" />
               <text x="20" y="5" textAnchor="middle" fontFamily="var(--mono), monospace" fontSize="13" fontWeight="700" fill="#fff">{depth}m</text>
             </g>
-            {/* diver silhouette (descending, head-down-ish) */}
+            {/* diver silhouette (descending, head-down-ish) — floats freely at its current depth */}
             <g transform={`translate(150 ${SURFACE_Y}) scale(1.05)`}>
-              <ellipse cx="0" cy="0" rx="20" ry="20" fill="#ffffff" opacity="0.12" />
-              <g fill="#14304a">
-                <circle cx="-2" cy="-12" r="6.5" />
-                <rect x="-9" y="-8" width="16" height="20" rx="7" />
-                <rect x="-15" y="10" width="7" height="15" rx="3.5" transform="rotate(10 -12 16)" />
-                <rect x="3" y="10" width="7" height="15" rx="3.5" transform="rotate(-8 6 16)" />
-                <rect x="-16" y="-6" width="7" height="14" rx="3.5" transform="rotate(28 -13 0)" />
-                <rect x="6" y="-6" width="7" height="14" rx="3.5" transform="rotate(-24 9 0)" />
+              <g className="de-diver-float">
+                <ellipse cx="0" cy="0" rx="20" ry="20" fill="#ffffff" opacity="0.12" />
+                <g fill="#14304a">
+                  <circle cx="-2" cy="-12" r="6.5" />
+                  <rect x="-9" y="-8" width="16" height="20" rx="7" />
+                  <rect x="-15" y="10" width="7" height="15" rx="3.5" transform="rotate(10 -12 16)" />
+                  <rect x="3" y="10" width="7" height="15" rx="3.5" transform="rotate(-8 6 16)" />
+                  <rect x="-16" y="-6" width="7" height="14" rx="3.5" transform="rotate(28 -13 0)" />
+                  <rect x="6" y="-6" width="7" height="14" rx="3.5" transform="rotate(-24 9 0)" />
+                </g>
+                {/* tank + fins accents */}
+                <rect x="6" y="-7" width="6" height="14" rx="3" fill="#f2c14e" />
+                <path d="M-18 24 l-9 5 9 3 z" fill="#1f6f78" />
+                <path d="M8 26 l9 5 -9 3 z" fill="#1f6f78" />
+                {/* mask glint */}
+                <circle cx="-4" cy="-13" r="2.2" fill="#bfe9f2" />
               </g>
-              {/* tank + fins accents */}
-              <rect x="6" y="-7" width="6" height="14" rx="3" fill="#f2c14e" />
-              <path d="M-18 24 l-9 5 9 3 z" fill="#1f6f78" />
-              <path d="M8 26 l9 5 -9 3 z" fill="#1f6f78" />
-              {/* mask glint */}
-              <circle cx="-4" cy="-13" r="2.2" fill="#bfe9f2" />
             </g>
           </g>
         </svg>
