@@ -2,27 +2,34 @@ import Link from 'next/link';
 import type { Settings } from '@/lib/types';
 import { waGeneral } from '@/lib/whatsapp';
 
-export default function Hero({ settings }: { settings: Settings }) {
+export default function Hero({
+  settings,
+  tryFrom = '₹2,500',
+}: {
+  settings: Settings;
+  tryFrom?: string;
+}) {
   return (
     <header className="hero">
       <div className="vert-label">Havelock · into the deep</div>
       <div className="eyebrow">Havelock Island · Andaman</div>
       <h1>
         <span className="stroke-reveal" style={{ animationDelay: '.2s' }}>
-          Still water,
+          Breathe underwater
         </span>
         <br />
         <span className="stroke-reveal em" style={{ animationDelay: '.6s' }}>
-          deep colour
+          in Havelock
         </span>
       </h1>
       <p className="hero-sub">
-        PADI-certified scuba diving in Havelock&apos;s clearest reefs. No experience needed — we
-        guide you every second below the surface.
+        Try scuba diving in Andaman&apos;s clearest reefs — <b>no experience needed</b>. A PADI
+        instructor is by your side the whole time, and you keep the HD photos &amp; GoPro video,
+        free. From <b>{tryFrom}</b>.
       </p>
       <div className="hero-cta">
         <Link href="/#experiences" className="btn btn-primary">
-          Book a Try Dive →
+          Book a Try Dive from {tryFrom} →
         </Link>
         <a
           href={waGeneral(settings.whatsapp)}

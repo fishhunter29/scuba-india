@@ -15,6 +15,7 @@ import FinalCTA from '@/components/home/FinalCTA';
 import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesBySite } from '@/lib/data';
 import { getGoogleReviews } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
+import { fromPrice } from '@/lib/format';
 
 // ISR: serve from edge cache, refresh every 60s (admin edits appear within ~1 min).
 export const revalidate = 60;
@@ -28,6 +29,11 @@ export default async function HomePage() {
     getGoogleReviews(),
   ]);
   const grouped = groupDivesBySite(dives);
+  // cheapest guided try dive (shallow first-timer sites) for the hero price hook
+  const tryDives = dives.filter(
+    (d) => (d.site_key === 'tribe' || d.site_key === 'red') && d.train_min != null,
+  );
+  const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
 
   return (
     <>
@@ -35,7 +41,7 @@ export default async function HomePage() {
       <ScrollFX />
       <Nav />
 
-      <Hero settings={settings} />
+      <Hero settings={settings} tryFrom={tryFrom} />
 
       <div className="sheet">
         <Experiences dives={dives} courses={courses} />
