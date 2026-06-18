@@ -47,10 +47,20 @@ const STAGES = [
   },
 ];
 
-function stageFor(depth: number) {
-  for (const s of STAGES) if (depth <= s.max) return s;
-  return STAGES[STAGES.length - 1];
+function stageIndexFor(depth: number) {
+  for (let i = 0; i < STAGES.length; i++) if (depth <= STAGES[i].max) return i;
+  return STAGES.length - 1;
 }
+
+// one illustrated pose per stage, matching real diver body position at that phase of the dive
+const DIVER_POSES = [
+  { src: '/images/depth-explorer/diver-surface.png', width: 50, height: 67 },
+  { src: '/images/depth-explorer/diver-justbelow.png', width: 50, height: 67 },
+  { src: '/images/depth-explorer/diver-shallowreef.png', width: 92, height: 69 },
+  { src: '/images/depth-explorer/diver-deeperreef.png', width: 92, height: 69 },
+  { src: '/images/depth-explorer/diver-openwater.png', width: 92, height: 69 },
+  { src: '/images/depth-explorer/diver-recreationallimit.png', width: 100, height: 75 },
+];
 
 // scene geometry
 const SURFACE_Y = 52;
@@ -59,7 +69,8 @@ const TRAVEL = BOTTOM_Y - SURFACE_Y;
 
 export default function DepthExplorer() {
   const [depth, setDepth] = useState(0);
-  const stage = stageFor(depth);
+  const stageIndex = stageIndexFor(depth);
+  const stage = STAGES[stageIndex];
   const diverY = (depth / 30) * TRAVEL; // translateY for the diver group
 
   return (
@@ -117,67 +128,46 @@ export default function DepthExplorer() {
           {/* shallow: anemone + clownfish (~5m) */}
           <g transform="translate(250 120)">
             <g className="de-sway">
-              <path d="M0 24 q-8 -22 -2 -24 q4 -1 5 12 q3 -16 9 -14 q4 2 -1 14 q9 -12 12 -7 q3 4 -7 12 q14 -4 13 2 q-1 5 -14 5 z" fill="#d56fae" opacity="0.92" />
+              <image href="/images/depth-explorer/anemone.png" x="-15" y="-6" width="30" height="36" />
             </g>
-            <g transform="translate(-8 18)">
-              <ellipse cx="0" cy="0" rx="13" ry="8" fill="#f08a2c" />
-              <rect x="-6" y="-8" width="4" height="16" rx="2" fill="#fff" />
-              <rect x="4" y="-8" width="4" height="16" rx="2" fill="#fff" />
-              <path d="M11 0 l9 -6 v12 z" fill="#f08a2c" />
-              <circle cx="-8" cy="-1" r="1.6" fill="#1b1a17" />
-            </g>
+            <image href="/images/depth-explorer/clownfish.png" x="-24" y="10" width="28" height="21" />
           </g>
 
           {/* shallow coral garden (~12m) */}
           <g transform="translate(40 230)">
-            <path d="M0 30 V12 M0 20 q-7 -3 -8 -12 M0 16 q8 -2 9 -12" stroke="#1f9b8e" strokeWidth="5" strokeLinecap="round" fill="none" />
-            <circle cx="-8" cy="-2" r="3.5" fill="#e07a5f" />
-            <circle cx="9" cy="2" r="3.5" fill="#f2a541" />
-            <circle cx="0" cy="-9" r="3.5" fill="#3d9bc9" />
+            <image href="/images/depth-explorer/coral-cluster.png" x="-15" y="-6" width="30" height="36" />
           </g>
 
           {/* parrotfish (~12m) */}
           <g transform="translate(120 250)">
-            <ellipse cx="0" cy="0" rx="18" ry="10" fill="#3aa6c9" />
-            <ellipse cx="0" cy="0" rx="18" ry="10" fill="#2bc7a8" opacity="0.4" />
-            <path d="M16 0 l12 -8 v16 z" fill="#2bc7a8" />
-            <circle cx="-11" cy="-2" r="2" fill="#fff" />
-            <circle cx="-11" cy="-2" r="1" fill="#1b1a17" />
+            <image href="/images/depth-explorer/parrotfish.png" x="-23" y="-13" width="46" height="26" />
           </g>
 
           {/* sea turtle (~14m) */}
           <g transform="translate(245 270)">
-            <ellipse cx="0" cy="0" rx="20" ry="15" fill="#3f7d4a" />
-            <path d="M-12 -6 l6 4 -3 7 M4 -8 l7 3 -2 8 M-2 -2 l5 2 -1 6" stroke="#2c5a36" strokeWidth="2" fill="none" opacity="0.7" />
-            <circle cx="20" cy="-4" r="6" fill="#4a8c56" />
-            <ellipse cx="-16" cy="8" rx="9" ry="5" fill="#4a8c56" transform="rotate(25 -16 8)" />
-            <ellipse cx="14" cy="12" rx="8" ry="4" fill="#4a8c56" transform="rotate(-20 14 12)" />
+            <image href="/images/depth-explorer/turtle.png" x="-26" y="-19" width="52" height="38" />
           </g>
 
           {/* fish school (~18m) */}
-          <g transform="translate(70 330)" fill="#bfe0ea" opacity="0.85">
+          <g transform="translate(70 330)" opacity="0.9">
             {[[0, 0], [14, -6], [26, 4], [40, -3], [10, 10], [34, 12], [52, 6]].map(([x, y], i) => (
-              <path key={i} d={`M${x} ${y} q5 -4 10 0 q-5 4 -10 0 z`} />
+              <image key={i} href="/images/depth-explorer/school-fish.png" x={x - 7} y={y - 4.5} width="14" height="9" />
             ))}
           </g>
 
           {/* reef shark (~24m) */}
           <g transform="translate(210 360)" className="de-shark">
-            <path d="M-40 0 q22 -16 70 -2 q-6 3 -14 3 q10 4 14 12 q-16 -8 -24 -6 q-30 4 -46 -7 z" fill="#5c7184" opacity="0.85" />
-            <path d="M8 -10 l8 -14 4 16 z" fill="#5c7184" opacity="0.85" />
-            <circle cx="22" cy="0" r="1.6" fill="#0a2c46" />
+            <image href="/images/depth-explorer/shark.png" x="-45" y="-25" width="90" height="50" opacity="0.92" />
           </g>
 
           {/* sea floor + bottom coral + ray (~30m) */}
           <path d="M0 452 Q90 438 180 450 T340 446 V480 H0 Z" fill="#0e3a55" />
           <path d="M0 462 Q120 452 240 460 T340 458 V480 H0 Z" fill="#0a2c46" />
           <g transform="translate(60 446)">
-            <path d="M0 6 V-12 M0 -2 q-9 -3 -10 -14 M0 -6 q10 -3 12 -15" stroke="#1f9b8e" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.85" />
-            <path d="M16 6 V-8 M16 0 q8 -2 9 -12" stroke="#e07a5f" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.7" />
+            <image href="/images/depth-explorer/bottom-coral.png" x="-20" y="-34" width="44" height="40" />
           </g>
-          <g transform="translate(225 452)" opacity="0.8">
-            <ellipse cx="0" cy="0" rx="24" ry="9" fill="#243b4f" />
-            <path d="M22 0 q14 0 22 -6 q-10 9 -22 6 z" fill="#243b4f" />
+          <g transform="translate(225 452)" opacity="0.85">
+            <image href="/images/depth-explorer/stingray.png" x="-35" y="-15" width="70" height="32" />
           </g>
 
           {/* rising bubbles */}
@@ -195,24 +185,21 @@ export default function DepthExplorer() {
               <rect x="-2" y="-13" width="44" height="26" rx="13" fill="#C8472E" />
               <text x="20" y="5" textAnchor="middle" fontFamily="var(--mono), monospace" fontSize="13" fontWeight="700" fill="#fff">{depth}m</text>
             </g>
-            {/* diver silhouette (descending, head-down-ish) — floats freely at its current depth */}
-            <g transform={`translate(150 ${SURFACE_Y}) scale(1.05)`}>
+            {/* diver — pose changes per depth stage to match real diving body position, crossfading between poses; floats freely at its current depth */}
+            <g transform={`translate(150 ${SURFACE_Y})`}>
               <g className="de-diver-float">
                 <ellipse cx="0" cy="0" rx="20" ry="20" fill="#ffffff" opacity="0.12" />
-                <g fill="#14304a">
-                  <circle cx="-2" cy="-12" r="6.5" />
-                  <rect x="-9" y="-8" width="16" height="20" rx="7" />
-                  <rect x="-15" y="10" width="7" height="15" rx="3.5" transform="rotate(10 -12 16)" />
-                  <rect x="3" y="10" width="7" height="15" rx="3.5" transform="rotate(-8 6 16)" />
-                  <rect x="-16" y="-6" width="7" height="14" rx="3.5" transform="rotate(28 -13 0)" />
-                  <rect x="6" y="-6" width="7" height="14" rx="3.5" transform="rotate(-24 9 0)" />
-                </g>
-                {/* tank + fins accents */}
-                <rect x="6" y="-7" width="6" height="14" rx="3" fill="#f2c14e" />
-                <path d="M-18 24 l-9 5 9 3 z" fill="#1f6f78" />
-                <path d="M8 26 l9 5 -9 3 z" fill="#1f6f78" />
-                {/* mask glint */}
-                <circle cx="-4" cy="-13" r="2.2" fill="#bfe9f2" />
+                {DIVER_POSES.map((pose, i) => (
+                  <image
+                    key={pose.src}
+                    href={pose.src}
+                    x={-pose.width / 2}
+                    y={-pose.height / 2}
+                    width={pose.width}
+                    height={pose.height}
+                    style={{ opacity: i === stageIndex ? 1 : 0, transition: 'opacity .6s ease' }}
+                  />
+                ))}
               </g>
             </g>
           </g>
