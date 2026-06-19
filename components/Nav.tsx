@@ -28,7 +28,7 @@ export default function Nav() {
               {l.label}
             </Link>
           ))}
-          <Link href="/#book" className="nav-cta">
+          <Link href="/#packages" className="nav-cta">
             Book a Dive
           </Link>
         </div>
@@ -54,7 +54,7 @@ export default function Nav() {
             {l.label}
           </Link>
         ))}
-        <Link href="/#book" className="drawer-cta" onClick={() => setOpen(false)}>
+        <Link href="/#packages" className="drawer-cta" onClick={() => setOpen(false)}>
           Book a Dive
         </Link>
       </div>

@@ -15,7 +15,7 @@ export function diveCentreSchema(settings: Settings) {
     email: settings.email,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Havelock Island',
+      addressLocality: 'Havelock Island (Swarajdweep)',
       addressRegion: 'Andaman and Nicobar Islands',
       addressCountry: 'IN',
     },

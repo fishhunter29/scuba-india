@@ -32,9 +32,10 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    'PADI dive centre in Havelock, Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
+    'PADI dive centre in Havelock (Swarajdweep), Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
   keywords: [
     'scuba diving Havelock',
+    'scuba diving Swarajdweep',
     'PADI course Andaman',
     'try dive Havelock price',
     'first time scuba diving Andaman',

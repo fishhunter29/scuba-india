@@ -114,8 +114,8 @@ export default async function LearnToDivePage() {
         <div className="wrap">
           <h2>What you&apos;ll be wearing</h2>
           <p className="lead">
-            It looks like a lot of equipment. It isn&apos;t complicated — and we fit and check every
-            piece for you. Explore each part below.
+            You bring nothing but yourself. Every piece is provided, fitted and safety-checked by
+            your instructor — and each one is there to make something easy. Tap any item to see how.
           </p>
           <GearWalkthrough />
         </div>

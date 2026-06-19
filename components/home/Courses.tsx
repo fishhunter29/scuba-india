@@ -1,7 +1,15 @@
+import Link from 'next/link';
 import type { Course } from '@/lib/types';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, courseSlug } from '@/lib/format';
+import { waLink } from '@/lib/whatsapp';
 
-export default function Courses({ courses }: { courses: Course[] }) {
+export default function Courses({
+  courses,
+  whatsapp,
+}: {
+  courses: Course[];
+  whatsapp: string;
+}) {
   return (
     <section className="band courses" id="courses">
       <div className="wrap">
@@ -9,14 +17,17 @@ export default function Courses({ courses }: { courses: Course[] }) {
           <div className="sec-eyebrow">PADI Certification</div>
           <h2>Get certified, for life</h2>
           <p>
-            Internationally recognised PADI courses, beginner to professional. Prices are per
-            person.
+            Internationally recognised PADI courses, beginner to professional. Tap any course for
+            details, or ask us on WhatsApp. Prices are per person.
           </p>
         </div>
         <div className="reveal">
           {courses.map((c) => (
-            <div className="course-row" key={c.id}>
-              <span className="cname">{c.name}</span>
+            <Link className="course-row" href={`/courses/${courseSlug(c.name)}`} key={c.id}>
+              <span className="cname">
+                {c.name}
+                <span className="cname-go">View details →</span>
+              </span>
               <span className="cstat">
                 <span>DURATION</span>
                 {c.duration}
@@ -30,8 +41,19 @@ export default function Courses({ courses }: { courses: Course[] }) {
                 {c.min_age}
               </span>
               <span className="cprice">{formatPrice(c.price, c.on_request)}</span>
-            </div>
+            </Link>
           ))}
+        </div>
+        <div className="courses-cta reveal">
+          <p>Not sure which course is right for you? We&apos;ll help you choose.</p>
+          <a
+            href={waLink(whatsapp, 'Hi Scuba India, I have a question about your PADI courses.')}
+            className="btn btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask about courses on WhatsApp →
+          </a>
         </div>
       </div>
     </section>

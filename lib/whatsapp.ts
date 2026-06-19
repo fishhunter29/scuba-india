@@ -19,6 +19,10 @@ export function waGeneral(number = DEFAULT_WHATSAPP): string {
   return waLink(number, 'Hi Scuba India, I have a question about diving in Havelock.');
 }
 
+export function waCourse(courseName: string, number = DEFAULT_WHATSAPP): string {
+  return waLink(number, `Hi Scuba India, I'd like to enquire about the ${courseName} course.`);
+}
+
 export function waTryDive(number = DEFAULT_WHATSAPP): string {
   return waLink(
     number,
