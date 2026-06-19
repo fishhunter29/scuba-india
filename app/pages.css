@@ -128,18 +128,30 @@
 .chooser-result .rec{font-family:var(--disp);font-size:30px;font-weight:700;color:var(--vermilion);margin:8px 0 6px}
 .chooser-result p{color:var(--sumi-soft);margin-bottom:22px}
 
-/* gear walkthrough */
-.gear{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-@media(max-width:920px){.gear{grid-template-columns:1fr}}
-.gear-stage{position:relative;background:linear-gradient(160deg,#e2f7f3,#cfeef0);border-radius:18px;padding:16px}
-.gear-photo-wrap{position:relative;width:100%;line-height:0}
-.gear-photo{width:100%;height:auto;display:block;border-radius:12px;background:#fff}
-.gear-hot{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--vermilion);color:#fff;border:none;cursor:pointer;font-family:var(--mono);font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(200,71,46,.2);transition:transform .2s}
-.gear-hot:hover,.gear-hot.active{transform:scale(1.18)}
-.gear-info{background:#fff;border:1px solid rgba(18,58,71,.12);border-radius:14px;padding:26px}
-.gear-info h3{font-family:var(--disp);font-size:24px;margin-bottom:10px}
-.gear-info p{color:var(--sumi-soft)}
-.gear-info .hint{font-family:var(--mono);font-size:12px;color:var(--ash);margin-top:14px}
+/* first-dive reassurance stats */
+.fd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:16px}
+.fd-card{background:var(--paper);border:1px solid rgba(18,58,71,.14);border-radius:14px;padding:24px 20px;text-align:center}
+.fd-fig{font-family:var(--disp);font-size:clamp(28px,4vw,38px);font-weight:700;color:var(--sumi);line-height:1.05}
+.fd-lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--vermilion);margin:12px 0 6px}
+.fd-sub{font-size:13.5px;color:var(--sumi-soft);line-height:1.5}
+.fd-note{margin-top:26px;color:var(--sumi-soft);font-size:15.5px;max-width:640px}
+
+/* gear walkthrough — image + clean accordion list (no overlapping dots) */
+.gear{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:start}
+@media(max-width:920px){.gear{grid-template-columns:1fr;gap:22px}}
+.gear-photo-wrap{position:relative;width:100%;line-height:0;background:#eaf4f4;border:1px solid rgba(18,58,71,.12);border-radius:14px;overflow:hidden}
+.gear-photo{width:100%;height:auto;display:block}
+.gear-list{display:grid;gap:10px}
+.gear-row{border:1px solid rgba(18,58,71,.14);border-radius:12px;background:var(--paper);overflow:hidden}
+.gear-row.open{border-color:var(--vermilion)}
+.gear-q{width:100%;display:flex;align-items:center;gap:12px;padding:15px 18px;background:none;border:none;cursor:pointer;font-family:var(--disp);font-size:18px;font-weight:600;color:var(--sumi);text-align:left}
+.gear-swatch{flex:0 0 16px;width:16px;height:16px;border-radius:4px;border:1px solid rgba(18,58,71,.25)}
+.gear-name{flex:1}
+.gear-chev{color:var(--vermilion);font-size:20px;line-height:1;transition:transform .25s}
+.gear-row.open .gear-chev{transform:rotate(45deg)}
+.gear-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.gear-row.open .gear-a{max-height:220px}
+.gear-a p{color:var(--sumi-soft);font-size:14.5px;line-height:1.6;padding:0 18px 16px 46px}
 
 /* marine gallery */
 .marine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
