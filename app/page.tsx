@@ -54,7 +54,7 @@ export default async function HomePage() {
 
       <FinalCTA settings={settings} />
       <Footer settings={settings} />
-      <WhatsAppFloat whatsapp={settings.whatsapp} />
+      <WhatsAppFloat whatsapp={settings.whatsapp} phone={settings.phone} />
 
       <JsonLd data={diveCentreSchema(settings)} />
     </>

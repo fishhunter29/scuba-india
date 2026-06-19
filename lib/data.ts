@@ -68,18 +68,6 @@ export async function getCourses(): Promise<Course[]> {
   return (data ?? []) as Course[];
 }
 
-export async function getCourseBySlug(slug: string): Promise<Course | null> {
-  const courses = await getCourses();
-  const { courseSlug } = await import('./format');
-  return courses.find((c) => courseSlug(c.name) === slug) ?? null;
-}
-
-export async function getAllCourseSlugs(): Promise<string[]> {
-  const courses = await getCourses();
-  const { courseSlug } = await import('./format');
-  return courses.map((c) => courseSlug(c.name));
-}
-
 export async function getFeaturedReviews(): Promise<Review[]> {
   if (!isSupabaseConfigured()) return [];
   const supabase = createClient();

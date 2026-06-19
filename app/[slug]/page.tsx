@@ -194,7 +194,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
       </main>
 
       <Footer settings={settings} />
-      <WhatsAppFloat whatsapp={settings.whatsapp} />
+      <WhatsAppFloat whatsapp={settings.whatsapp} phone={settings.phone} />
 
       <JsonLd data={[diveProductSchema(dive, settings), breadcrumbSchema(dive)]} />
     </>

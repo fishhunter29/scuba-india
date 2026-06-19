@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import type { Course } from '@/lib/types';
-import { formatPrice, courseSlug } from '@/lib/format';
+import { formatPrice } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
 export default function Courses({
@@ -17,17 +16,14 @@ export default function Courses({
           <div className="sec-eyebrow">PADI Certification</div>
           <h2>Get certified, for life</h2>
           <p>
-            Internationally recognised PADI courses, beginner to professional. Tap any course for
-            details, or ask us on WhatsApp. Prices are per person.
+            Internationally recognised PADI courses, beginner to professional. Prices are per
+            person — message us for dates, details and anything you&apos;re unsure about.
           </p>
         </div>
         <div className="reveal">
           {courses.map((c) => (
-            <Link className="course-row" href={`/courses/${courseSlug(c.name)}`} key={c.id}>
-              <span className="cname">
-                {c.name}
-                <span className="cname-go">View details →</span>
-              </span>
+            <div className="course-row" key={c.id}>
+              <span className="cname">{c.name}</span>
               <span className="cstat">
                 <span>DURATION</span>
                 {c.duration}
@@ -41,7 +37,7 @@ export default function Courses({
                 {c.min_age}
               </span>
               <span className="cprice">{formatPrice(c.price, c.on_request)}</span>
-            </Link>
+            </div>
           ))}
         </div>
         <div className="courses-cta reveal">
