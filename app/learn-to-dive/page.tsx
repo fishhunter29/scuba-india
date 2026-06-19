@@ -124,10 +124,10 @@ export default async function LearnToDivePage() {
       {/* Marine life */}
       <section className="learn-section">
         <div className="wrap">
-          <h2>Who you&apos;ll meet down there</h2>
+          <h2>What it looks like down there</h2>
           <p className="lead">
-            A few of the friendly locals on Havelock&apos;s reefs. Hover or tap a card to learn
-            more.
+            Real photos from our Havelock dives — the reefs, the fish, and first-timers right in the
+            middle of it. Hover or tap a photo.
           </p>
           <MarineGallery />
         </div>
