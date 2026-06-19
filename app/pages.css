@@ -90,7 +90,7 @@
 @media(prefers-reduced-motion:reduce){.de-bubble,.de-sway,.de-shark,.de-rays,.de-diver,.de-diver-float{animation:none!important;transition:none!important}}
 
 .de-panel{display:flex;flex-direction:column;justify-content:center;gap:18px}
-@media(max-width:920px){.de-panel{background:#fff;border:1px solid rgba(27,26,23,.12);border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(27,26,23,.06)}}
+@media(max-width:920px){.de-panel{background:#fff;border:1px solid rgba(18,58,71,.12);border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(18,58,71,.06)}}
 .de-panel input[type=range]{width:100%;accent-color:var(--vermilion);height:8px;cursor:pointer}
 @media(pointer:coarse){
   .de-panel input[type=range]{height:30px}

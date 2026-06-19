@@ -33,7 +33,7 @@ export default function Footer({ settings }: { settings: Settings }) {
             <div className="foot-brand">
               <Seal /> Scuba India
             </div>
-            <p style={{ color: 'rgba(244,239,228,.7)', maxWidth: 300, fontSize: '14.5px' }}>
+            <p style={{ color: 'rgba(220,239,239,.7)', maxWidth: 300, fontSize: '14.5px' }}>
               PADI dive centre on Havelock Island, Andaman. Try dives, fun dives &amp;
               certification courses in India&apos;s clearest waters.
             </p>
