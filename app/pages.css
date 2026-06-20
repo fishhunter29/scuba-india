@@ -178,7 +178,7 @@
 .admin-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--paper-deep);padding:24px}
 .admin-login-card{background:var(--paper);border:1px solid rgba(18,58,71,.14);border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(18,58,71,.12)}
 .admin-login-card h1{font-family:var(--disp);font-size:28px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:10px}
-.admin-login-card .seal{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;background:var(--vermilion);color:#fff;border-radius:6px;overflow:hidden}
+.admin-login-card .seal{display:inline-flex;align-items:center;justify-content:center}
 .admin-login-card p.sub{color:var(--ash);font-size:14px;margin-bottom:26px}
 
 .admin-shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh;background:var(--paper-deep)}

@@ -1,12 +1,10 @@
-// Brand mark: the "diver down" flag (red field + white diagonal stripe) — the
-// universal scuba symbol, on-brand with the vermilion accent. Replaces the old
-// "SI" monogram across nav / footer / admin.
-export function Seal({ size = 30 }: { size?: number }) {
+// Brand mark: the Scuba India circular badge (diver over the wave fan).
+// Paired with the "Scuba India" wordmark set in Shippori Mincho beside it.
+export function Seal({ size = 38 }: { size?: number }) {
   return (
-    <span className="seal" aria-hidden="true" style={{ width: size, height: size }}>
-      <svg viewBox="0 0 30 30" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-        <polygon points="1.5,9 9,1.5 28.5,21 21,28.5" fill="#EAF4F4" />
-      </svg>
+    <span className="seal" style={{ width: size, height: size }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/logo-mark.png" alt="Scuba India logo" width={size} height={size} />
     </span>
   );
 }

@@ -48,6 +48,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     type: 'website',
     locale: 'en_IN',
+    images: [{ url: '/images/logo-full.png', width: 640, height: 640, alt: 'Scuba India' }],
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },

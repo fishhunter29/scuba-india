@@ -44,8 +44,8 @@ body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opac
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 44px;transition:background .4s,padding .4s}
 nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding:14px 44px;box-shadow:0 1px 0 rgba(18,58,71,.1)}
 .brand{font-family:var(--disp);font-size:24px;font-weight:700;letter-spacing:.02em;color:var(--sumi);display:flex;align-items:center;gap:10px}
-.brand .seal{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;background:var(--vermilion);color:var(--paper);border-radius:6px;overflow:hidden}
-.seal svg{display:block;width:100%;height:100%}
+.brand .seal{display:inline-flex;align-items:center;justify-content:center}
+.seal img{display:block;width:100%;height:100%;object-fit:contain}
 .nav-links{display:flex;gap:32px;align-items:center;font-size:15px;font-weight:500}
 .nav-links a{opacity:.8;transition:opacity .2s,color .2s}
 .nav-links a:hover{opacity:1;color:var(--vermilion)}
@@ -198,7 +198,7 @@ section{position:relative;z-index:3}
 footer{position:relative;z-index:3;background:var(--sumi);padding:72px 0 40px;color:var(--paper);border-top:1px solid rgba(220,239,239,.14)}
 .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:50px}
 .foot-brand{font-family:var(--disp);font-size:26px;font-weight:600;color:var(--paper);margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.foot-brand .seal{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;background:var(--vermilion);color:var(--paper);border-radius:6px;overflow:hidden}
+.foot-brand .seal{display:inline-flex;align-items:center;justify-content:center}
 .foot-col h4{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--vermilion);margin-bottom:18px}
 .foot-col a,.foot-col p{display:block;color:rgba(220,239,239,.7);font-size:14.5px;margin-bottom:10px;transition:color .2s}
 .foot-col a:hover{color:var(--paper)}
