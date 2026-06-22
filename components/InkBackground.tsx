@@ -33,10 +33,11 @@ export default function InkBackground() {
     const frag = `
     precision highp float;
     uniform float u_time; uniform vec2 u_res; uniform vec2 u_mouse; uniform float u_mvel;
-    vec3 paper=vec3(0.957,0.937,0.894);
-    vec3 sumi=vec3(0.106,0.102,0.090);
-    vec3 indigo=vec3(0.180,0.290,0.322);
-    vec3 verm=vec3(0.784,0.278,0.180);
+    vec3 water=vec3(0.863,0.937,0.937);
+    vec3 waterDeep=vec3(0.624,0.824,0.824);
+    vec3 inkNavy=vec3(0.071,0.227,0.278);
+    vec3 teal=vec3(0.118,0.435,0.482);
+    vec3 verm=vec3(0.878,0.322,0.227);
     vec2 hash(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return -1.0+2.0*fract(sin(p)*43758.5453);}
     float noise(vec2 p){const float K1=0.366025404,K2=0.211324865;vec2 i=floor(p+(p.x+p.y)*K1);vec2 a=p-i+(i.x+i.y)*K2;float m=step(a.y,a.x);vec2 o=vec2(m,1.0-m);vec2 b=a-o+K2;vec2 c=a-1.0+2.0*K2;vec3 h=max(0.5-vec3(dot(a,a),dot(b,b),dot(c,c)),0.0);vec3 n=h*h*h*h*vec3(dot(a,hash(i)),dot(b,hash(i+o)),dot(c,hash(i+1.0)));return dot(n,vec3(70.0));}
     float fbm(vec2 p){float v=0.0,a=0.55;for(int i=0;i<6;i++){v+=a*noise(p);p=p*2.02+vec2(1.7,9.2);a*=0.5;}return v;}
@@ -54,20 +55,22 @@ export default function InkBackground() {
       // mouse disturbs the ink (disperses it)
       vec2 m=u_mouse; m.x*=u_res.x/u_res.y;
       float d=distance(p,m);
-      ink+=sin(d*10.0-u_time*1.5)*exp(-d*4.5)*(0.18+u_mvel*0.9);
-      // ink density -> washes of grey on paper (sumi gradation: nōtan)
-      float density=smoothstep(0.15,0.95,ink);
-      vec3 col=mix(paper,sumi,density*0.82);
-      // a faint indigo cast in the mid densities (water, not pure black)
-      col=mix(col,mix(col,indigo,0.5),smoothstep(0.3,0.7,ink)*0.4);
-      // dry-brush paper showing through (keeps it from going flat)
+      ink+=sin(d*10.0-u_time*1.5)*exp(-d*4.5)*(0.16+u_mvel*0.8);
+      // density -> warm-blue water washed with teal-navy ink (softer than black for readability)
+      float density=smoothstep(0.12,0.95,ink);
+      vec3 col=mix(water, inkNavy, density*0.62);          // 0.62 keeps it lighter = more readable
+      col=mix(col, teal, smoothstep(0.3,0.75,ink)*0.5);    // teal mid-tones = water feel
+      col=mix(col, waterDeep, smoothstep(0.0,0.4,1.0-ink)*0.3); // lighten the clear areas
+      // dry-brush light water breaking through
       float dry=fbm(p*9.0);
-      col=mix(col,paper,smoothstep(0.55,0.8,dry)*density*0.3);
-      // one vermilion seal-ink bleed, low and subtle, drifting
+      col=mix(col, water, smoothstep(0.55,0.82,dry)*density*0.28);
+      // single warm coral seal bleed, drifting (accent)
       vec2 sc=vec2(0.82+0.02*sin(t),0.2+0.02*cos(t*0.8)); sc.x*=u_res.x/u_res.y;
       float seal=exp(-distance(p,sc)*9.0);
-      col=mix(col,verm,seal*0.5*smoothstep(0.3,0.6,ink+0.2));
-      gl_FragColor=vec4(col,1.0);
+      col=mix(col, verm, seal*0.4*smoothstep(0.3,0.6,ink+0.2));
+      // gentle top light for an airy, warm feel
+      col+=0.04*(1.0-uv.y)*vec3(1.0,0.98,0.92);
+      gl_FragColor=vec4(clamp(col,0.,1.),1.0);
     }`;
     const mat = new THREE.ShaderMaterial({
       uniforms,

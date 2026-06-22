@@ -13,50 +13,50 @@ truncate table public.reviews  restart identity cascade;
 -- ---------- Tribe Gate (12m, shallow reef, first-timers) -------------------
 insert into public.dives
   (slug, name, site, site_key, depth_m, dive_min, train_min, photos, gopro_min, price, tier, pitch, see_text, for_text, steps, sort) values
-('tribe-gate-light', 'Light Pack', 'Tribe Gate', 'tribe', 12, 20, 40, 20, 2, 3500, 'Light',
+('tribe-gate-light', '20-Min Taster Dive', 'Tribe Gate', 'tribe', 12, 20, 40, 20, 2, 3500, 'Light',
  'Your first breath underwater on Havelock''s calmest shallow reef.',
  'Gentle coral gardens in bright, shallow water — clownfish darting through anemones, butterflyfish, parrotfish nibbling the reef, and shoals of bright blue chromis. Visibility here is some of the best in the islands.',
  'Made for first-timers. You needn''t have dived before — or even be a strong swimmer. Tribe Gate''s shallow, sheltered water and an instructor at your side the whole time make this the easiest, safest way to try scuba.',
  '[{"title":"Arrive & meet","body":"We pick you up within 5km. Meet your PADI instructor, no rush."},{"title":"Safety brief","body":"Simple, jargon-free briefing on breathing and a few hand signals."},{"title":"Gear up","body":"We fit your mask, fins and gear and check everything twice."},{"title":"Your dive","body":"Into the shallows with your instructor at arm''s reach the entire time."},{"title":"Photos & video","body":"Your instructor shoots HD photos and GoPro video — yours to keep, free."}]', 10),
 
-('tribe-gate-light-plus', 'Light Plus Pack', 'Tribe Gate', 'tribe', 12, 30, 40, 30, 3, 4000, 'Light',
+('tribe-gate-light-plus', '30-Min Explorer Dive', 'Tribe Gate', 'tribe', 12, 30, 40, 30, 3, 4000, 'Light',
  'A little longer underwater, a few more frames to take home.',
- 'The same bright shallow reef as the Light Pack with extra time to settle in — more clownfish, anemones and reef life once your breathing relaxes.',
+ 'The same bright shallow reef as the Taster Dive, with extra time to settle in — more clownfish, anemones and reef life once your breathing relaxes.',
  'Ideal first-timers who want more than a taster. Still fully guided, still shallow — just a longer, calmer dive once nerves settle.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, then meet your PADI instructor."},{"title":"Safety brief","body":"Easy briefing on breathing and hand signals."},{"title":"Gear up","body":"Fitted and double-checked before you touch the water."},{"title":"Your dive","body":"A longer 30-minute dive, instructor by your side throughout."},{"title":"Photos & video","body":"30 HD photos and 3 min of GoPro footage, included."}]', 20),
 
-('tribe-gate-premium', 'Premium Pack', 'Tribe Gate', 'tribe', 12, 40, 50, 40, 4, 4500, 'Premium',
+('tribe-gate-premium', '40-Min Adventure Dive', 'Tribe Gate', 'tribe', 12, 40, 50, 40, 4, 4500, 'Premium',
  'The full Tribe Gate experience — longer training, longer dive, more footage.',
  'Extended time over the shallow coral gardens to really explore — anemone cities, parrotfish, butterflyfish and the occasional curious wrasse following you along the reef.',
  'For first-timers who want the complete experience, and anyone who wants the most relaxed, unhurried dive. Extra training time means you''ll feel genuinely confident underwater.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km and a warm welcome from your instructor."},{"title":"Safety brief","body":"A fuller 50-minute training session so you feel ready."},{"title":"Gear up","body":"Personally fitted gear, checked before every dive."},{"title":"Your dive","body":"A relaxed 40-minute guided dive across the reef."},{"title":"Photos & video","body":"40 HD photos and 4 min of GoPro — free with this pack."}]', 30),
 
-('tribe-gate-premium-plus', 'Premium Plus Pack', 'Tribe Gate', 'tribe', 12, 50, 50, 50, 5, 6000, 'Premium+',
+('tribe-gate-premium-plus', '50-Min Signature Dive', 'Tribe Gate', 'tribe', 12, 50, 50, 50, 5, 6000, 'Premium+',
  'Our longest Tribe Gate dive — the most time underwater and the biggest photo set.',
  'A full 50 minutes drifting the shallow reef: clownfish, anemones, parrotfish and reef shoals, with time to simply float and watch the coral come alive.',
  'For first-timers who want it all, and couples or friends who want the most memorable, unhurried first dive with the largest set of photos and video to take home.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, meet your instructor."},{"title":"Safety brief","body":"Full training so you''re completely at ease."},{"title":"Gear up","body":"Fitted and double-checked gear."},{"title":"Your dive","body":"A full 50-minute guided dive — our longest Tribe Gate experience."},{"title":"Photos & video","body":"50 HD photos and 5 min of GoPro footage included."}]', 40),
 
 -- ---------- Red Pillar (14m, coral & snorkelling, best value) --------------
-('red-pillar-light', 'Light Pack', 'Red Pillar', 'red', 14, 20, 40, 20, 2, 2500, 'Light',
+('red-pillar-light', '20-Min Taster Dive', 'Red Pillar', 'red', 14, 20, 40, 20, 2, 2500, 'Light',
  'Havelock''s best-value first dive — coral pillars in clear water.',
  'Standing coral pillars wrapped in reef fish — sergeant majors, fusiliers, angelfish and the flash of a passing trigger. One of the most colourful shallow sites we dive.',
  'The easiest on the wallet and a brilliant first dive. Shallow, sheltered and fully guided — perfect if you''re curious but want to keep it simple.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, then meet your PADI instructor."},{"title":"Safety brief","body":"Simple briefing on breathing and signals."},{"title":"Gear up","body":"Fitted and checked before you enter the water."},{"title":"Your dive","body":"A guided dive around the coral pillars, instructor beside you."},{"title":"Photos & video","body":"20 HD photos and 2 min of GoPro, free."}]', 50),
 
-('red-pillar-light-plus', 'Light Plus Pack', 'Red Pillar', 'red', 14, 30, 40, 30, 3, 3000, 'Light',
+('red-pillar-light-plus', '30-Min Explorer Dive', 'Red Pillar', 'red', 14, 30, 40, 30, 3, 3000, 'Light',
  'More time on Havelock''s best-value reef, more photos to keep.',
  'Extended time among the coral pillars and their clouds of reef fish, with the chance to spot moray eels tucked into crevices and reef shrimp on the coral.',
  'Great value for first-timers who want a slightly longer, fuller dive. Still shallow and fully guided from start to finish.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km and a relaxed welcome."},{"title":"Safety brief","body":"Easy, jargon-free briefing."},{"title":"Gear up","body":"Fitted gear, double-checked."},{"title":"Your dive","body":"A longer 30-minute guided dive around the pillars."},{"title":"Photos & video","body":"30 HD photos and 3 min of GoPro included."}]', 60),
 
-('red-pillar-premium', 'Premium Pack', 'Red Pillar', 'red', 14, 40, 50, 40, 4, 4000, 'Premium',
+('red-pillar-premium', '40-Min Adventure Dive', 'Red Pillar', 'red', 14, 40, 50, 40, 4, 4000, 'Premium',
  'The full Red Pillar dive — extra training, a longer dive, more footage.',
  'A proper exploration of the pillars and surrounding reef — schooling fusiliers, angelfish, anemonefish and, if you''re lucky, a turtle gliding past.',
  'For first-timers who want the complete experience at the best-value site, with more training time so you feel truly confident underwater.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, meet your instructor."},{"title":"Safety brief","body":"A fuller 50-minute training session."},{"title":"Gear up","body":"Personally fitted and checked gear."},{"title":"Your dive","body":"A relaxed 40-minute guided dive across the reef."},{"title":"Photos & video","body":"40 HD photos and 4 min of GoPro, free."}]', 70),
 
-('red-pillar-premium-plus', 'Premium Plus Pack', 'Red Pillar', 'red', 14, 45, 50, 40, 4, 5000, 'Premium+',
+('red-pillar-premium-plus', '45-Min Signature Dive', 'Red Pillar', 'red', 14, 45, 50, 40, 4, 5000, 'Premium+',
  'Our longest Red Pillar dive for the most time among the coral.',
  'Nearly an hour over the pillars and reef — the longer you stay, the more comes out: moray eels, reef shrimp, schooling fish and the occasional turtle.',
  'For first-timers who want maximum time underwater at our best-value site. Fully guided throughout, with a big set of photos and video to take home.',

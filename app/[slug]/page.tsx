@@ -59,6 +59,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
   return (
     <>
       <InkBackground />
+      <div className="section-veil" aria-hidden="true" />
       <ScrollFX />
       <Nav />
 
@@ -116,6 +117,12 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
         {/* BODY */}
         <section className="detail-body">
           <div className="wrap">
+            {dive.image_url && (
+              <div className="detail-photo">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={dive.image_url} alt={`${dive.name} — ${dive.site}, Havelock`} />
+              </div>
+            )}
             <div className="detail-grid">
               <div className="detail-main">
                 <div className="panel">
@@ -194,7 +201,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
       </main>
 
       <Footer settings={settings} />
-      <WhatsAppFloat whatsapp={settings.whatsapp} />
+      <WhatsAppFloat whatsapp={settings.whatsapp} phone={settings.phone} />
 
       <JsonLd data={[diveProductSchema(dive, settings), breadcrumbSchema(dive)]} />
     </>

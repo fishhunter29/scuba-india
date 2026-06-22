@@ -19,10 +19,11 @@ export default function ScrollFX() {
       nav?.classList.toggle('scrolled', scrollY > 40);
       const pct = Math.min(scrollY / (document.body.scrollHeight - innerHeight || 1), 1);
       if (depthveil) {
+        // deepen into ocean teal-navy (not black) as you descend
         depthveil.style.background =
-          'linear-gradient(180deg,rgba(20,46,52,' +
+          'linear-gradient(180deg,rgba(26,78,90,' +
           (pct * 0.3).toFixed(3) +
-          ') 0%,rgba(6,18,22,' +
+          ') 0%,rgba(9,40,52,' +
           (pct * 0.62).toFixed(3) +
           ') 100%)';
       }

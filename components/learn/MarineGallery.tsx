@@ -1,69 +1,48 @@
 'use client';
 
-// Hover/tap cards of Havelock reef life. Each card shows a photo from
-// public/images/marine-*.jpg (replace the placeholders with real shots — same
-// filename). The coloured SVG sits behind as a fallback if an image is missing.
-const LIFE = [
+// Real photos from our Havelock dives. Hover/tap reveals a short caption.
+const SHOTS = [
   {
-    name: 'Clownfish',
-    img: '/images/marine-clownfish.jpg',
-    fact: 'Live among stinging anemones that protect them — you\'ll see them at almost every site.',
-    bg: '#e07a5f',
-    fish: '#ff9a5a',
+    img: '/images/gallery-01.jpg',
+    name: 'Clownfish & anemone',
+    fact: 'You\'ll find them at almost every site, darting in and out of their stinging anemone homes.',
   },
   {
-    name: 'Green sea turtle',
-    img: '/images/marine-turtle.jpg',
-    fact: 'Graze on seagrass at Turtle Beach. Calm and curious — a highlight of any dive.',
-    bg: '#1f8f86',
-    fish: '#7fd3c0',
+    img: '/images/gallery-02.jpg',
+    name: 'Living coral gardens',
+    fact: 'Healthy hard and soft coral stretches across Havelock\'s shallow reefs.',
   },
   {
-    name: 'Parrotfish',
-    img: '/images/marine-parrotfish.jpg',
-    fact: 'Bright and beaked, they nibble algae off the coral and keep the reef healthy.',
-    bg: '#3d9bc9',
-    fish: '#9fe0ff',
+    img: '/images/gallery-03.jpg',
+    name: 'Reef fish everywhere',
+    fact: 'Clouds of fusiliers, sergeant majors and angelfish drift around you as you swim.',
   },
   {
-    name: 'Reef shark',
-    img: '/images/marine-reef-shark.jpg',
-    fact: 'Small, shy and harmless to divers. A graceful sighting at deeper Lighthouse.',
-    bg: '#1a4f74',
-    fish: '#bcd6e6',
+    img: '/images/gallery-04.jpg',
+    name: 'Reef as far as you can see',
+    fact: 'The reefs roll on — there\'s always something new around the next coral outcrop.',
   },
   {
-    name: 'Butterflyfish',
-    img: '/images/marine-butterflyfish.jpg',
-    fact: 'Paired for life, they flit through the coral in bright yellow and white.',
-    bg: '#f2a541',
-    fish: '#fff0c2',
+    img: '/images/gallery-05.jpg',
+    name: 'Always in safe hands',
+    fact: 'Your instructor stays right beside you, so you can relax and just take it all in.',
   },
   {
-    name: 'Moray eel',
-    img: '/images/marine-moray-eel.jpg',
-    fact: 'Peer out of crevices with an open mouth — that\'s just how they breathe, not a threat.',
-    bg: '#5a7d4f',
-    fish: '#b6d4a0',
+    img: '/images/gallery-06.jpg',
+    name: 'Your dive, your photos',
+    fact: 'Every dive comes with HD photos and GoPro video of you underwater — free, to keep.',
   },
 ];
 
 export default function MarineGallery() {
   return (
     <div className="marine-grid">
-      {LIFE.map((l) => (
-        <div className="marine-card" key={l.name} tabIndex={0} style={{ background: l.bg }}>
-          <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <rect width="100" height="100" fill={l.bg} />
-            <circle cx="78" cy="22" r="26" fill="rgba(255,255,255,.12)" />
-            <path d="M28 58 C38 44,62 44,72 58 C62 72,38 72,28 58Z" fill={l.fish} />
-            <path d="M72 58 l12 -10 v20 z" fill={l.fish} />
-            <circle cx="38" cy="55" r="3" fill="#1B1A17" />
-          </svg>
+      {SHOTS.map((s) => (
+        <div className="marine-card" key={s.name} tabIndex={0}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="mc-photo" src={l.img} alt={l.name} loading="lazy" />
-          <div className="mc-label">{l.name}</div>
-          <div className="mc-fact">{l.fact}</div>
+          <img className="mc-photo" src={s.img} alt={s.name} loading="lazy" />
+          <div className="mc-label">{s.name}</div>
+          <div className="mc-fact">{s.fact}</div>
         </div>
       ))}
     </div>

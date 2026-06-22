@@ -93,7 +93,7 @@ export default function PhotosAdmin() {
         <div className="admin-card">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(160px,1fr))', gap: 16 }}>
             {rows.map((p) => (
-              <div key={p.id} style={{ border: '1px solid rgba(27,26,23,.12)', borderRadius: 10, overflow: 'hidden' }}>
+              <div key={p.id} style={{ border: '1px solid rgba(18,58,71,.12)', borderRadius: 10, overflow: 'hidden' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={p.url} alt={p.alt ?? ''} style={{ width: '100%', height: 110, objectFit: 'cover' }} />
                 <div style={{ padding: 10 }}>

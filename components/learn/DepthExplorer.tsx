@@ -182,7 +182,7 @@ export default function DepthExplorer() {
             {/* guide line + depth badge */}
             <line x1="150" y1={SURFACE_Y} x2="312" y2={SURFACE_Y} stroke="#ffffff" strokeWidth="1" strokeDasharray="3 4" opacity="0.55" />
             <g transform={`translate(298 ${SURFACE_Y})`}>
-              <rect x="-2" y="-13" width="44" height="26" rx="13" fill="#C8472E" />
+              <rect x="-2" y="-13" width="44" height="26" rx="13" fill="#E0523A" />
               <text x="20" y="5" textAnchor="middle" fontFamily="var(--mono), monospace" fontSize="13" fontWeight="700" fill="#fff">{depth}m</text>
             </g>
             {/* diver — pose changes per depth stage to match real diving body position, crossfading between poses; floats freely at its current depth */}

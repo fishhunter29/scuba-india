@@ -1,7 +1,14 @@
 import type { Course } from '@/lib/types';
 import { formatPrice } from '@/lib/format';
+import { waLink } from '@/lib/whatsapp';
 
-export default function Courses({ courses }: { courses: Course[] }) {
+export default function Courses({
+  courses,
+  whatsapp,
+}: {
+  courses: Course[];
+  whatsapp: string;
+}) {
   return (
     <section className="band courses" id="courses">
       <div className="wrap">
@@ -10,7 +17,7 @@ export default function Courses({ courses }: { courses: Course[] }) {
           <h2>Get certified, for life</h2>
           <p>
             Internationally recognised PADI courses, beginner to professional. Prices are per
-            person.
+            person — message us for dates, details and anything you&apos;re unsure about.
           </p>
         </div>
         <div className="reveal">
@@ -32,6 +39,17 @@ export default function Courses({ courses }: { courses: Course[] }) {
               <span className="cprice">{formatPrice(c.price, c.on_request)}</span>
             </div>
           ))}
+        </div>
+        <div className="courses-cta reveal">
+          <p>Not sure which course is right for you? We&apos;ll help you choose.</p>
+          <a
+            href={waLink(whatsapp, 'Hi Scuba India, I have a question about your PADI courses.')}
+            className="btn btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask about courses on WhatsApp →
+          </a>
         </div>
       </div>
     </section>

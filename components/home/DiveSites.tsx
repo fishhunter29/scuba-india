@@ -1,19 +1,33 @@
 import type { Dive } from '@/lib/types';
 
-// Distinct physical dive sites (one row each) with their typical max depth.
+// Short, real descriptor per site — the marine-life hook a first-timer wants.
+const SITE_INFO: Record<string, { name: string; blurb: string }> = {
+  tribe: {
+    name: 'Tribe Gate',
+    blurb: 'Shallow, sunlit coral garden — the easiest first dive. Clownfish, parrotfish and grazing green turtles.',
+  },
+  red: {
+    name: 'Red Pillar',
+    blurb: 'Coral pillars alive with fusiliers and angelfish — our most colourful, best-value reef.',
+  },
+  light: {
+    name: 'Lighthouse',
+    blurb: 'Deeper water, bigger fish — snapper schools, groupers and the odd reef shark in the blue.',
+  },
+  turtle: {
+    name: 'Turtle Beach',
+    blurb: 'Green sea turtles grazing the seagrass, rays over the sand — unhurried and life-rich.',
+  },
+};
+
 function sitesFromDives(dives: Dive[]) {
-  const order: { key: string; name: string }[] = [
-    { key: 'tribe', name: 'Tribe Gate' },
-    { key: 'red', name: 'Red Pillar' },
-    { key: 'light', name: 'Lighthouse' },
-    { key: 'turtle', name: 'Turtle Beach' },
-  ];
+  const order = ['tribe', 'red', 'light', 'turtle'];
   return order
-    .map((o) => {
-      const d = dives.find((x) => x.site_key === o.key && x.depth_m != null);
-      return d ? { name: o.name, depth: d.depth_m as number } : null;
+    .map((key) => {
+      const d = dives.find((x) => x.site_key === key && x.depth_m != null);
+      return d ? { key, name: SITE_INFO[key].name, blurb: SITE_INFO[key].blurb, depth: d.depth_m as number } : null;
     })
-    .filter(Boolean) as { name: string; depth: number }[];
+    .filter(Boolean) as { key: string; name: string; blurb: string; depth: number }[];
 }
 
 export default function DiveSites({ dives }: { dives: Dive[] }) {
@@ -29,8 +43,9 @@ export default function DiveSites({ dives }: { dives: Dive[] }) {
             <div className="sec-eyebrow">Where you&apos;ll dive</div>
             <h2>Four reefs. Every level of diver.</h2>
             <p>
-              We dive Havelock&apos;s healthiest sites and match each to your experience — gentle
-              shallow coral to deeper drifts for the certified.
+              We dive Havelock&apos;s (Swarajdweep&apos;s) healthiest sites and match each to your
+              experience — gentle shallow coral for your first breath, deeper drifts for the
+              certified. Warm water 27–30°C, visibility 15–25m.
             </p>
             <p>Depths shown are typical maximums. Conditions are calmest October through May.</p>
           </div>
@@ -42,6 +57,7 @@ export default function DiveSites({ dives }: { dives: Dive[] }) {
                   <span className="depth-fill" data-depth={pct(s.depth)} />
                 </div>
                 <span className="m">{s.depth}m</span>
+                <span className="site-blurb">{s.blurb}</span>
               </div>
             ))}
           </div>

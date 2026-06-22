@@ -32,9 +32,10 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    'PADI dive centre in Havelock, Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
+    'PADI dive centre in Havelock (Swarajdweep), Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
   keywords: [
     'scuba diving Havelock',
+    'scuba diving Swarajdweep',
     'PADI course Andaman',
     'try dive Havelock price',
     'first time scuba diving Andaman',
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     type: 'website',
     locale: 'en_IN',
+    images: [{ url: '/images/logo-full.png', width: 640, height: 640, alt: 'Scuba India' }],
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
