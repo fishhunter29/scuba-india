@@ -271,14 +271,24 @@
    GALLERY (home) — masonry grid + accessible lightbox
    ========================================================================= */
 .gallery-band{background:rgba(205,231,231,.6);backdrop-filter:blur(2px)}
-.gallery-masonry{column-count:3;column-gap:14px;margin-top:10px}
-@media(max-width:920px){.gallery-masonry{column-count:2}}
-@media(max-width:480px){.gallery-masonry{column-count:1}}
-.gallery-item{display:block;width:100%;padding:0;border:none;background:none;cursor:pointer;margin:0 0 14px;break-inside:avoid;border-radius:12px;overflow:hidden;line-height:0;box-shadow:0 8px 24px rgba(10,44,70,.12);transition:transform .25s,box-shadow .25s}
-.gallery-item:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(10,44,70,.2)}
-.gallery-item img{width:100%;height:auto;display:block}
-.gallery-item:focus-visible{outline:2px solid var(--vermilion);outline-offset:3px}
-@media(prefers-reduced-motion:reduce){.gallery-item{transition:none}.gallery-item:hover{transform:none}}
+/* 3D coliseum carousel */
+.coliseum{position:relative;margin-top:6px}
+.coliseum-stage{position:relative;height:clamp(330px,52vh,500px);overflow:hidden;cursor:grab;touch-action:pan-y}
+.coliseum-stage:active{cursor:grabbing}
+.coliseum-ring{position:absolute;top:50%;left:50%;width:0;height:0;transform-style:preserve-3d}
+.coliseum-ring.smooth{transition:transform .55s cubic-bezier(.22,.61,.36,1)}
+.coliseum-card{position:absolute;top:50%;left:50%;width:var(--cw);height:var(--ch);margin-left:calc(var(--cw) / -2);margin-top:calc(var(--ch) / -2);padding:0;border:none;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.coliseum-inner{display:block;width:100%;height:100%;border-radius:12px;overflow:hidden;line-height:0;background:var(--paper-deep);box-shadow:0 16px 40px rgba(8,34,46,.45);border:2px solid rgba(255,255,255,.5);transition:transform .3s,box-shadow .3s,border-color .3s}
+.coliseum-card picture,.coliseum-card img{width:100%;height:100%;display:block;object-fit:cover;user-select:none}
+.coliseum-card:hover .coliseum-inner{transform:scale(1.07);box-shadow:0 22px 60px rgba(8,34,46,.6)}
+.coliseum-card.is-front .coliseum-inner{border-color:var(--vermilion)}
+.coliseum-card:focus-visible{outline:none}
+.coliseum-card:focus-visible .coliseum-inner{outline:3px solid var(--vermilion);outline-offset:3px}
+.coliseum-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:48px;height:48px;border-radius:50%;border:1px solid rgba(18,58,71,.18);background:rgba(255,255,255,.85);backdrop-filter:blur(4px);color:var(--sumi);font-size:30px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(8,34,46,.18);transition:background .2s,transform .2s}
+.coliseum-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
+.coliseum-arrow:focus-visible{outline:2px solid var(--vermilion);outline-offset:2px}
+.ca-prev{left:6px}.ca-next{right:6px}
+@media(prefers-reduced-motion:reduce){.coliseum-ring.smooth{transition:none}.coliseum-card:hover .coliseum-inner{transform:none}}
 
 .lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,24,32,.93);display:flex;align-items:center;justify-content:center;padding:5vh 64px}
 .lb-figure{margin:0;display:flex;flex-direction:column;align-items:center}
