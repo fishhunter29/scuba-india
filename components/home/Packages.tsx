@@ -45,9 +45,11 @@ function PickupIcon() {
 export default function Packages({
   grouped,
   settings,
+  tryFrom,
 }: {
   grouped: Record<SiteKey, Dive[]>;
   settings: Settings;
+  tryFrom: string;
 }) {
   const tabs = SITE_TABS.filter((t) => grouped[t.key]?.length);
   const [active, setActive] = useState<SiteKey>(tabs[0]?.key ?? 'tribe');
@@ -61,6 +63,10 @@ export default function Packages({
           <p>
             Choose a dive site to see its packages. All include pickup &amp; drop within 5km, plus
             HD photos and GoPro video unless noted.
+          </p>
+          <p className="pk-value">
+            PADI try dives in Havelock typically start higher — ours start at <b>{tryFrom}</b>:
+            same certification, same reefs, free HD photos included.
           </p>
         </div>
 
