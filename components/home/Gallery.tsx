@@ -122,7 +122,7 @@ export default function Gallery() {
             Gallery
           </div>
           <h2>Beneath the surface</h2>
-          <p>Drag to glide through the reef — tap any photo to open it full-screen.</p>
+          <p>Moments from our dives around Havelock.</p>
         </div>
 
         <div className="coliseum">
