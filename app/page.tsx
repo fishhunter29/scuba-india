@@ -47,7 +47,7 @@ export default async function HomePage() {
 
       <div className="sheet">
         <Experiences dives={dives} courses={courses} />
-        <Packages grouped={grouped} />
+        <Packages grouped={grouped} settings={settings} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
         <DiveSites dives={dives} />
         <WhyUs />

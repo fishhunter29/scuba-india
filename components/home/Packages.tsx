@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import type { Dive, SiteKey } from '@/lib/types';
+import type { Dive, Settings, SiteKey } from '@/lib/types';
 import { SITE_TABS, SITE_INTRO } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
 
@@ -42,7 +42,13 @@ function PickupIcon() {
   );
 }
 
-export default function Packages({ grouped }: { grouped: Record<SiteKey, Dive[]> }) {
+export default function Packages({
+  grouped,
+  settings,
+}: {
+  grouped: Record<SiteKey, Dive[]>;
+  settings: Settings;
+}) {
   const tabs = SITE_TABS.filter((t) => grouped[t.key]?.length);
   const [active, setActive] = useState<SiteKey>(tabs[0]?.key ?? 'tribe');
 
@@ -74,6 +80,22 @@ export default function Packages({ grouped }: { grouped: Record<SiteKey, Dive[]>
         </div>
         <div className="pk-note reveal">
           Prices are per person. Premium tiers include longer dives and more footage.
+        </div>
+
+        <div className="pk-trust reveal">
+          <span>
+            <span className="star">★</span> <b>{settings.rating_avg}</b> ·{' '}
+            {settings.review_count > 0 ? settings.review_count : '[XX]'}+ reviews
+          </span>
+          <span>
+            <b>PADI</b> Dive Centre <span className="padi-no">#27122</span>
+          </span>
+          <span>
+            <b>{settings.dives_guided}+</b> dives guided
+          </span>
+          <span>
+            Based in <b>Havelock</b>
+          </span>
         </div>
 
         {tabs.map((t) => {
