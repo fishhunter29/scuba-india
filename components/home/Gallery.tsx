@@ -5,14 +5,14 @@ import { createPortal } from 'react-dom';
 import shots from '@/lib/gallery.json';
 
 type Shot = { src: string; w: number; h: number; alt: string };
-// up to 14 cards make a clean coliseum ring with a clear centre
-const PHOTOS = (shots as Shot[]).slice(0, 14);
+const PHOTOS = (shots as Shot[]).slice(0, 16);
 const N = PHOTOS.length;
-const THETA = 360 / N;
+const VIS = 3.4; // how many cards each side stay visible
 
 export default function Gallery() {
-  const [rot, setRot] = useState(0);
-  const [dims, setDims] = useState({ radius: 460, cw: 230, ch: 310 });
+  // pos = fractional focused index; drag/inertia move it, snap to whole numbers
+  const [pos, setPos] = useState(0);
+  const [d, setD] = useState({ cw: 300, ch: 360, gap: 188, depth: 170, tilt: 50 });
   const [smooth, setSmooth] = useState(true);
   const [open, setOpen] = useState<number | null>(null);
 
@@ -23,14 +23,13 @@ export default function Gallery() {
   const lastFocus = useRef<HTMLElement | null>(null);
   const touchX = useRef<number | null>(null);
 
-  // responsive ring size
   useEffect(() => {
     reduce.current = matchMedia('(prefers-reduced-motion:reduce)').matches;
     const fit = () => {
       const w = innerWidth;
-      if (w < 560) setDims({ radius: 250, cw: 150, ch: 205 });
-      else if (w < 920) setDims({ radius: 360, cw: 195, ch: 265 });
-      else setDims({ radius: 470, cw: 235, ch: 315 });
+      if (w < 560) setD({ cw: 210, ch: 270, gap: 120, depth: 130, tilt: 52 });
+      else if (w < 920) setD({ cw: 260, ch: 320, gap: 158, depth: 150, tilt: 50 });
+      else setD({ cw: 310, ch: 380, gap: 196, depth: 175, tilt: 48 });
     };
     fit();
     addEventListener('resize', fit);
@@ -39,19 +38,14 @@ export default function Gallery() {
 
   const snap = useCallback(() => {
     setSmooth(true);
-    setRot((r) => Math.round(r / THETA) * THETA);
+    setPos((p) => Math.round(p));
+  }, []);
+  const step = useCallback((dir: number) => {
+    cancelAnimationFrame(raf.current);
+    setSmooth(true);
+    setPos((p) => Math.round(p) + dir);
   }, []);
 
-  const spin = useCallback(
-    (dir: number) => {
-      cancelAnimationFrame(raf.current);
-      setSmooth(true);
-      setRot((r) => Math.round(r / THETA) * THETA + dir * THETA);
-    },
-    [],
-  );
-
-  // pointer drag + inertia
   const onDown = (e: React.PointerEvent) => {
     if (open !== null) return;
     cancelAnimationFrame(raf.current);
@@ -64,20 +58,21 @@ export default function Gallery() {
     const dx = e.clientX - drag.current.lastX;
     drag.current.lastX = e.clientX;
     drag.current.moved += Math.abs(dx);
-    drag.current.vel = dx * 0.28;
-    setRot((r) => r + dx * 0.28);
+    const dp = -dx / d.gap;
+    drag.current.vel = dp;
+    setPos((p) => p + dp);
   };
   const endDrag = () => {
     if (!drag.current.active) return;
     drag.current.active = false;
     if (reduce.current) return snap();
-    const step = () => {
-      drag.current.vel *= 0.94;
-      setRot((r) => r + drag.current.vel);
-      if (Math.abs(drag.current.vel) > 0.08) raf.current = requestAnimationFrame(step);
+    const run = () => {
+      drag.current.vel *= 0.92;
+      setPos((p) => p + drag.current.vel);
+      if (Math.abs(drag.current.vel) > 0.002) raf.current = requestAnimationFrame(run);
       else snap();
     };
-    raf.current = requestAnimationFrame(step);
+    raf.current = requestAnimationFrame(run);
   };
 
   // lightbox
@@ -85,7 +80,7 @@ export default function Gallery() {
     setOpen(null);
     lastFocus.current?.focus?.();
   }, []);
-  const go = useCallback((d: number) => setOpen((o) => (o === null ? o : (o + d + N) % N)), []);
+  const go = useCallback((dir: number) => setOpen((o) => (o === null ? o : (o + dir + N) % N)), []);
   useEffect(() => {
     if (open === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -116,7 +111,7 @@ export default function Gallery() {
     };
   }, [open, close, go]);
 
-  const front = ((Math.round(-rot / THETA) % N) + N) % N;
+  const center = ((Math.round(pos) % N) + N) % N;
   const cur = open === null ? null : PHOTOS[open];
 
   return (
@@ -127,7 +122,7 @@ export default function Gallery() {
             Gallery
           </div>
           <h2>Beneath the surface</h2>
-          <p>Drag to spin the ring — tap any photo to open it full-screen.</p>
+          <p>Drag to glide through the reef — tap any photo to open it full-screen.</p>
         </div>
 
         <div className="coliseum">
@@ -137,42 +132,39 @@ export default function Gallery() {
             onPointerMove={onMove}
             onPointerUp={endDrag}
             onPointerLeave={endDrag}
-            style={{ perspective: `${dims.radius * 2.4}px` }}
+            style={{ height: `${d.ch + 60}px` }}
           >
             <div
-              className={`coliseum-ring${smooth ? ' smooth' : ''}`}
-              style={
-                {
-                  transform: `translateZ(-${dims.radius}px) rotateY(${rot}deg)`,
-                  ['--cw' as string]: `${dims.cw}px`,
-                  ['--ch' as string]: `${dims.ch}px`,
-                } as React.CSSProperties
-              }
+              className={`coverflow${smooth ? ' smooth' : ''}`}
+              style={{ ['--cw' as string]: `${d.cw}px`, ['--ch' as string]: `${d.ch}px` }}
             >
               {PHOTOS.map((p, i) => {
-                const angle = i * THETA;
-                // how far this card is from the front (0 = centre)
-                let off = (((angle + rot) % 360) + 360) % 360;
-                if (off > 180) off -= 360;
+                // shortest signed offset (wraps around the ring)
+                let off = ((i - pos + N + N / 2) % N) - N / 2;
                 const a = Math.abs(off);
-                const opacity = a > 105 ? 0 : 1 - (a / 105) * 0.72;
+                const tx = off * d.gap;
+                const tz = -a * d.depth;
+                const ry = Math.max(-70, Math.min(70, off * -d.tilt)); // concave: sides cup toward centre
+                const opacity = a > VIS ? 0 : 1 - (a / (VIS + 0.6)) * 0.85;
                 return (
                   <button
                     key={p.src}
-                    className={`coliseum-card${i === front ? ' is-front' : ''}`}
+                    className={`cf-card${i === center ? ' is-front' : ''}`}
                     style={{
-                      transform: `rotateY(${angle}deg) translateZ(${dims.radius}px)`,
+                      transform: `translate(-50%,-50%) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg)`,
                       opacity,
-                      pointerEvents: a > 100 ? 'none' : 'auto',
+                      zIndex: 100 - Math.round(a * 10),
+                      pointerEvents: a > VIS ? 'none' : 'auto',
                     }}
                     aria-label={`Open ${p.alt}`}
+                    aria-hidden={a > VIS}
                     onClick={(e) => {
-                      if (drag.current.moved > 6) return; // ignore drags
+                      if (drag.current.moved > 6) return;
                       lastFocus.current = e.currentTarget;
                       setOpen(i);
                     }}
                   >
-                    <span className="coliseum-inner">
+                    <span className="cf-inner">
                       <picture>
                         <source type="image/webp" srcSet={`${p.src}.webp`} />
                         <img src={`${p.src}.jpg`} alt={p.alt} loading="lazy" decoding="async" draggable={false} />
@@ -184,10 +176,10 @@ export default function Gallery() {
             </div>
           </div>
 
-          <button className="coliseum-arrow ca-prev" onClick={() => spin(1)} aria-label="Previous photos">
+          <button className="coliseum-arrow ca-prev" onClick={() => step(-1)} aria-label="Previous photo">
             ‹
           </button>
-          <button className="coliseum-arrow ca-next" onClick={() => spin(-1)} aria-label="Next photos">
+          <button className="coliseum-arrow ca-next" onClick={() => step(1)} aria-label="Next photo">
             ›
           </button>
         </div>

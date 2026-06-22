@@ -271,24 +271,24 @@
    GALLERY (home) — masonry grid + accessible lightbox
    ========================================================================= */
 .gallery-band{background:rgba(205,231,231,.6);backdrop-filter:blur(2px)}
-/* 3D coliseum carousel */
+/* concave cover-flow carousel */
 .coliseum{position:relative;margin-top:6px}
-.coliseum-stage{position:relative;height:clamp(330px,52vh,500px);overflow:hidden;cursor:grab;touch-action:pan-y}
+.coliseum-stage{position:relative;overflow:hidden;cursor:grab;touch-action:pan-y;perspective:1300px}
 .coliseum-stage:active{cursor:grabbing}
-.coliseum-ring{position:absolute;top:50%;left:50%;width:0;height:0;transform-style:preserve-3d}
-.coliseum-ring.smooth{transition:transform .55s cubic-bezier(.22,.61,.36,1)}
-.coliseum-card{position:absolute;top:50%;left:50%;width:var(--cw);height:var(--ch);margin-left:calc(var(--cw) / -2);margin-top:calc(var(--ch) / -2);padding:0;border:none;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.coliseum-inner{display:block;width:100%;height:100%;border-radius:12px;overflow:hidden;line-height:0;background:var(--paper-deep);box-shadow:0 16px 40px rgba(8,34,46,.45);border:2px solid rgba(255,255,255,.5);transition:transform .3s,box-shadow .3s,border-color .3s}
-.coliseum-card picture,.coliseum-card img{width:100%;height:100%;display:block;object-fit:cover;user-select:none}
-.coliseum-card:hover .coliseum-inner{transform:scale(1.07);box-shadow:0 22px 60px rgba(8,34,46,.6)}
-.coliseum-card.is-front .coliseum-inner{border-color:var(--vermilion)}
-.coliseum-card:focus-visible{outline:none}
-.coliseum-card:focus-visible .coliseum-inner{outline:3px solid var(--vermilion);outline-offset:3px}
-.coliseum-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:48px;height:48px;border-radius:50%;border:1px solid rgba(18,58,71,.18);background:rgba(255,255,255,.85);backdrop-filter:blur(4px);color:var(--sumi);font-size:30px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(8,34,46,.18);transition:background .2s,transform .2s}
+.coverflow{position:absolute;inset:0;transform-style:preserve-3d}
+.cf-card{position:absolute;top:50%;left:50%;width:var(--cw);height:var(--ch);padding:0;border:none;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .2s}
+.cf-card.smoothed,.coverflow.smooth .cf-card{transition:transform .5s cubic-bezier(.22,.61,.36,1),opacity .3s}
+.cf-inner{display:block;width:100%;height:100%;border-radius:14px;overflow:hidden;line-height:0;background:var(--paper-deep);box-shadow:0 18px 44px rgba(8,34,46,.4);transition:transform .3s,box-shadow .3s}
+.cf-card picture,.cf-card img{width:100%;height:100%;display:block;object-fit:cover;user-select:none}
+.cf-card.is-front .cf-inner{box-shadow:0 26px 64px rgba(8,34,46,.5)}
+.cf-card.is-front:hover .cf-inner{transform:scale(1.04)}
+.cf-card:focus-visible{outline:none}
+.cf-card:focus-visible .cf-inner{outline:3px solid var(--vermilion);outline-offset:3px}
+.coliseum-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:120;width:48px;height:48px;border-radius:50%;border:1px solid rgba(18,58,71,.18);background:rgba(255,255,255,.85);backdrop-filter:blur(4px);color:var(--sumi);font-size:30px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(8,34,46,.18);transition:background .2s,transform .2s}
 .coliseum-arrow:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
 .coliseum-arrow:focus-visible{outline:2px solid var(--vermilion);outline-offset:2px}
-.ca-prev{left:6px}.ca-next{right:6px}
-@media(prefers-reduced-motion:reduce){.coliseum-ring.smooth{transition:none}.coliseum-card:hover .coliseum-inner{transform:none}}
+.ca-prev{left:8px}.ca-next{right:8px}
+@media(prefers-reduced-motion:reduce){.coverflow.smooth .cf-card{transition:none}.cf-card.is-front:hover .cf-inner{transform:none}}
 
 .lightbox{position:fixed;inset:0;z-index:200;background:rgba(6,24,32,.93);display:flex;align-items:center;justify-content:center;padding:5vh 64px}
 .lb-figure{margin:0;display:flex;flex-direction:column;align-items:center}
