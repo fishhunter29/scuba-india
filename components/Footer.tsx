@@ -68,7 +68,13 @@ export default function Footer({ settings }: { settings: Settings }) {
         </div>
         <div className="foot-bottom">
           <span>© {new Date().getFullYear()} Scuba India · Havelock (Swarajdweep)</span>
-          <span>Privacy · Terms · Cancellation</span>
+          <span className="foot-legal">
+            <Link href="/privacy-policy">Privacy</Link>
+            {' · '}
+            <Link href="/terms-conditions">Terms</Link>
+            {' · '}
+            <Link href="/cancellation-policy">Cancellation</Link>
+          </span>
         </div>
       </div>
     </footer>
