@@ -59,6 +59,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
   return (
     <>
       <InkBackground />
+      <div className="section-veil" aria-hidden="true" />
       <ScrollFX />
       <Nav />
 

@@ -4,32 +4,18 @@ import { Seal } from '@/components/BrandMark';
 
 function InstagramIcon() {
   return (
-    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
-      <defs>
-        <radialGradient id="ig-grad" cx="30%" cy="107%" r="150%">
-          <stop offset="0%" stopColor="#fdf497" />
-          <stop offset="5%" stopColor="#fdf497" />
-          <stop offset="45%" stopColor="#fd5949" />
-          <stop offset="60%" stopColor="#d6249f" />
-          <stop offset="90%" stopColor="#285AEB" />
-        </radialGradient>
-      </defs>
-      <rect width="40" height="40" rx="11" fill="url(#ig-grad)" />
-      <rect x="11" y="11" width="18" height="18" rx="6" fill="none" stroke="#fff" strokeWidth="2.2" />
-      <circle cx="20" cy="20" r="4.6" fill="none" stroke="#fff" strokeWidth="2.2" />
-      <circle cx="26.6" cy="13.4" r="1.5" fill="#fff" />
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4.2" />
+      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
     </svg>
   );
 }
 
 function FacebookIcon() {
   return (
-    <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="12" fill="#1877F2" />
-      <path
-        fill="#fff"
-        d="M15.12 5.32H17V2.14C16.4 2.06 15.55 2 14.56 2c-2.06 0-3.47 1.3-3.47 3.69v2.62H8v3.34h3.09V22h3.69v-8.35h3.27l.47-3.34h-3.74V6.02c0-.97.26-1.63 1.85-1.63z"
-      />
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.3-.04-1.3-.13-2.45-.13-2.43 0-4.1 1.48-4.1 4.2v2.34H7.7V13h2.75v8h3.05z" />
     </svg>
   );
 }

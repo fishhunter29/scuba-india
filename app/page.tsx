@@ -11,6 +11,7 @@ import Courses from '@/components/home/Courses';
 import DiveSites from '@/components/home/DiveSites';
 import WhyUs from '@/components/home/WhyUs';
 import Reviews from '@/components/home/Reviews';
+import Gallery from '@/components/home/Gallery';
 import FinalCTA from '@/components/home/FinalCTA';
 import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesBySite } from '@/lib/data';
 import { getGoogleReviews } from '@/lib/google-reviews';
@@ -38,6 +39,7 @@ export default async function HomePage() {
   return (
     <>
       <InkBackground />
+      <div className="section-veil" aria-hidden="true" />
       <ScrollFX />
       <Nav />
 
@@ -50,6 +52,7 @@ export default async function HomePage() {
         <DiveSites dives={dives} />
         <WhyUs />
         <Reviews reviews={reviews} settings={settings} google={google} />
+        <Gallery />
       </div>
 
       <FinalCTA settings={settings} />

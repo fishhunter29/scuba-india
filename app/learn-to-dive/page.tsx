@@ -29,6 +29,7 @@ export default async function LearnToDivePage() {
   return (
     <>
       <InkBackground />
+      <div className="section-veil" aria-hidden="true" />
       <ScrollFX />
       <Nav />
       <main className="learn">
