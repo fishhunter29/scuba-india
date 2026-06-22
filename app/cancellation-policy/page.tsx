@@ -114,7 +114,7 @@ export default async function CancellationPolicyPage() {
       </main>
 
       <Footer settings={settings} />
-      <WhatsAppFloat whatsapp={settings.whatsapp} />
+      <WhatsAppFloat whatsapp={settings.whatsapp} phone={settings.phone} />
     </>
   );
 }

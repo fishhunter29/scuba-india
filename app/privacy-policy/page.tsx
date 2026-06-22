@@ -139,7 +139,7 @@ export default async function PrivacyPolicyPage() {
       </main>
 
       <Footer settings={settings} />
-      <WhatsAppFloat whatsapp={settings.whatsapp} />
+      <WhatsAppFloat whatsapp={settings.whatsapp} phone={settings.phone} />
     </>
   );
 }
