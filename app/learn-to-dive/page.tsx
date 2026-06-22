@@ -116,7 +116,7 @@ export default async function LearnToDivePage() {
           <h2>What you&apos;ll be wearing</h2>
           <p className="lead">
             You bring nothing but yourself. Every piece is provided, fitted and safety-checked by
-            your instructor — and each one is there to make something easy. Tap any item to see how.
+            your instructor — and each one is there to make something easy.
           </p>
           <GearWalkthrough />
         </div>
@@ -128,7 +128,7 @@ export default async function LearnToDivePage() {
           <h2>What it looks like down there</h2>
           <p className="lead">
             Real photos from our Havelock dives — the reefs, the fish, and first-timers right in the
-            middle of it. Hover or tap a photo.
+            middle of it.
           </p>
           <MarineGallery />
         </div>
