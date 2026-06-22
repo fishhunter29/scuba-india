@@ -14,7 +14,7 @@
 .detail-hero{position:relative;z-index:3;padding:150px 0 46px}
 .detail-back{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ash);margin-bottom:22px;display:inline-flex;gap:8px;align-items:center}
 .detail-back:hover{color:var(--vermilion)}
-.detail-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--vermilion);margin-bottom:16px}
+.detail-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--vermilion);margin-bottom:18px}
 .detail-hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(36px,6vw,72px);line-height:1.02;margin-bottom:14px;color:var(--sumi)}
 .detail-pitch{font-size:clamp(17px,2vw,21px);max-width:620px;color:var(--sumi-soft);margin-bottom:30px}
 .detail-stats{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px}
@@ -27,13 +27,13 @@
 .detail-photo{margin-bottom:34px;border-radius:16px;overflow:hidden;border:1px solid rgba(18,58,71,.14);box-shadow:0 18px 50px rgba(10,44,70,.18)}
 .detail-photo img{width:100%;height:clamp(220px,40vh,440px);object-fit:cover;display:block}
 .detail-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:44px;align-items:start}
-@media(max-width:920px){.detail-grid{grid-template-columns:1fr;gap:28px}.detail-hero{padding:120px 0 40px}.detail-aside{position:static}}
+@media(max-width:920px){.detail-grid{grid-template-columns:1fr;gap:28px}.detail-hero{padding:120px 0 40px}.detail-body{padding:32px 0 64px}.detail-aside{position:static}.learn-hero{padding:120px 0 48px}.learn-section{padding:64px 0}.learn-final{padding:64px 0}}
 
 .detail-main .panel{background:rgba(220,239,239,.72);backdrop-filter:blur(2px);border:1px solid rgba(18,58,71,.14);padding:30px 30px 32px;margin-bottom:22px}
 .detail-main .panel:nth-child(even){background:rgba(205,231,231,.74)}
 .panel h3{font-family:var(--disp);font-size:24px;font-weight:600;margin-bottom:16px;color:var(--sumi)}
 .panel p{color:var(--sumi-soft);font-size:16px;line-height:1.7}
-.panel h4{font-family:var(--disp);font-size:17px;font-weight:600;margin:18px 0 6px;color:var(--sumi)}
+.panel h4{font-family:var(--disp);font-size:17px;font-weight:600;margin:18px 0 10px;color:var(--sumi)}
 .panel ul{margin:6px 0 14px;padding-left:20px;color:var(--sumi-soft)}
 .panel li{font-size:15.5px;line-height:1.7;margin-bottom:6px}
 .legal-wrap{max-width:760px}
@@ -69,10 +69,10 @@
 .learn-hero .detail-eyebrow{color:var(--vermilion)}
 .learn-hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(38px,7vw,84px);line-height:1.0;margin-bottom:18px;color:var(--sumi)}
 .learn-hero p{font-size:clamp(17px,2.2vw,22px);max-width:600px;color:var(--sumi-soft)}
-.learn-section{position:relative;z-index:3;padding:70px 0;border-bottom:1px solid rgba(18,58,71,.1);
+.learn-section{position:relative;z-index:3;padding:90px 0;border-bottom:1px solid rgba(18,58,71,.1);
   background:rgba(220,239,239,.66);backdrop-filter:blur(2px)}
 .learn-section:nth-child(odd){background:rgba(205,231,231,.72)}
-.learn-section h2{font-family:var(--disp);font-size:clamp(28px,4vw,46px);font-weight:600;margin-bottom:14px}
+.learn-section h2{font-family:var(--disp);font-size:clamp(28px,4vw,46px);font-weight:600;margin-bottom:18px}
 .learn-section .lead{color:var(--sumi-soft);font-size:17px;max-width:620px;margin-bottom:34px}
 
 /* depth explorer — vector ocean cross-section */
