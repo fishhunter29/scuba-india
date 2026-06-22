@@ -64,16 +64,29 @@
    ink shows through, content sits at z-index 3 (SPEC §4 stacking rule). */
 .learn{background:transparent;color:var(--sumi);position:relative;z-index:3}
 /* hero is transparent (ink shows through) with sumi text, matching the home hero */
-.learn-hero{background:transparent;color:var(--sumi);padding:150px 0 60px;position:relative;z-index:3}
+.learn-hero{background:transparent;color:var(--sumi);min-height:92vh;display:flex;align-items:center;padding:140px 0 80px;position:relative;z-index:3}
 .learn-hero .wrap{position:relative;z-index:2}
 .learn-hero .detail-eyebrow{color:var(--vermilion)}
 .learn-hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(38px,7vw,84px);line-height:1.0;margin-bottom:18px;color:var(--sumi)}
 .learn-hero p{font-size:clamp(17px,2.2vw,22px);max-width:600px;color:var(--sumi-soft)}
+.scroll-cue{position:absolute;left:0;right:0;bottom:36px;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sumi-soft)}
+.scroll-cue:hover{color:var(--vermilion)}
+.scroll-cue svg{width:16px;height:16px}
+@media(prefers-reduced-motion:no-preference){.scroll-cue svg{animation:cue-bounce 1.8s ease-in-out infinite}}
+@keyframes cue-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
 .learn-section{position:relative;z-index:3;padding:90px 0;border-bottom:1px solid rgba(18,58,71,.1);
   background:rgba(220,239,239,.66);backdrop-filter:blur(2px)}
 .learn-section:nth-child(odd){background:rgba(205,231,231,.72)}
 .learn-section h2{font-family:var(--disp);font-size:clamp(28px,4vw,46px);font-weight:600;margin-bottom:18px}
 .learn-section .lead{color:var(--sumi-soft);font-size:17px;max-width:620px;margin-bottom:34px}
+.learn-closing{margin-top:30px;font-size:15.5px;color:var(--sumi-soft)}
+.learn-closing a{color:var(--vermilion);font-weight:600}
+
+/* persistent "book a dive" access — never trapped mid-scroll */
+.learn-skip{position:fixed;left:26px;bottom:26px;z-index:69;background:var(--paper);color:var(--vermilion);border:1px solid var(--vermilion);border-radius:999px;padding:12px 20px;font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.02em;box-shadow:0 8px 22px rgba(10,44,70,.18);transition:transform .2s,background .2s,color .2s}
+.learn-skip:hover{background:var(--vermilion);color:#fff;transform:translateY(-2px)}
+@media(max-width:640px){.learn-skip{left:16px;bottom:16px;padding:10px 16px;font-size:12px}}
 
 /* depth explorer — vector ocean cross-section */
 .depth-explorer{display:grid;grid-template-columns:0.85fr 1.05fr;gap:44px;align-items:center}
@@ -135,47 +148,56 @@
 .chooser-result .rec{font-family:var(--disp);font-size:30px;font-weight:700;color:var(--vermilion);margin:8px 0 6px}
 .chooser-result p{color:var(--sumi-soft);margin-bottom:22px}
 
-/* first-dive reassurance stats */
-.fd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:16px}
-.fd-card{background:var(--paper);border:1px solid rgba(18,58,71,.14);border-radius:14px;padding:24px 20px;text-align:center}
-.fd-fig{font-family:var(--disp);font-size:clamp(28px,4vw,38px);font-weight:700;color:var(--sumi);line-height:1.05}
-.fd-lab{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--vermilion);margin:12px 0 6px}
-.fd-sub{font-size:13.5px;color:var(--sumi-soft);line-height:1.5}
-.fd-note{margin-top:26px;color:var(--sumi-soft);font-size:15.5px;max-width:640px}
+/* colour-fade strip (Section 3A — static, no interaction) */
+.colour-fade{margin-top:28px;max-width:560px}
+.colour-fade-bar{height:34px;border-radius:8px;background:linear-gradient(90deg,#c23b2c 0%,#d9772f 22%,#dbb33a 42%,#3f8f8a 68%,#1c4f6e 100%);box-shadow:inset 0 0 0 1px rgba(18,58,71,.14)}
+.colour-fade-labels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ash);margin-top:8px}
 
-/* gear walkthrough — image + clean accordion list (no overlapping dots) */
-.gear{display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:start}
-@media(max-width:920px){.gear{grid-template-columns:1fr;gap:22px}}
-.gear-photo-wrap{position:relative;width:100%;line-height:0;background:#eaf4f4;border:1px solid rgba(18,58,71,.12);border-radius:14px;overflow:hidden}
-.gear-photo{width:100%;height:auto;display:block}
-.gear-list{display:grid;gap:10px}
-.gear-row{border:1px solid rgba(18,58,71,.14);border-radius:12px;background:var(--paper);overflow:hidden}
-.gear-row.open{border-color:var(--vermilion)}
-.gear-q{width:100%;display:flex;align-items:center;gap:12px;padding:15px 18px;background:none;border:none;cursor:pointer;font-family:var(--disp);font-size:18px;font-weight:600;color:var(--sumi);text-align:left}
-.gear-swatch{flex:0 0 16px;width:16px;height:16px;border-radius:4px;border:1px solid rgba(18,58,71,.25)}
-.gear-name{flex:1;display:flex;flex-direction:column;gap:2px}
-.gear-tag{font-family:var(--body);font-size:12.5px;font-weight:400;color:var(--vermilion)}
-.gear-chev{color:var(--vermilion);font-size:20px;line-height:1;transition:transform .25s}
-.gear-row.open .gear-chev{transform:rotate(45deg)}
-.gear-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.gear-row.open .gear-a{max-height:220px}
-.gear-a p{color:var(--sumi-soft);font-size:14.5px;line-height:1.6;padding:0 18px 16px 46px}
+/* gear explorer (Section 3B) — numbered markers over one illustration; all
+   explanation text lives in a modal so nothing can overlap the diagram. */
+.gear-explorer{display:flex;justify-content:center}
+.gear-diagram{position:relative;width:100%;max-width:300px;line-height:0;border-radius:16px;overflow:hidden;background:#eaf4f4;border:1px solid rgba(18,58,71,.12)}
+.gear-diagram img{width:100%;height:auto;display:block}
+.gear-marker{position:absolute;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:var(--vermilion);color:#fff;border:2px solid var(--paper);font-family:var(--disp);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px rgba(18,58,71,.3);transition:transform .2s}
+.gear-marker:hover,.gear-marker:focus-visible{transform:translate(-50%,-50%) scale(1.12)}
 
-/* marine gallery */
-.marine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
-.marine-card{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:1;cursor:pointer;border:1px solid rgba(18,58,71,.1)}
-.marine-card svg{position:absolute;inset:0;width:100%;height:100%}
-.marine-card .mc-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.marine-card .mc-label{position:absolute;left:0;right:0;bottom:0;padding:12px;color:#fff;font-family:var(--disp);font-weight:600;background:linear-gradient(180deg,transparent,rgba(15,59,66,.85));transform:translateY(8px);opacity:.92;transition:transform .25s}
-.marine-card:hover .mc-label{transform:none;opacity:1}
-.marine-card .mc-fact{position:absolute;inset:0;background:rgba(15,59,66,.92);color:#fff;padding:16px;display:flex;align-items:center;font-size:13.5px;opacity:0;transition:opacity .25s}
-.marine-card:hover .mc-fact{opacity:1}
+.gear-modal-backdrop{position:fixed;inset:0;z-index:80;background:rgba(15,40,46,.55);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:24px;animation:gear-fade .2s ease}
+.gear-modal{position:relative;background:var(--paper);border-radius:18px;max-width:380px;width:100%;padding:34px 28px 28px;text-align:center;box-shadow:0 30px 80px rgba(10,30,40,.35);animation:gear-pop .25s ease}
+.gear-modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(18,58,71,.2);background:var(--paper);font-size:18px;line-height:1;color:var(--sumi);cursor:pointer}
+.gear-modal-close:hover{border-color:var(--vermilion);color:var(--vermilion)}
+.gear-modal-img-wrap{width:130px;margin:0 auto 16px}
+.gear-modal-img{width:100%;height:auto;display:block}
+.gear-modal-num{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ash);margin-bottom:8px;text-transform:uppercase}
+.gear-modal h3{font-family:var(--disp);font-size:22px;font-weight:600;color:var(--sumi);margin-bottom:10px}
+.gear-modal p{color:var(--sumi-soft);font-size:15px;line-height:1.6;margin-bottom:22px}
+.gear-modal-nav{display:flex;justify-content:space-between;gap:10px;border-top:1px solid rgba(18,58,71,.12);padding-top:16px}
+.gear-modal-arrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--sumi);background:none;border:none;cursor:pointer;padding:6px 4px}
+.gear-modal-arrow:hover{color:var(--vermilion)}
+@keyframes gear-fade{from{opacity:0}to{opacity:1}}
+@keyframes gear-pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes gear-wobble{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+@media(prefers-reduced-motion:no-preference){
+  .gear-modal-img{animation:gear-wobble 4.5s ease-in-out infinite}
+}
+
+/* hour-by-hour timeline (Section 4) — reuses the .step card language from the
+   detail pages, with an icon swapped in for the numbered circle. */
+.day-timeline{display:grid;gap:12px;max-width:680px}
+.day-step{display:flex;gap:16px;align-items:flex-start;background:var(--paper);border:1px solid rgba(18,58,71,.12);padding:18px 20px}
+.day-step-icon{flex:0 0 38px;width:38px;height:38px;border-radius:50%;background:var(--vermilion);color:var(--paper);display:flex;align-items:center;justify-content:center}
+.day-step-icon svg{width:18px;height:18px}
+.day-step h4{font-family:var(--disp);font-size:17px;font-weight:600;margin-bottom:4px;color:var(--sumi)}
+.day-step p{font-size:14px;color:var(--sumi-soft);line-height:1.6}
 
 .learn-final{position:relative;z-index:3;background:linear-gradient(135deg,var(--vermilion),var(--vermilion-deep));color:#fff;text-align:center;padding:90px 0}
 .learn-final h2{font-family:var(--disp);font-size:clamp(30px,5vw,56px);font-weight:600;color:#fff;margin-bottom:16px}
 .learn-final p{color:rgba(255,255,255,.9);font-size:18px;margin-bottom:30px}
 .learn-final .btn-light{background:#fff;color:var(--vermilion)}
 .learn-final .btn-light:hover{background:var(--paper)}
+.learn-final .btn-ghost{color:var(--paper);border-color:var(--paper)}
+.learn-final .btn-ghost:hover{background:var(--paper);color:var(--vermilion)}
+.learn-final .detail-eyebrow{color:rgba(255,255,255,.85)}
+.learn-final-reassure{margin-top:24px;font-size:14px;color:rgba(255,255,255,.75)}
 
 /* =========================================================================
    ADMIN — simple Wix-like panel (SPEC §6)

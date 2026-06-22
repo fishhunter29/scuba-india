@@ -29,3 +29,7 @@ export function waTryDive(number = DEFAULT_WHATSAPP): string {
     "Hi Scuba India, I'm new to diving and would like to book a Try Scuba Dive.",
   );
 }
+
+export function waCoursesGeneral(number = DEFAULT_WHATSAPP): string {
+  return waLink(number, "Hi Scuba India, I'd like to ask about your PADI courses.");
+}
