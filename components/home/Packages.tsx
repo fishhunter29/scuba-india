@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import type { Dive, SiteKey } from '@/lib/types';
+import type { Dive, Settings, SiteKey } from '@/lib/types';
 import { SITE_TABS, SITE_INTRO } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
 
@@ -13,7 +13,44 @@ function tierLabel(tier: string | null): string | null {
   return tier.toUpperCase();
 }
 
-export default function Packages({ grouped }: { grouped: Record<SiteKey, Dive[]> }) {
+function CameraIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M4 8h3l1.5-2.5h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+      <circle cx="12" cy="13.5" r="3.3" />
+    </svg>
+  );
+}
+
+function VideoIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <rect x="3" y="6.5" width="13" height="11" rx="1.5" />
+      <path d="M16 10.5 21 8v8l-5-2.5Z" />
+    </svg>
+  );
+}
+
+function PickupIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M3 16V9.5a1 1 0 0 1 1-1h9l4.5 4.5H21a1 1 0 0 1 1 1V16" />
+      <path d="M3 16h19" />
+      <circle cx="7.5" cy="17.5" r="1.7" />
+      <circle cx="17.5" cy="17.5" r="1.7" />
+    </svg>
+  );
+}
+
+export default function Packages({
+  grouped,
+  settings,
+  tryFrom,
+}: {
+  grouped: Record<SiteKey, Dive[]>;
+  settings: Settings;
+  tryFrom: string;
+}) {
   const tabs = SITE_TABS.filter((t) => grouped[t.key]?.length);
   const [active, setActive] = useState<SiteKey>(tabs[0]?.key ?? 'tribe');
 
@@ -26,6 +63,10 @@ export default function Packages({ grouped }: { grouped: Record<SiteKey, Dive[]>
           <p>
             Choose a dive site to see its packages. All include pickup &amp; drop within 5km, plus
             HD photos and GoPro video unless noted.
+          </p>
+          <p className="pk-value">
+            PADI try dives in Havelock typically start higher — ours start at <b>{tryFrom}</b>:
+            same certification, same reefs, free HD photos included.
           </p>
         </div>
 
@@ -45,6 +86,22 @@ export default function Packages({ grouped }: { grouped: Record<SiteKey, Dive[]>
         </div>
         <div className="pk-note reveal">
           Prices are per person. Premium tiers include longer dives and more footage.
+        </div>
+
+        <div className="pk-trust reveal">
+          <span>
+            <span className="star">★</span> <b>{settings.rating_avg}</b> ·{' '}
+            {settings.review_count > 0 ? settings.review_count : '[XX]'}+ reviews
+          </span>
+          <span>
+            <b>PADI</b> Dive Centre <span className="padi-no">#27122</span>
+          </span>
+          <span>
+            <b>{settings.dives_guided}+</b> dives guided
+          </span>
+          <span>
+            Based in <b>Havelock</b>
+          </span>
         </div>
 
         {tabs.map((t) => {
@@ -67,13 +124,20 @@ export default function Packages({ grouped }: { grouped: Record<SiteKey, Dive[]>
                       {d.tier && <span className="tier">{tierLabel(d.tier)}</span>}
                       <span className="dur">{diveDuration(d)}</span>
                       <h4>{d.name}</h4>
-                      <ul>
+                      <ul className="pk-incl">
                         {d.photos > 0 && (
                           <li>
-                            {d.photos} photos + {d.gopro_min} min GoPro
+                            <CameraIcon /> {d.photos} photos
                           </li>
                         )}
-                        <li>Pickup &amp; drop within 5km</li>
+                        {d.gopro_min > 0 && (
+                          <li>
+                            <VideoIcon /> {d.gopro_min}min GoPro
+                          </li>
+                        )}
+                        <li>
+                          <PickupIcon /> Pickup &amp; drop
+                        </li>
                       </ul>
                       <div className="pk-foot">
                         <span className="pk-price">
