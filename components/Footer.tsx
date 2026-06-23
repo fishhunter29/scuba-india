@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Settings } from '@/lib/types';
 import { Seal } from '@/components/BrandMark';
+import { waGeneral } from '@/lib/whatsapp';
 
 export default function Footer({ settings }: { settings: Settings }) {
   return (
@@ -55,6 +56,12 @@ export default function Footer({ settings }: { settings: Settings }) {
             <h4>Contact</h4>
             <p>{settings.address}</p>
             <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>
+            {settings.phone2 && (
+              <a href={`tel:${settings.phone2.replace(/\s/g, '')}`}>{settings.phone2}</a>
+            )}
+            <a href={waGeneral(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
+              WhatsApp: {settings.phone}
+            </a>
             <a href={`mailto:${settings.email}`}>{settings.email}</a>
           </div>
         </div>

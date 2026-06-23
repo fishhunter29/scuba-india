@@ -84,6 +84,7 @@ export interface Settings {
   rating_avg: number;
   dives_guided: string;
   phone: string;
+  phone2: string | null;
   whatsapp: string;
   email: string;
   instagram: string | null;

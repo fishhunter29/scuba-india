@@ -99,13 +99,17 @@ export default function SettingsAdmin() {
         </div>
         <div className="a-grid2">
           <div className="a-field">
+            <label>Second phone number (optional, shown in footer)</label>
+            <input value={s.phone2 ?? ''} onChange={(e) => field('phone2', e.target.value)} />
+          </div>
+          <div className="a-field">
             <label>Email</label>
             <input value={s.email} onChange={(e) => field('email', e.target.value)} />
           </div>
-          <div className="a-field">
-            <label>Instagram URL</label>
-            <input value={s.instagram ?? ''} onChange={(e) => field('instagram', e.target.value)} />
-          </div>
+        </div>
+        <div className="a-field">
+          <label>Instagram URL</label>
+          <input value={s.instagram ?? ''} onChange={(e) => field('instagram', e.target.value)} />
         </div>
         <div className="a-field">
           <label>Facebook URL</label>

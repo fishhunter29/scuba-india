@@ -19,6 +19,7 @@ export const FALLBACK_SETTINGS: Settings = {
   rating_avg: 4.8,
   dives_guided: '[X,000]',
   phone: '+91 76950 03828',
+  phone2: '',
   whatsapp: DEFAULT_WHATSAPP,
   email: DEFAULT_EMAIL,
   instagram: '',
