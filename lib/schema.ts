@@ -14,8 +14,10 @@ export function diveCentreSchema(settings: Settings) {
     email: settings.email,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Havelock Island (Swarajdweep)',
-      addressRegion: 'Andaman and Nicobar Islands',
+      streetAddress: 'Govind Nagar -2, Near Helipad Ground',
+      addressLocality: 'Swaradjdweep (HAVELOCK) Islan',
+      addressRegion: 'Andaman & Nicobar Island',
+      postalCode: '744211',
       addressCountry: 'IN',
     },
     sport: 'Scuba Diving',
