@@ -60,8 +60,8 @@ export default function Hero({
           </span>
           <span className="trust-padi">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={22} height={29} loading="eager" />
-            Dive Centre <span className="padi-no">#27122</span>
+            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={38} height={50} loading="eager" />
+            Dive Centre <b className="padi-no">#27122</b>
           </span>
           <span>
             <b>{settings.dives_guided}+</b> dives guided · since <b>2011</b>
