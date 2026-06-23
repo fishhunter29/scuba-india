@@ -91,6 +91,8 @@ nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding
 .trust-inline b{color:var(--sumi);font-weight:700}
 .trust-inline .star{color:var(--vermilion)}
 .padi-no{font-family:var(--mono);font-size:11px;color:var(--ash)}
+.trust-padi{display:inline-flex;align-items:center;gap:7px}
+.trust-padi img{display:block;height:22px;width:auto;background:#fff;border-radius:6px;padding:2px 3px;flex-shrink:0}
 
 /* ---- hero with background photo (home) ---- */
 .hero--photo{position:relative;overflow:hidden}

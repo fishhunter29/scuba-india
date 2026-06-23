@@ -58,8 +58,10 @@ export default function Hero({
             <span className="star">★</span> <b>{settings.rating_avg}</b> on Google ·{' '}
             {settings.review_count > 0 ? settings.review_count : '[XX]'}+ reviews
           </span>
-          <span>
-            <b>PADI</b> Dive Centre <span className="padi-no">#27122</span>
+          <span className="trust-padi">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={22} height={29} loading="eager" />
+            Dive Centre <span className="padi-no">#27122</span>
           </span>
           <span>
             <b>{settings.dives_guided}+</b> dives guided · since <b>2011</b>
