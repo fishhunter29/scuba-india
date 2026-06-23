@@ -19,7 +19,16 @@ export default function InkBackground() {
       canvas.style.background = 'var(--paper)';
       return;
     }
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    } catch {
+      // No WebGL support (old GPU/driver, hardware acceleration disabled, some
+      // locked-down mobile webviews) — fall back to a static background instead
+      // of leaving an uncaught exception to take down the whole page.
+      canvas.style.background = 'var(--paper)';
+      return;
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     const scene = new THREE.Scene();
     const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
