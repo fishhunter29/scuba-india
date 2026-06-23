@@ -18,10 +18,19 @@ export default function Nav() {
   return (
     <>
       <nav id="nav">
-        <Link href="/" className="brand">
-          <Seal />
-          Scuba India
-        </Link>
+        <div className="nav-brand-group">
+          <Link href="/" className="brand">
+            <Seal />
+            Scuba India
+          </Link>
+          <div className="nav-padi">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/padi-badge.png" alt="PADI" width={30} height={24} loading="eager" />
+            <span>
+              Dive Centre <b>#27122</b>
+            </span>
+          </div>
+        </div>
         <div className="nav-links">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href}>

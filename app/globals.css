@@ -43,9 +43,13 @@ body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opac
 
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 44px;transition:background .4s,padding .4s}
 nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding:14px 44px;box-shadow:0 1px 0 rgba(18,58,71,.1)}
+.nav-brand-group{display:flex;align-items:center;gap:18px}
 .brand{font-family:var(--disp);font-size:24px;font-weight:700;letter-spacing:.02em;color:var(--sumi);display:flex;align-items:center;gap:10px}
 .brand .seal{display:inline-flex;align-items:center;justify-content:center}
 .seal img{display:block;width:100%;height:100%;object-fit:contain}
+.nav-padi{display:flex;align-items:center;gap:8px;padding-left:18px;border-left:1px solid rgba(18,58,71,.18);font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--sumi-soft);transition:border-color .4s,color .4s}
+.nav-padi img{display:block;flex-shrink:0}
+.nav-padi b{color:var(--sumi);transition:color .4s}
 .nav-links{display:flex;gap:32px;align-items:center;font-size:15px;font-weight:500}
 .nav-links a{opacity:.8;transition:opacity .2s,color .2s}
 .nav-links a:hover{opacity:1;color:var(--vermilion)}
@@ -53,7 +57,7 @@ nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding
 .nav-cta:hover{opacity:1;background:var(--vermilion)}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
 .burger span{width:26px;height:2px;background:var(--sumi);display:block}
-@media(max-width:920px){.nav-links{display:none}.burger{display:flex}nav{padding:16px 22px}}
+@media(max-width:920px){.nav-links{display:none}.nav-padi{display:none}.burger{display:flex}nav{padding:16px 22px}}
 
 /* mobile nav drawer — above the shader (SPEC §8 mobile pass) */
 .drawer{position:fixed;inset:0;z-index:60;background:rgba(220,239,239,.97);backdrop-filter:blur(14px);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:44px;transform:translateX(100%);transition:transform .35s cubic-bezier(.7,0,.3,1)}
@@ -108,6 +112,8 @@ nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding
 #nav:not(.scrolled) .nav-links a:hover{opacity:1;color:#fff}
 #nav:not(.scrolled) .nav-cta{background:var(--vermilion);color:#fff}
 #nav:not(.scrolled) .burger span{background:#fff}
+#nav:not(.scrolled) .nav-padi{border-left-color:rgba(255,255,255,.3);color:rgba(255,255,255,.85)}
+#nav:not(.scrolled) .nav-padi b{color:#fff}
 
 /* ---- soft section-bg veil: subtle underwater wash blended over the shader ---- */
 .section-veil{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.42;
@@ -237,10 +243,13 @@ footer{position:relative;z-index:3;background:var(--sumi);padding:80px 0;color:v
 .foot-col a:hover{color:var(--paper)}
 .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:28px;border-top:1px solid rgba(220,239,239,.14);font-size:13px;color:rgba(220,239,239,.6);font-family:var(--mono)}
 .foot-legal a:hover{color:var(--paper)}
-.foot-social{display:flex;gap:12px;margin-top:18px}
-.foot-social a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(220,239,239,.3);color:rgba(220,239,239,.85);transition:background .2s,color .2s,border-color .2s}
-.foot-social a:hover{background:var(--vermilion);border-color:var(--vermilion);color:#fff}
-.foot-social svg{display:block}
+.foot-padi{display:flex;align-items:center;gap:10px;margin-top:18px;font-size:14.5px;color:rgba(220,239,239,.85)}
+.foot-padi img{display:block;flex-shrink:0}
+.foot-padi b{color:var(--paper)}
+.foot-social{display:flex;gap:14px;margin-top:14px}
+.foot-social a{display:inline-flex;align-items:center;justify-content:center;transition:transform .2s,opacity .2s;opacity:.92}
+.foot-social a:hover{transform:scale(1.1);opacity:1}
+.foot-social img{display:block}
 
 .wa{position:fixed;bottom:26px;right:26px;z-index:70;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px rgba(0,0,0,.3);transition:transform .2s}
 .wa:hover{transform:scale(1.08)}

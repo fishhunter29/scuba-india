@@ -6,7 +6,6 @@ import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import FearCheck from '@/components/learn/FearCheck';
-import GearExplorer from '@/components/learn/GearExplorer';
 import DiveChooser from '@/components/learn/DiveChooser';
 import { FEAR_CHECKS } from '@/lib/faqs';
 import { getSettings } from '@/lib/data';
@@ -114,25 +113,6 @@ export default async function LearnToDivePage() {
               <span>Deeper</span>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* SECTION 3B — WHAT YOU'LL BE WEARING */}
-      <section className="learn-section">
-        <div className="wrap">
-          <div className="detail-eyebrow reveal">Your gear</div>
-          <h2 className="reveal">None of it is as complicated as it looks.</h2>
-          <p className="lead reveal">
-            Five pieces of equipment, that&apos;s it. Tap each one to see what it does —
-            you&apos;ll realise there&apos;s nothing to be intimidated by.
-          </p>
-          <div className="reveal">
-            <GearExplorer />
-          </div>
-          <p className="learn-closing reveal">
-            That&apos;s the whole kit. Five things, all of them there to keep you safe and
-            comfortable.
-          </p>
         </div>
       </section>
 
@@ -290,9 +270,9 @@ export default async function LearnToDivePage() {
             <div className="detail-eyebrow">You&apos;re ready</div>
             <h2>You now understand more about diving than most people who&apos;ve never tried.</h2>
             <p>
-              Breathing, floating, the gear, the colours, your day, the safety. That&apos;s the
-              whole foundation of a first dive — and you just learned it. The only thing left is
-              the part you can&apos;t read your way into.
+              Breathing, floating, the colours, your day, the safety. That&apos;s the whole
+              foundation of a first dive — and you just learned it. The only thing left is the
+              part you can&apos;t read your way into.
             </p>
             <div className="hero-cta">
               <a

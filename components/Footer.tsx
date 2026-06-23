@@ -2,24 +2,6 @@ import Link from 'next/link';
 import type { Settings } from '@/lib/types';
 import { Seal } from '@/components/BrandMark';
 
-function InstagramIcon() {
-  return (
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4.2" />
-      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-function FacebookIcon() {
-  return (
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H17V3.6c-.3-.04-1.3-.13-2.45-.13-2.43 0-4.1 1.48-4.1 4.2v2.34H7.7V13h2.75v8h3.05z" />
-    </svg>
-  );
-}
-
 export default function Footer({ settings }: { settings: Settings }) {
   return (
     <footer>
@@ -33,6 +15,13 @@ export default function Footer({ settings }: { settings: Settings }) {
               PADI dive centre on Havelock (Swarajdweep) Island, Andaman. Try dives, fun dives &amp;
               certification courses in India&apos;s clearest waters.
             </p>
+            <div className="foot-padi">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/padi-badge.png" alt="PADI" width={36} height={29} loading="lazy" />
+              <span>
+                PADI Dive Centre <b>#27122</b>
+              </span>
+            </div>
             <div className="foot-social">
               <a
                 href={settings.instagram || '#'}
@@ -40,7 +29,8 @@ export default function Footer({ settings }: { settings: Settings }) {
                 rel="noopener noreferrer"
                 aria-label="Instagram"
               >
-                <InstagramIcon />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/social/instagram.png" alt="" width={28} height={28} loading="lazy" />
               </a>
               <a
                 href={settings.facebook || '#'}
@@ -48,7 +38,8 @@ export default function Footer({ settings }: { settings: Settings }) {
                 rel="noopener noreferrer"
                 aria-label="Facebook"
               >
-                <FacebookIcon />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/social/facebook.png" alt="" width={28} height={28} loading="lazy" />
               </a>
             </div>
           </div>

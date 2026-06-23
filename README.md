@@ -142,7 +142,7 @@ components/
   ScrollFX.tsx          depth veil + 0→30m depth meter + nav blur + reveal
   Nav, Footer, WhatsAppFloat, Analytics, JsonLd, ReefAccents
   home/                 Hero, Experiences, Packages (tabs), Courses, DiveSites, WhyUs, Reviews, FinalCTA
-  learn/                FearCheck, DiveChooser, GearExplorer
+  learn/                FearCheck, DiveChooser
   admin/                AdminShell, ImageUpload, useToast
 lib/
   supabase/             client / server / middleware / public clients
