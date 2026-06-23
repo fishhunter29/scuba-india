@@ -25,9 +25,10 @@ export default function Nav() {
           </Link>
           <div className="nav-padi">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/padi-badge.png" alt="PADI" width={30} height={24} loading="eager" />
-            <span>
-              Dive Centre <b>#27122</b>
+            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={32} height={42} loading="eager" />
+            <span className="nav-padi-no">
+              <small>Dive Centre</small>
+              <b>#27122</b>
             </span>
           </div>
         </div>

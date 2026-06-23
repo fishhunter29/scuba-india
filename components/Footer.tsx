@@ -17,9 +17,10 @@ export default function Footer({ settings }: { settings: Settings }) {
             </p>
             <div className="foot-padi">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/padi-badge.png" alt="PADI" width={36} height={29} loading="lazy" />
-              <span>
-                PADI Dive Centre <b>#27122</b>
+              <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={40} height={53} loading="lazy" />
+              <span className="foot-padi-no">
+                <small>PADI Dive Centre</small>
+                <b>#27122</b>
               </span>
             </div>
             <div className="foot-social">
