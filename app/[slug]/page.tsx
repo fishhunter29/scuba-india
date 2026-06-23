@@ -28,15 +28,22 @@ export async function generateMetadata({
   const dive = await getDiveBySlug(params.slug);
   if (!dive) return { title: 'Dive not found' };
   const title = `${dive.name} — ${dive.site}, Havelock`;
+  const description = dive.pitch || `${dive.name} scuba dive at ${dive.site}, Havelock, Andaman.`;
   return {
     title,
-    description: dive.pitch || `${dive.name} scuba dive at ${dive.site}, Havelock, Andaman.`,
+    description,
     alternates: { canonical: `${SITE_URL}/${dive.slug}` },
     openGraph: {
       title,
-      description: dive.pitch || '',
+      description,
       url: `${SITE_URL}/${dive.slug}`,
       type: 'website',
+      images: [
+        {
+          url: dive.image_url || `${SITE_URL}/images/logo-full.png`,
+          alt: `${dive.name} — ${dive.site}, Havelock`,
+        },
+      ],
     },
   };
 }

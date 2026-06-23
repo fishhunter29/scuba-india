@@ -13,11 +13,21 @@ import { faqSchema } from '@/lib/schema';
 import { waGeneral, waTryDive, waCoursesGeneral } from '@/lib/whatsapp';
 import { SITE_URL } from '@/lib/constants';
 
+const title = 'First-Time Scuba Diving in Havelock — What to Expect';
+const description =
+  "New to diving? Here's exactly what your first scuba dive in Havelock, Andaman feels like — the safety, and your day, hour by hour. No jargon, no pressure.";
+
 export const metadata: Metadata = {
-  title: 'First-Time Scuba Diving in Havelock — What to Expect',
-  description:
-    "New to diving? Here's exactly what your first scuba dive in Havelock, Andaman feels like — the gear, the safety, and your day, hour by hour. No jargon, no pressure.",
+  title,
+  description,
   alternates: { canonical: `${SITE_URL}/learn-to-dive` },
+  openGraph: {
+    title,
+    description,
+    url: `${SITE_URL}/learn-to-dive`,
+    type: 'website',
+    images: [{ url: '/images/logo-full.png', width: 640, height: 640, alt: 'Scuba India' }],
+  },
 };
 
 export const revalidate = 60;
