@@ -155,8 +155,9 @@ create policy "admin write reviews"  on public.reviews  for all to authenticated
 create policy "admin write photos"   on public.photos   for all to authenticated using (true) with check (true);
 create policy "admin write settings" on public.settings for all to authenticated using (true) with check (true);
 
--- bookings: anyone may submit an enquiry; only admin may read / manage
-create policy "anyone insert booking" on public.bookings for insert with check (true);
+-- bookings: admin-only read / write. No public form submits to this table
+-- (booking CTAs go to WhatsApp instead), so inserts are restricted to admin too.
+create policy "admin insert bookings" on public.bookings for insert to authenticated with check (true);
 create policy "admin read bookings"   on public.bookings for select to authenticated using (true);
 create policy "admin update bookings" on public.bookings for update to authenticated using (true) with check (true);
 create policy "admin delete bookings" on public.bookings for delete to authenticated using (true);
