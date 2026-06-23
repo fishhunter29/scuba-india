@@ -110,9 +110,10 @@ export default function InkBackground() {
     const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
     const clock = new THREE.Clock();
     let raf = 0;
-    (function loop() {
+
+    function loop() {
       const dt = clock.getDelta();
-      uniforms.u_time.value += reduce ? 0 : dt;
+      uniforms.u_time.value += dt;
       const mx = uniforms.u_mouse.value;
       mx.x += (tx - mx.x) * 0.06;
       mx.y += (ty - mx.y) * 0.06;
@@ -121,14 +122,30 @@ export default function InkBackground() {
       ly = mx.y;
       uniforms.u_mvel.value += (Math.min(vel * 30, 1) - uniforms.u_mvel.value) * 0.08;
       renderer.render(scene, cam);
+      // Pause the loop while the tab is backgrounded instead of burning
+      // GPU/battery on an invisible canvas; onVisibility resumes it.
+      raf = document.hidden ? 0 : requestAnimationFrame(loop);
+    }
+    function onVisibility() {
+      if (!document.hidden && !raf) {
+        clock.getDelta(); // discard time elapsed while hidden
+        raf = requestAnimationFrame(loop);
+      }
+    }
+
+    if (reduce) {
+      renderer.render(scene, cam); // single static frame — no animation loop
+    } else {
+      addEventListener('visibilitychange', onVisibility);
       raf = requestAnimationFrame(loop);
-    })();
+    }
 
     // React cleanup (new — prevents leaks on unmount/HMR)
     return () => {
       cancelAnimationFrame(raf);
       removeEventListener('resize', resize);
       removeEventListener('pointermove', onMove);
+      removeEventListener('visibilitychange', onVisibility);
       mat.dispose();
       renderer.dispose();
     };
