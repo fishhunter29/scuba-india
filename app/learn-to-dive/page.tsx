@@ -44,6 +44,7 @@ export default async function LearnToDivePage() {
 
       <a
         href={waTryDive(settings.whatsapp)}
+        data-track="book_click"
         className="learn-skip"
         target="_blank"
         rel="noopener noreferrer"
@@ -287,6 +288,7 @@ export default async function LearnToDivePage() {
             <div className="hero-cta">
               <a
                 href={waTryDive(settings.whatsapp)}
+                data-track="book_click"
                 className="btn btn-light"
                 target="_blank"
                 rel="noopener noreferrer"

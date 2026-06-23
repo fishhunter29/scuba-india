@@ -3,6 +3,7 @@ import { Shippori_Mincho, Hanken_Grotesk, DM_Mono } from 'next/font/google';
 import './globals.css';
 import './pages.css';
 import Analytics from '@/components/Analytics';
+import ConversionTracker from '@/components/ConversionTracker';
 import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
 // Fonts — do NOT change (SPEC §3). Exposed as CSS vars consumed by globals.css.
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <Analytics />
+        <ConversionTracker />
       </body>
     </html>
   );

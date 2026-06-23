@@ -1,26 +1,35 @@
 import Script from 'next/script';
 
 /**
- * GA4 + Meta Pixel slots (SPEC §5.4). Render nothing unless the IDs are set,
- * so local dev stays clean. Set NEXT_PUBLIC_GA4_ID / NEXT_PUBLIC_META_PIXEL_ID.
+ * GA4 + Google Ads + Meta Pixel slots (SPEC §5.4). Render nothing unless the
+ * matching ID is set, so local dev stays clean. Conversion events are emitted
+ * from components/ConversionTracker via lib/analytics.
+ *   NEXT_PUBLIC_GA4_ID          — GA4 measurement id (G-XXXX)
+ *   NEXT_PUBLIC_GOOGLE_ADS_ID   — Google Ads tag id (AW-XXXX)
+ *   NEXT_PUBLIC_META_PIXEL_ID   — Meta pixel id
  */
 export default function Analytics() {
   const ga = process.env.NEXT_PUBLIC_GA4_ID;
+  const ads = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
   const pixel = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+
+  // GA4 and Google Ads share the single gtag.js loader; load it if either is set.
+  const gtagId = ga || ads;
 
   return (
     <>
-      {ga && (
+      {gtagId && (
         <>
           <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${ga}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}
             strategy="afterInteractive"
           />
-          <Script id="ga4" strategy="afterInteractive">
+          <Script id="gtag-init" strategy="afterInteractive">
             {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${ga}');`}
+${ga ? `gtag('config', '${ga}');` : ''}
+${ads ? `gtag('config', '${ads}');` : ''}`}
           </Script>
         </>
       )}

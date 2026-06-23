@@ -111,7 +111,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
             </div>
 
             <div className="detail-cta-row">
-              <a href={waBook} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+              <a href={waBook} data-track="book_click" className="btn btn-primary" target="_blank" rel="noopener noreferrer">
                 Book on WhatsApp →
               </a>
               <Link href="/learn-to-dive" className="btn btn-ghost">
@@ -183,7 +183,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
                   <div className="bc-per">
                     {dive.on_request ? 'contact us for pricing' : 'per person'}
                   </div>
-                  <a href={waBook} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                  <a href={waBook} data-track="book_click" className="btn btn-primary" target="_blank" rel="noopener noreferrer">
                     Book on WhatsApp →
                   </a>
                   <a
