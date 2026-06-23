@@ -59,7 +59,8 @@ nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding
 .nav-cta:hover{opacity:1;background:var(--vermilion)}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
 .burger span{width:26px;height:2px;background:var(--sumi);display:block}
-@media(max-width:920px){.nav-links{display:none}.nav-padi{display:none}.burger{display:flex}nav{padding:16px 22px}}
+@media(max-width:920px){.nav-links{display:none}.burger{display:flex}nav{padding:14px 16px}.nav-brand-group{gap:10px}.brand{font-size:19px;gap:7px}.nav-padi{gap:5px;padding:3px 9px 3px 6px}.nav-padi img{height:26px}.nav-padi-no small{display:none}.nav-padi-no b{font-size:12px}}
+@media(max-width:420px){.nav-padi-no{display:none}.nav-padi{padding:3px 7px}}
 
 /* mobile nav drawer — above the shader (SPEC §8 mobile pass) */
 .drawer{position:fixed;inset:0;z-index:60;background:rgba(220,239,239,.97);backdrop-filter:blur(14px);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:44px;transform:translateX(100%);transition:transform .35s cubic-bezier(.7,0,.3,1)}
