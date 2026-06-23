@@ -3,7 +3,7 @@
 // Google returns a MAX of 5 reviews ("most relevant"); rating + total count
 // come straight from the listing. Cached 1h (within Google's caching terms).
 
-export interface GoogleReview {
+interface GoogleReview {
   name: string;
   photo: string | null;
   rating: number;
@@ -18,10 +18,6 @@ export interface GoogleReviewsData {
   count: number | null;
   reviews: GoogleReview[];
   mapsUri: string | null;
-}
-
-export function isGoogleReviewsConfigured() {
-  return Boolean(process.env.GOOGLE_MAPS_API_KEY && process.env.GOOGLE_PLACE_ID);
 }
 
 export async function getGoogleReviews(): Promise<GoogleReviewsData | null> {

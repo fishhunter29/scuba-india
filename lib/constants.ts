@@ -11,7 +11,7 @@ export const SITE_URL =
 export const DEFAULT_WHATSAPP = '917695003828';
 
 // Footer email MUST be info@scubaindia.in (SPEC §10 — never the competitor's).
-export const DEFAULT_EMAIL = 'info@scubaindia.in';
+const DEFAULT_EMAIL = 'info@scubaindia.in';
 
 export const FALLBACK_SETTINGS: Settings = {
   id: 1,

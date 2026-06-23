@@ -15,14 +15,6 @@ export function diveDuration(d: Dive): string {
   return parts.join(' · ');
 }
 
-// URL slug derived from a course name (no DB column needed).
-export function courseSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 // "from ₹X,XXX" across a set of dives (cheapest priced one).
 export function fromPrice(dives: Dive[]): string {
   const priced = dives.filter((d) => !d.on_request && d.price != null).map((d) => d.price!);

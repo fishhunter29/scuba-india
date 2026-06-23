@@ -1,7 +1,6 @@
 // schema.org JSON-LD builders (SPEC §5.4).
 import type { Dive, Settings } from './types';
 import { SITE_URL, SITE_NAME } from './constants';
-import { diveDuration } from './format';
 
 export function diveCentreSchema(settings: Settings) {
   const schema: Record<string, unknown> = {
@@ -88,6 +87,3 @@ export function breadcrumbSchema(dive: Dive) {
     ],
   };
 }
-
-// re-export to keep callers tidy
-export { diveDuration };
