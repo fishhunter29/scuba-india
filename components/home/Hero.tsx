@@ -58,16 +58,16 @@ export default function Hero({
             <span className="star">★</span> <b>{settings.rating_avg}</b> on Google ·{' '}
             {settings.review_count > 0 ? settings.review_count : '[XX]'}+ reviews
           </span>
-          <span className="trust-padi">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={38} height={50} loading="eager" />
-            Dive Centre <b className="padi-no">#27122</b>
-          </span>
           <span>
             <b>{settings.dives_guided}+</b> dives guided · since <b>2011</b>
           </span>
           <span>
             Based in <b>Havelock</b>
+          </span>
+          <span className="trust-padi">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={38} height={50} loading="eager" />
+            Dive Centre <b className="padi-no">#27122</b>
           </span>
         </div>
       </div>
