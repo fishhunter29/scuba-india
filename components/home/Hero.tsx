@@ -54,6 +54,11 @@ export default function Hero({
           </a>
         </div>
         <div className="trust-inline">
+          <span className="trust-padi">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={38} height={50} loading="eager" />
+            Dive Centre <b className="padi-no">#27122</b>
+          </span>
           <span>
             <span className="star">★</span> <b>{settings.rating_avg}</b> on Google ·{' '}
             {settings.review_count > 0 ? settings.review_count : '[XX]'}+ reviews
@@ -63,11 +68,6 @@ export default function Hero({
           </span>
           <span>
             Based in <b>Havelock</b>
-          </span>
-          <span className="trust-padi">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/padi-logo.png" alt="PADI Dive Centre" width={38} height={50} loading="eager" />
-            Dive Centre <b className="padi-no">#27122</b>
           </span>
         </div>
       </div>
