@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Settings } from '@/lib/types';
 import { Seal } from '@/components/BrandMark';
 import { waGeneral } from '@/lib/whatsapp';
+import { formatIndianPhone } from '@/lib/format';
 
 export default function Footer({ settings }: { settings: Settings }) {
   return (
@@ -54,13 +55,19 @@ export default function Footer({ settings }: { settings: Settings }) {
           </div>
           <div className="foot-col">
             <h4>Contact</h4>
-            <p>{settings.address}</p>
+            {settings.address_map_url ? (
+              <a href={settings.address_map_url} target="_blank" rel="noopener noreferrer">
+                {settings.address}
+              </a>
+            ) : (
+              <p>{settings.address}</p>
+            )}
             <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>
             {settings.phone2 && (
               <a href={`tel:${settings.phone2.replace(/\s/g, '')}`}>{settings.phone2}</a>
             )}
             <a href={waGeneral(settings.whatsapp)} target="_blank" rel="noopener noreferrer">
-              WhatsApp: {settings.phone}
+              WhatsApp: {formatIndianPhone(settings.whatsapp)}
             </a>
             <a href={`mailto:${settings.email}`}>{settings.email}</a>
           </div>

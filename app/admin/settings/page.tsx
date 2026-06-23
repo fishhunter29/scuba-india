@@ -124,6 +124,14 @@ export default function SettingsAdmin() {
           <input value={s.address} onChange={(e) => field('address', e.target.value)} />
         </div>
         <div className="a-field">
+          <label>Address map URL (makes the footer address clickable)</label>
+          <input
+            value={s.address_map_url ?? ''}
+            placeholder="https://google.com/maps/search/…"
+            onChange={(e) => field('address_map_url', e.target.value)}
+          />
+        </div>
+        <div className="a-field">
           <label>Google reviews URL (the “Read all reviews on Google” button)</label>
           <input
             value={s.google_url ?? ''}

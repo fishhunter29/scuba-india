@@ -8,7 +8,7 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://scubaindia.in';
 
 // WhatsApp number (SPEC §5.2). Keep in sync with settings.whatsapp.
-export const DEFAULT_WHATSAPP = '917695003828';
+export const DEFAULT_WHATSAPP = '919434290310';
 
 // Footer email MUST be info@scubaindia.in (SPEC §10 — never the competitor's).
 const DEFAULT_EMAIL = 'info@scubaindia.in';
@@ -24,6 +24,8 @@ export const FALLBACK_SETTINGS: Settings = {
   email: DEFAULT_EMAIL,
   instagram: '',
   facebook: '',
-  address: 'Havelock Island, Andaman',
+  address: 'Govind Nagar -2, Near Helipad Ground, Swarajdweep (Havelock) Island, Andaman & Nicobar Islands 744211, India',
+  address_map_url:
+    'https://google.com/maps/search/Govind%20Nagar%20-2%2C%20Near%20Helipad%20Ground%2C%20Swaradjdweep%20%28HAVELOCK%29%20Islan%2C%20Andaman%20%26%20Nicobar%20Island%20744211%2C%20No%20State%2C%20India',
   google_url: '',
 };

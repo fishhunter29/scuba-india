@@ -20,6 +20,9 @@ export function diveCentreSchema(settings: Settings) {
     },
     sport: 'Scuba Diving',
   };
+  if (settings.address_map_url) {
+    schema.hasMap = settings.address_map_url;
+  }
   if (settings.review_count > 0) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',

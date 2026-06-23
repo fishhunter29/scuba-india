@@ -21,3 +21,12 @@ export function fromPrice(dives: Dive[]): string {
   if (!priced.length) return 'On request';
   return '₹' + Math.min(...priced).toLocaleString('en-IN');
 }
+
+// "919434290310" -> "+91 94342 90310" (for display; storage stays digits-only).
+export function formatIndianPhone(digits: string): string {
+  const d = (digits || '').replace(/[^\d]/g, '');
+  if (d.startsWith('91') && d.length === 12) {
+    return `+91 ${d.slice(2, 7)} ${d.slice(7)}`;
+  }
+  return digits;
+}

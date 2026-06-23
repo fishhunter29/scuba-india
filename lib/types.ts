@@ -90,6 +90,7 @@ export interface Settings {
   instagram: string | null;
   facebook: string | null;
   address: string;
+  address_map_url: string | null;
   google_url: string | null;
 }
 
