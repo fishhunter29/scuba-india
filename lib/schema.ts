@@ -52,6 +52,7 @@ export function diveProductSchema(dive: Dive, settings: Settings) {
     '@type': 'Product',
     name: `${dive.name} — ${dive.site}`,
     description: dive.pitch || `${dive.name} scuba dive at ${dive.site}, Havelock.`,
+    image: dive.image_url || `${SITE_URL}/images/logo-full.png`,
     brand: { '@type': 'Brand', name: SITE_NAME },
     category: 'Scuba Diving',
   };
