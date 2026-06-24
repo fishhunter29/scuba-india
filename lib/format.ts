@@ -30,3 +30,12 @@ export function formatIndianPhone(digits: string): string {
   }
   return digits;
 }
+
+// Courses have no stored slug column — derive a stable URL slug from the name.
+export function courseSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}

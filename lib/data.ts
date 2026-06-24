@@ -4,6 +4,7 @@
 import { createPublicClient } from './supabase/public';
 import { isSupabaseConfigured } from './supabase/server';
 import { FALLBACK_SETTINGS } from './constants';
+import { courseSlug } from './format';
 import type { Dive, Course, Review, Settings, SiteKey } from './types';
 
 const createClient = createPublicClient;
@@ -93,6 +94,16 @@ export async function getCourses(): Promise<Course[]> {
     return [];
   }
   return (data ?? []) as Course[];
+}
+
+export async function getCourseBySlug(slug: string): Promise<Course | null> {
+  const courses = await getCourses();
+  return courses.find((c) => courseSlug(c.name) === slug) ?? null;
+}
+
+export async function getAllCourseSlugs(): Promise<string[]> {
+  const courses = await getCourses();
+  return courses.map((c) => courseSlug(c.name));
 }
 
 export async function getFeaturedReviews(): Promise<Review[]> {

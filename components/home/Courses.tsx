@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import type { Course } from '@/lib/types';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, courseSlug } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
 export default function Courses({
@@ -22,7 +23,7 @@ export default function Courses({
         </div>
         <div className="reveal">
           {courses.map((c) => (
-            <div className="course-row" key={c.id}>
+            <Link href={`/courses/${courseSlug(c.name)}`} className="course-row" key={c.id}>
               <span className="cname">{c.name}</span>
               <span className="cstat">
                 <span>DURATION</span>
@@ -37,7 +38,7 @@ export default function Courses({
                 {c.min_age}
               </span>
               <span className="cprice">{formatPrice(c.price, c.on_request)}</span>
-            </div>
+            </Link>
           ))}
         </div>
         <div className="courses-cta reveal">

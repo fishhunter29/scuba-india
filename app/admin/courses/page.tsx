@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminShell from '@/components/admin/AdminShell';
+import ImageUpload from '@/components/admin/ImageUpload';
 import { useToast } from '@/components/admin/useToast';
 import { createClient } from '@/lib/supabase/client';
+import { courseSlug } from '@/lib/format';
 import type { Course } from '@/lib/types';
 
 const EMPTY: Partial<Course> = {
@@ -15,6 +17,7 @@ const EMPTY: Partial<Course> = {
   price: null,
   on_request: false,
   description: '',
+  image_url: null,
   sort: 0,
 };
 
@@ -94,6 +97,10 @@ export default function CoursesAdmin() {
                 <tr key={c.id}>
                   <td>
                     <strong>{c.name}</strong>
+                    <br />
+                    <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ash)' }}>
+                      /courses/{courseSlug(c.name)}
+                    </span>
                   </td>
                   <td>{c.duration}</td>
                   <td>{c.depth}</td>
@@ -159,6 +166,13 @@ export default function CoursesAdmin() {
             <div className="a-field">
               <label>Description</label>
               <textarea value={editing.description ?? ''} onChange={(e) => field('description', e.target.value)} />
+            </div>
+            <div className="a-field">
+              <label>Image URL</label>
+              <input value={editing.image_url ?? ''} onChange={(e) => field('image_url', e.target.value || null)} />
+              <div style={{ marginTop: 8 }}>
+                <ImageUpload folder="courses" onUploaded={(url) => field('image_url', url)} />
+              </div>
             </div>
             <div className="a-field">
               <label>Sort order</label>

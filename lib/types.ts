@@ -41,6 +41,7 @@ export interface Course {
   price: number | null;
   on_request: boolean;
   description: string | null;
+  image_url: string | null;
   sort: number;
 }
 

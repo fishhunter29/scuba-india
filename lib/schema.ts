@@ -1,6 +1,7 @@
 // schema.org JSON-LD builders (SPEC §5.4).
-import type { Dive, Settings } from './types';
+import type { Dive, Course, Settings } from './types';
 import { SITE_URL, SITE_NAME } from './constants';
+import { courseSlug } from './format';
 
 export function diveCentreSchema(settings: Settings) {
   const schema: Record<string, unknown> = {
@@ -74,6 +75,46 @@ export function diveProductSchema(dive: Dive, settings: Settings) {
     };
   }
   return schema;
+}
+
+export function courseSchema(course: Course) {
+  const schema: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: `${course.name} — ${SITE_NAME}`,
+    description: course.description || `${course.name} PADI certification course in Havelock, Andaman.`,
+    provider: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      sameAs: SITE_URL,
+    },
+  };
+  if (!course.on_request && course.price != null) {
+    schema.offers = {
+      '@type': 'Offer',
+      price: course.price,
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}/courses/${courseSlug(course.name)}`,
+    };
+  }
+  return schema;
+}
+
+export function courseBreadcrumbSchema(course: Course) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: course.name,
+        item: `${SITE_URL}/courses/${courseSlug(course.name)}`,
+      },
+    ],
+  };
 }
 
 export function faqSchema(items: { q: string; a: string }[]) {
