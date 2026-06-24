@@ -36,6 +36,12 @@
 .panel h4{font-family:var(--disp);font-size:17px;font-weight:600;margin:18px 0 10px;color:var(--sumi)}
 .panel ul{margin:6px 0 14px;padding-left:20px;color:var(--sumi-soft)}
 .panel li{font-size:15.5px;line-height:1.7;margin-bottom:6px}
+.related-dives{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.related-dives li{border-bottom:1px solid rgba(18,58,71,.1)}
+.related-dives li:last-child{border-bottom:none}
+.related-dives a{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:12px 4px;color:var(--sumi);font-size:15.5px;text-decoration:none}
+.related-dives a:hover{color:var(--vermilion)}
+.related-dives-price{font-family:var(--mono);font-size:13px;color:var(--indigo);white-space:nowrap}
 .legal-wrap{max-width:760px}
 .legal-updated{font-family:var(--mono);font-size:12px;color:var(--ash);margin-bottom:30px}
 .included-list{list-style:none;display:grid;gap:12px}

@@ -54,6 +54,24 @@ export async function getDiveSitemapEntries(): Promise<{ slug: string; updatedAt
   return (data ?? []).map((d) => ({ slug: d.slug as string, updatedAt: d.updated_at as string }));
 }
 
+export async function getDivesBySite(siteKey: SiteKey, excludeSlug?: string): Promise<Dive[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  let query = supabase
+    .from('dives')
+    .select('*')
+    .eq('active', true)
+    .eq('site_key', siteKey)
+    .order('sort', { ascending: true });
+  if (excludeSlug) query = query.neq('slug', excludeSlug);
+  const { data, error } = await query;
+  if (error) {
+    console.error('getDivesBySite', error.message);
+    return [];
+  }
+  return (data ?? []) as Dive[];
+}
+
 export function groupDivesBySite(dives: Dive[]): Record<SiteKey, Dive[]> {
   const groups = { tribe: [], red: [], light: [], turtle: [], multi: [] } as Record<
     SiteKey,

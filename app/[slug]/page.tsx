@@ -8,7 +8,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
-import { getDiveBySlug, getAllDiveSlugs, getSettings } from '@/lib/data';
+import { getDiveBySlug, getAllDiveSlugs, getDivesBySite, getSettings } from '@/lib/data';
 import { formatPrice, diveDuration } from '@/lib/format';
 import { waBookDive, waGeneral } from '@/lib/whatsapp';
 import { diveProductSchema, breadcrumbSchema } from '@/lib/schema';
@@ -39,12 +39,6 @@ export async function generateMetadata({
       description,
       url: `${SITE_URL}/${dive.slug}`,
       type: 'website',
-      images: [
-        {
-          url: dive.image_url || `${SITE_URL}/images/logo-full.png`,
-          alt: `${dive.name} — ${dive.site}, Havelock`,
-        },
-      ],
     },
   };
 }
@@ -52,6 +46,8 @@ export async function generateMetadata({
 export default async function DiveDetailPage({ params }: { params: { slug: string } }) {
   const [dive, settings] = await Promise.all([getDiveBySlug(params.slug), getSettings()]);
   if (!dive) notFound();
+
+  const relatedDives = await getDivesBySite(dive.site_key, dive.slug);
 
   const priceLabel = formatPrice(dive.price, dive.on_request);
   const included: string[] = [];
@@ -178,6 +174,24 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
                         </div>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {relatedDives.length > 0 && (
+                  <div className="panel">
+                    <h3>More dives at {dive.site}</h3>
+                    <ul className="related-dives">
+                      {relatedDives.map((rd) => (
+                        <li key={rd.slug}>
+                          <Link href={`/${rd.slug}`}>
+                            <span>{rd.name}</span>
+                            <span className="related-dives-price">
+                              {formatPrice(rd.price, rd.on_request)}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </div>
