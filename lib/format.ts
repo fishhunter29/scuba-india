@@ -15,9 +15,9 @@ export function diveDuration(d: Dive): string {
   return parts.join(' · ');
 }
 
-// "from ₹X,XXX" across a set of dives (cheapest priced one).
-export function fromPrice(dives: Dive[]): string {
-  const priced = dives.filter((d) => !d.on_request && d.price != null).map((d) => d.price!);
+// "from ₹X,XXX" across a set of priced items (dives or courses).
+export function fromPrice(items: { price: number | null; on_request: boolean }[]): string {
+  const priced = items.filter((d) => !d.on_request && d.price != null).map((d) => d.price!);
   if (!priced.length) return 'On request';
   return '₹' + Math.min(...priced).toLocaleString('en-IN');
 }

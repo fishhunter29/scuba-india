@@ -124,7 +124,8 @@
 .chooser-progress{font-family:var(--mono);font-size:12px;color:var(--ash);margin-bottom:18px;letter-spacing:.06em}
 .chooser-result{text-align:center}
 .chooser-result .rec{font-family:var(--disp);font-size:30px;font-weight:700;color:var(--vermilion);margin:8px 0 6px}
-.chooser-result p{color:var(--sumi-soft);margin-bottom:22px}
+.chooser-result p{color:var(--sumi-soft);margin-bottom:12px}
+.chooser-result .rec-price{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--sumi);margin-bottom:22px}
 
 /* colour-fade strip (Section 3A — static, no interaction) */
 .colour-fade{margin-top:28px;max-width:560px}

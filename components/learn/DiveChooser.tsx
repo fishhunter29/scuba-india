@@ -3,31 +3,44 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-type Rec = { title: string; blurb: string; href: string; cta: string };
+type Rec = { title: string; blurb: string; href: string; cta: string; price: string };
 
-const REC_TRY: Rec = {
-  title: 'A Try Scuba Dive',
-  blurb:
-    'You don\'t need any experience or certification. An instructor guides you the whole way on a calm, shallow reef — the perfect first taste of diving.',
-  href: '/tribe-gate-light',
-  cta: 'See the Try Dive →',
-};
-const REC_COURSE: Rec = {
-  title: 'A PADI Course',
-  blurb:
-    'You want to dive properly and for life. Start with PADI Scuba Diver or Open Water — a real certification you can use anywhere in the world.',
-  href: '/#courses',
-  cta: 'View PADI courses →',
-};
-const REC_FUN: Rec = {
-  title: 'Fun Dives',
-  blurb:
-    'You\'re already certified — skip the training and explore. Our divemasters lead you across two of Havelock\'s best sites in one trip.',
-  href: '/fun-dives',
-  cta: 'See Fun Dives →',
-};
+export default function DiveChooser({
+  tryFrom,
+  tryHref,
+  courseFrom,
+  funFrom,
+}: {
+  tryFrom: string;
+  tryHref: string;
+  courseFrom: string;
+  funFrom: string;
+}) {
+  const REC_TRY: Rec = {
+    title: 'A Try Scuba Dive',
+    blurb:
+      'You don\'t need any experience or certification. An instructor guides you the whole way on a calm, shallow reef — the perfect first taste of diving.',
+    href: tryHref,
+    cta: 'See the Try Dive →',
+    price: `From ${tryFrom} per person`,
+  };
+  const REC_COURSE: Rec = {
+    title: 'A PADI Course',
+    blurb:
+      'You want to dive properly and for life. Start with PADI Scuba Diver or Open Water — a real certification you can use anywhere in the world.',
+    href: '/#courses',
+    cta: 'View PADI courses →',
+    price: `From ${courseFrom} per person`,
+  };
+  const REC_FUN: Rec = {
+    title: 'Fun Dives',
+    blurb:
+      'You\'re already certified — skip the training and explore. Our divemasters lead you across two of Havelock\'s best sites in one trip.',
+    href: '/fun-dives',
+    cta: 'See Fun Dives →',
+    price: `From ${funFrom} per person`,
+  };
 
-export default function DiveChooser() {
   const [step, setStep] = useState(0);
   const [rec, setRec] = useState<Rec | null>(null);
 
@@ -43,6 +56,7 @@ export default function DiveChooser() {
           <div className="chooser-progress">Our recommendation</div>
           <div className="rec">{rec.title}</div>
           <p>{rec.blurb}</p>
+          <div className="rec-price">{rec.price}</div>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href={rec.href} className="btn btn-primary">
               {rec.cta}

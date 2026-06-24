@@ -10,10 +10,11 @@ import WhatsAppFloat from '@/components/WhatsAppFloat';
 import FearCheck from '@/components/learn/FearCheck';
 import DiveChooser from '@/components/learn/DiveChooser';
 import { FEAR_CHECKS } from '@/lib/faqs';
-import { getSettings, getPosts } from '@/lib/data';
+import { getSettings, getPosts, getDives, getCourses } from '@/lib/data';
 import { faqSchema } from '@/lib/schema';
 import { waGeneral, waTryDive, waCoursesGeneral } from '@/lib/whatsapp';
 import { SITE_URL } from '@/lib/constants';
+import { fromPrice, cheapestDive, formatPrice } from '@/lib/format';
 
 const title = 'First-Time Scuba Diving in Havelock (Swaraj Dweep) — What to Expect';
 const description =
@@ -35,7 +36,24 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function LearnToDivePage() {
-  const [settings, posts] = await Promise.all([getSettings(), getPosts()]);
+  const [settings, posts, dives, courses] = await Promise.all([
+    getSettings(),
+    getPosts(),
+    getDives(),
+    getCourses(),
+  ]);
+
+  // Same cheapest-try-dive logic as the homepage hero/Packages section, so the
+  // quiz never recommends a pricier dive than what the rest of the site promises.
+  const tryDives = dives.filter(
+    (d) => (d.site_key === 'tribe' || d.site_key === 'red') && d.train_min != null,
+  );
+  const cheapestTry = cheapestDive(tryDives.length ? tryDives : dives);
+  const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
+  const tryHref = cheapestTry ? `/${cheapestTry.slug}` : '/tribe-gate-light';
+  const courseFrom = fromPrice(courses);
+  const funDive = dives.find((d) => d.slug === 'fun-dives');
+  const funFrom = funDive ? formatPrice(funDive.price, funDive.on_request) : 'On request';
 
   return (
     <>
@@ -96,6 +114,18 @@ export default async function LearnToDivePage() {
             </a>{' '}
             — we&apos;ll tell you honestly, no pressure.
           </p>
+          <div className="trust-inline reveal">
+            <span>
+              <b>PADI</b> Dive Centre <span className="padi-no">#27122</span>
+            </span>
+            <span>
+              <span className="star">★</span> <b>{settings.rating_avg}</b> on Google ·{' '}
+              {settings.review_count > 0 ? settings.review_count : '[XX]'}+ reviews
+            </span>
+            <span>
+              <b>{settings.dives_guided}+</b> dives guided
+            </span>
+          </div>
         </div>
       </section>
 
@@ -236,7 +266,7 @@ export default async function LearnToDivePage() {
             the right one.
           </p>
           <div className="reveal">
-            <DiveChooser />
+            <DiveChooser tryFrom={tryFrom} tryHref={tryHref} courseFrom={courseFrom} funFrom={funFrom} />
           </div>
           <p className="pk-value learn-closing reveal">
             Same PADI standards, same reefs, same free photos and pickup as anywhere in Havelock —
