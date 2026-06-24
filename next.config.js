@@ -15,6 +15,13 @@ const nextConfig = {
       // 301 to the homepage (contact details live in the footer) instead of 404,
       // so old search traffic lands somewhere useful and Google folds these in faster.
       { source: '/contact', destination: '/#contact', permanent: true },
+      // Old site used flat "-course" URLs at the root; current course pages live under /courses/.
+      { source: '/padi-scuba-diver-course', destination: '/courses/padi-scuba-diver', permanent: true },
+      { source: '/padi-open-water-diver-course', destination: '/courses/padi-open-water-diver', permanent: true },
+      { source: '/padi-adventure-diver-course', destination: '/courses/padi-adventure-diver', permanent: true },
+      { source: '/padi-advanced-open-water-course', destination: '/courses/padi-advanced-open-water', permanent: true },
+      { source: '/emergency-first-responder-course', destination: '/courses/emergency-first-responder-efr', permanent: true },
+      { source: '/padi-rescue-diver-course', destination: '/courses/padi-rescue-diver', permanent: true },
     ];
   },
   async headers() {
