@@ -9,6 +9,7 @@ import JsonLd from '@/components/JsonLd';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import FearCheck from '@/components/learn/FearCheck';
 import DiveChooser from '@/components/learn/DiveChooser';
+import LeadMagnet from '@/components/learn/LeadMagnet';
 import { FEAR_CHECKS } from '@/lib/faqs';
 import { getSettings, getPosts, getDives, getCourses } from '@/lib/data';
 import { faqSchema } from '@/lib/schema';
@@ -309,6 +310,7 @@ export default async function LearnToDivePage() {
             <p className="learn-closing reveal">
               <Link href="/guides">See the full Scuba Guide →</Link>
             </p>
+            <LeadMagnet />
           </div>
         </section>
       )}
