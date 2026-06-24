@@ -6,7 +6,7 @@ import { formatIndianPhone } from '@/lib/format';
 
 export default function Footer({ settings }: { settings: Settings }) {
   return (
-    <footer>
+    <footer id="contact">
       <div className="wrap">
         <div className="foot-grid">
           <div>
