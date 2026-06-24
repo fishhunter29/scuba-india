@@ -24,6 +24,7 @@ export const FALLBACK_SETTINGS: Settings = {
   email: DEFAULT_EMAIL,
   instagram: '',
   facebook: '',
+  tripadvisor: '',
   address:
     'Govind Nagar -2, Near Helipad Ground, Swaradjdweep (HAVELOCK) Islan, Andaman & Nicobar Island 744211, No State, India',
   address_map_url:

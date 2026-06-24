@@ -104,6 +104,7 @@ export interface Settings {
   email: string;
   instagram: string | null;
   facebook: string | null;
+  tripadvisor: string | null;
   address: string;
   address_map_url: string | null;
   google_url: string | null;

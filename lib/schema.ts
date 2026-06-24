@@ -31,8 +31,13 @@ export function diveCentreSchema(settings: Settings) {
     schema.hasMap = settings.address_map_url;
   }
   // Cross-validates the business identity across the web (Google Business
-  // Profile, Instagram, Facebook) — leave out any that aren't set yet.
-  const sameAs = [settings.google_url, settings.instagram, settings.facebook].filter(Boolean);
+  // Profile, Instagram, Facebook, TripAdvisor) — leave out any that aren't set yet.
+  const sameAs = [
+    settings.google_url,
+    settings.instagram,
+    settings.facebook,
+    settings.tripadvisor,
+  ].filter(Boolean);
   if (sameAs.length) {
     schema.sameAs = sameAs;
   }

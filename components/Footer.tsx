@@ -44,6 +44,15 @@ export default function Footer({ settings }: { settings: Settings }) {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/images/social/facebook.png" alt="" width={28} height={28} loading="lazy" />
               </a>
+              <a
+                href={settings.tripadvisor || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TripAdvisor"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/social/tripadvisor.png" alt="" width={28} height={28} loading="lazy" />
+              </a>
             </div>
           </div>
           <div className="foot-col">

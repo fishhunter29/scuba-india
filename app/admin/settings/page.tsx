@@ -120,6 +120,14 @@ export default function SettingsAdmin() {
           />
         </div>
         <div className="a-field">
+          <label>TripAdvisor URL</label>
+          <input
+            value={s.tripadvisor ?? ''}
+            placeholder="https://www.tripadvisor.com/Attraction_Review-..."
+            onChange={(e) => field('tripadvisor', e.target.value)}
+          />
+        </div>
+        <div className="a-field">
           <label>Address</label>
           <input value={s.address} onChange={(e) => field('address', e.target.value)} />
         </div>
