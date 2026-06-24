@@ -25,6 +25,20 @@ export default function Hero({
       <div className="hero-overlay" aria-hidden="true" />
 
       <div className="hero-content">
+        <div className="hero-social">
+          <a href={settings.instagram || '#'} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/social/instagram.png" alt="" width={26} height={26} loading="lazy" />
+          </a>
+          <a href={settings.facebook || '#'} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/social/facebook.png" alt="" width={26} height={26} loading="lazy" />
+          </a>
+          <a href={settings.tripadvisor || '#'} target="_blank" rel="noopener noreferrer" aria-label="TripAdvisor">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/social/tripadvisor.png" alt="" width={26} height={26} loading="lazy" />
+          </a>
+        </div>
         <div className="eyebrow">Havelock (Swarajdweep) · Andaman</div>
         <h1>
           <span className="stroke-reveal" style={{ animationDelay: '.2s' }}>

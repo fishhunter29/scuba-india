@@ -66,6 +66,9 @@ nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding
 .hero{position:relative;z-index:3;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 44px 90px;max-width:1180px;margin:0 auto}
 .vert-label{position:absolute;right:44px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:var(--disp);font-size:15px;letter-spacing:.4em;color:var(--ash)}
 @media(max-width:920px){.vert-label{display:none}}
+.hero-social{display:flex;gap:12px;margin-bottom:22px}
+.hero-social img{display:block;border-radius:50%;transition:transform .2s,opacity .2s}
+.hero-social a:hover img{transform:translateY(-2px);opacity:.85}
 .eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--vermilion);margin-bottom:28px;display:flex;align-items:center;gap:14px;font-weight:500}
 .eyebrow::before{content:"";width:40px;height:1px;background:var(--vermilion)}
 .hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(46px,8.5vw,118px);line-height:1.0;letter-spacing:.01em;color:var(--sumi);margin-bottom:10px}
