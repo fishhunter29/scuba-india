@@ -29,7 +29,28 @@ export default function InkBackground() {
       canvas.style.background = 'var(--paper)';
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // A WebGL context can exist with no real GPU behind it — headless/CI
+    // browsers (and some sandboxed environments) report a software rasterizer
+    // (SwiftShader/llvmpipe) instead of failing outright. Running this shader's
+    // 3 layered fbm() calls per pixel, every animation frame, on a CPU
+    // rasterizer blocks the main thread for seconds per frame. No real device
+    // with hardware-accelerated WebGL hits this branch, so it's the same
+    // defensive fallback as the no-WebGL case above, just for a context that
+    // technically exists but can't actually render this affordably.
+    const dbg = renderer.getContext().getExtension('WEBGL_debug_renderer_info');
+    const rendererName = dbg
+      ? String(renderer.getContext().getParameter(dbg.UNMASKED_RENDERER_WEBGL))
+      : '';
+    if (/swiftshader|llvmpipe|software/i.test(rendererName)) {
+      canvas.style.background = 'var(--paper)';
+      renderer.dispose();
+      return;
+    }
+    // Resolution is capped (not tied 1:1 to devicePixelRatio) in resize()
+    // below — this is a soft, blurred noise field, not detail that benefits
+    // from retina sharpness, and full-res shading is the single biggest cost
+    // of this effect on mid-range mobile GPUs since it re-runs every frame.
+    renderer.setPixelRatio(1);
     const scene = new THREE.Scene();
     const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const uniforms = {
@@ -90,11 +111,15 @@ export default function InkBackground() {
     function resize() {
       const w = innerWidth,
         h = innerHeight;
-      renderer.setSize(w, h);
-      uniforms.u_res.value.set(
-        w * Math.min(devicePixelRatio, 2),
-        h * Math.min(devicePixelRatio, 2),
-      );
+      // Cap the WebGL framebuffer's longest edge regardless of viewport size
+      // or device pixel ratio — pixel count (not octave count) is what makes
+      // this shader expensive, and it re-renders every animation frame.
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      const scale = Math.min(1, 900 / (Math.max(w, h) * dpr));
+      const bw = Math.round(w * dpr * scale);
+      const bh = Math.round(h * dpr * scale);
+      renderer.setSize(bw, bh, false); // false: canvas CSS box stays controlled by #ink{inset:0}
+      uniforms.u_res.value.set(bw, bh);
     }
     addEventListener('resize', resize);
     resize();
