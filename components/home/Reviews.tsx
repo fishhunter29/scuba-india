@@ -161,7 +161,8 @@ export default function Reviews({
           )}
         </div>
 
-        {/* review cards */}
+        {/* review cards — only render with real (Google or stored) reviews; never placeholders */}
+        {items.length > 0 && (
         <div className="g-rev-grid">
           {items.map((r) => (
             <div className="g-rev reveal" key={r.key}>
@@ -193,6 +194,7 @@ export default function Reviews({
             </div>
           ))}
         </div>
+        )}
 
         <div className="rev-foot reveal">
           {hasUrl ? (
