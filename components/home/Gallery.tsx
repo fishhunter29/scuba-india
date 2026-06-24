@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import shots from '@/lib/gallery.json';
 
 type Shot = { src: string; w: number; h: number; alt: string };
-const PHOTOS = (shots as Shot[]).slice(0, 16);
+const PHOTOS = shots as Shot[];
 const N = PHOTOS.length;
 const VIS = 3.4; // how many cards each side stay visible
 
