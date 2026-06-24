@@ -14,6 +14,9 @@ export function diveCentreSchema(settings: Settings) {
     telephone: settings.phone,
     email: settings.email,
     image: `${SITE_URL}/images/logo-full.png`,
+    // Square, text-free mark — what Google's Logo rich result actually wants
+    // (the brand image shown in Knowledge Panel / branded search results).
+    logo: `${SITE_URL}/images/logo-badge.png`,
     // Rough mid-range indicator (₹2,000–₹25,000 across dives/courses) — schema.org
     // priceRange has no India-specific convention, so this is the closest analogue.
     priceRange: '₹₹',
