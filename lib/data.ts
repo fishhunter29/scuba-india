@@ -45,6 +45,15 @@ export async function getAllDiveSlugs(): Promise<string[]> {
   return (data ?? []).map((d) => d.slug as string);
 }
 
+// For the sitemap: real updated_at per page instead of a request-time
+// timestamp, so lastModified actually reflects when content changed.
+export async function getDiveSitemapEntries(): Promise<{ slug: string; updatedAt: string }[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  const { data } = await supabase.from('dives').select('slug, updated_at').eq('active', true);
+  return (data ?? []).map((d) => ({ slug: d.slug as string, updatedAt: d.updated_at as string }));
+}
+
 export function groupDivesBySite(dives: Dive[]): Record<SiteKey, Dive[]> {
   const groups = { tribe: [], red: [], light: [], turtle: [], multi: [] } as Record<
     SiteKey,

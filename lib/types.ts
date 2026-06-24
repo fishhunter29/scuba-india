@@ -29,6 +29,7 @@ export interface Dive {
   image_url: string | null;
   active: boolean;
   sort: number;
+  updated_at: string;
 }
 
 export interface Course {

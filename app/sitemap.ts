@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next';
-import { getAllDiveSlugs } from '@/lib/data';
+import { getDiveSitemapEntries } from '@/lib/data';
 import { SITE_URL } from '@/lib/constants';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const slugs = await getAllDiveSlugs();
+  const dives = await getDiveSitemapEntries();
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -16,9 +16,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const divePages: MetadataRoute.Sitemap = slugs.map((slug) => ({
-    url: `${SITE_URL}/${slug}`,
-    lastModified: now,
+  const divePages: MetadataRoute.Sitemap = dives.map((d) => ({
+    url: `${SITE_URL}/${d.slug}`,
+    lastModified: new Date(d.updatedAt),
     changeFrequency: 'monthly',
     priority: 0.7,
   }));

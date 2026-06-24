@@ -34,6 +34,7 @@ export const metadata: Metadata = {
   },
   description:
     'PADI dive centre in Havelock (Swarajdweep), Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
+  alternates: { canonical: SITE_URL },
   keywords: [
     'scuba diving Havelock',
     'scuba diving Swarajdweep',

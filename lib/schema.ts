@@ -12,6 +12,10 @@ export function diveCentreSchema(settings: Settings) {
     url: SITE_URL,
     telephone: settings.phone,
     email: settings.email,
+    image: `${SITE_URL}/images/logo-full.png`,
+    // Rough mid-range indicator (₹2,000–₹25,000 across dives/courses) — schema.org
+    // priceRange has no India-specific convention, so this is the closest analogue.
+    priceRange: '₹₹',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Govind Nagar -2, Near Helipad Ground',
@@ -24,6 +28,12 @@ export function diveCentreSchema(settings: Settings) {
   };
   if (settings.address_map_url) {
     schema.hasMap = settings.address_map_url;
+  }
+  // Cross-validates the business identity across the web (Google Business
+  // Profile, Instagram, Facebook) — leave out any that aren't set yet.
+  const sameAs = [settings.google_url, settings.instagram, settings.facebook].filter(Boolean);
+  if (sameAs.length) {
+    schema.sameAs = sameAs;
   }
   if (settings.review_count > 0) {
     schema.aggregateRating = {
