@@ -30,7 +30,7 @@ export async function generateMetadata({
   if (!post) return { title: 'Guide not found' };
   const description = post.excerpt || post.title;
   return {
-    title: `${post.title} — Scuba India`,
+    title: `${post.title} — Scuba Guide, Scuba India`,
     description,
     alternates: { canonical: `${SITE_URL}/guides/${params.slug}` },
     openGraph: {
@@ -60,9 +60,9 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
         <section className="detail-hero">
           <div className="wrap">
             <Link href="/guides" className="detail-back">
-              ← All guides
+              ← Scuba Guide
             </Link>
-            <div className="detail-eyebrow">Dive Guide</div>
+            <div className="detail-eyebrow">Scuba Guide</div>
             <h1>{post.title}</h1>
             {post.excerpt && <p className="detail-pitch">{post.excerpt}</p>}
           </div>

@@ -9,7 +9,7 @@ const LINKS = [
   { href: '/#packages', label: 'Packages' },
   { href: '/#courses', label: 'Courses' },
   { href: '/#sites', label: 'Sites' },
-  { href: '/guides', label: 'Guides' },
+  { href: '/learn-to-dive#scuba-guide', label: 'Scuba Guide' },
   { href: '/learn-to-dive', label: 'New to diving?' },
 ];
 

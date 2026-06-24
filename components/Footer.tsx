@@ -14,7 +14,7 @@ export default function Footer({ settings }: { settings: Settings }) {
               <Seal /> Scuba India
             </div>
             <p style={{ color: 'rgba(220,239,239,.7)', maxWidth: 300, fontSize: '14.5px' }}>
-              PADI dive centre on Havelock (Swarajdweep) Island, Andaman. Try dives, fun dives &amp;
+              PADI dive centre on Havelock (Swaraj Dweep) Island, Andaman. Try dives, fun dives &amp;
               certification courses in India&apos;s clearest waters.
             </p>
             <div className="foot-padi">
@@ -82,7 +82,7 @@ export default function Footer({ settings }: { settings: Settings }) {
           </div>
         </div>
         <div className="foot-bottom">
-          <span>© {new Date().getFullYear()} Scuba India · Havelock (Swarajdweep)</span>
+          <span>© {new Date().getFullYear()} Scuba India · Havelock (Swaraj Dweep)</span>
           <span className="foot-legal">
             <Link href="/privacy-policy">Privacy</Link>
             {' · '}

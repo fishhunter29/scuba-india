@@ -12,9 +12,9 @@ import { SITE_URL } from '@/lib/constants';
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Dive Guides — Scuba India, Havelock',
+  title: 'Scuba Guide — Scuba India, Havelock (Swaraj Dweep)',
   description:
-    'Practical guides to diving in Havelock, Andaman — best season to go, what to expect on your first dive, and how to choose a PADI course.',
+    'The Scuba Guide: practical guides to diving in Havelock, Swaraj Dweep, Andaman — best season to go, what to expect on your first dive, and how to choose a PADI course.',
   alternates: { canonical: `${SITE_URL}/guides` },
 };
 
@@ -31,11 +31,12 @@ export default async function GuidesIndexPage() {
       <main className="detail">
         <section className="detail-hero">
           <div className="wrap">
-            <div className="detail-eyebrow">Dive Guides</div>
-            <h1>Guides to diving in Havelock</h1>
+            <div className="detail-eyebrow">Scuba Guide</div>
+            <h1>The Scuba Guide: diving in Havelock</h1>
             <p className="detail-pitch">
               Practical, honest answers to the questions divers ask us most — season, first dives,
-              and choosing a PADI course.
+              and choosing a PADI course.{' '}
+              <Link href="/learn-to-dive">New to diving? Start here →</Link>
             </p>
           </div>
         </section>

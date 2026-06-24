@@ -9,7 +9,7 @@ export function diveCentreSchema(settings: Settings) {
     '@type': 'SportsActivityLocation',
     name: SITE_NAME,
     description:
-      'PADI dive centre on Havelock Island, Andaman. Try dives, fun dives and PADI certification courses.',
+      'PADI dive centre on Havelock Island (Swaraj Dweep), Andaman. Try dives, fun dives and PADI certification courses.',
     url: SITE_URL,
     telephone: settings.phone,
     email: settings.email,
@@ -20,7 +20,7 @@ export function diveCentreSchema(settings: Settings) {
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Govind Nagar -2, Near Helipad Ground',
-      addressLocality: 'Swaradjdweep (HAVELOCK) Islan',
+      addressLocality: 'Havelock (Swaraj Dweep) Island',
       addressRegion: 'Andaman & Nicobar Island',
       postalCode: '744211',
       addressCountry: 'IN',
@@ -57,7 +57,7 @@ export function diveProductSchema(dive: Dive, settings: Settings) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: `${dive.name} — ${dive.site}`,
-    description: dive.pitch || `${dive.name} scuba dive at ${dive.site}, Havelock.`,
+    description: dive.pitch || `${dive.name} scuba dive at ${dive.site}, Havelock (Swaraj Dweep).`,
     image: dive.image_url || `${SITE_URL}/images/logo-full.png`,
     brand: { '@type': 'Brand', name: SITE_NAME },
     category: 'Scuba Diving',
@@ -87,7 +87,7 @@ export function courseSchema(course: Course) {
     '@context': 'https://schema.org',
     '@type': 'Course',
     name: `${course.name} — ${SITE_NAME}`,
-    description: course.description || `${course.name} PADI certification course in Havelock, Andaman.`,
+    description: course.description || `${course.name} PADI certification course in Havelock (Swaraj Dweep), Andaman.`,
     provider: {
       '@type': 'Organization',
       name: SITE_NAME,
@@ -143,7 +143,7 @@ export function articleBreadcrumbSchema(post: Post) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Guides', item: `${SITE_URL}/guides` },
+      { '@type': 'ListItem', position: 2, name: 'Scuba Guide', item: `${SITE_URL}/guides` },
       {
         '@type': 'ListItem',
         position: 3,

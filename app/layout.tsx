@@ -29,16 +29,16 @@ const mono = DM_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} | PADI Diving in Havelock, Andaman Islands`,
+    default: `${SITE_NAME} | PADI Diving in Havelock (Swaraj Dweep), Andaman`,
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    'PADI dive centre in Havelock (Swarajdweep), Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
+    'PADI dive centre in Havelock, Swaraj Dweep, Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `${SITE_NAME} | PADI Diving in Havelock, Andaman`,
+    title: `${SITE_NAME} | PADI Diving in Havelock (Swaraj Dweep), Andaman`,
     description:
-      'Try dives, fun dives & PADI certification in Havelock, Andaman. Free HD photos & GoPro video with every dive.',
+      'Try dives, fun dives & PADI certification in Havelock, Swaraj Dweep, Andaman. Free HD photos & GoPro video with every dive.',
     url: SITE_URL,
     siteName: SITE_NAME,
     type: 'website',

@@ -41,7 +41,7 @@ export default function Hero({
             <img src="/images/social/tripadvisor.png" alt="" width={26} height={26} loading="lazy" />
           </a>
         </div>
-        <div className="eyebrow">Havelock (Swarajdweep) · Andaman</div>
+        <div className="eyebrow">Havelock (Swaraj Dweep) · Andaman</div>
         <h1>
           <span className="stroke-reveal" style={{ animationDelay: '.2s' }}>
             Breathe underwater

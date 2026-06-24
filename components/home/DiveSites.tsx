@@ -43,7 +43,7 @@ export default function DiveSites({ dives }: { dives: Dive[] }) {
             <div className="sec-eyebrow">Where you&apos;ll dive</div>
             <h2>Four reefs. Every level of diver.</h2>
             <p>
-              We dive Havelock&apos;s (Swarajdweep&apos;s) healthiest sites and match each to your
+              We dive Havelock&apos;s (Swaraj Dweep&apos;s) healthiest sites and match each to your
               experience — gentle shallow coral for your first breath, deeper drifts for the
               certified. Warm water 27–30°C, visibility 15–25m.
             </p>

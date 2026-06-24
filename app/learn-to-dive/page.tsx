@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
@@ -8,14 +10,14 @@ import WhatsAppFloat from '@/components/WhatsAppFloat';
 import FearCheck from '@/components/learn/FearCheck';
 import DiveChooser from '@/components/learn/DiveChooser';
 import { FEAR_CHECKS } from '@/lib/faqs';
-import { getSettings } from '@/lib/data';
+import { getSettings, getPosts } from '@/lib/data';
 import { faqSchema } from '@/lib/schema';
 import { waGeneral, waTryDive, waCoursesGeneral } from '@/lib/whatsapp';
 import { SITE_URL } from '@/lib/constants';
 
-const title = 'First-Time Scuba Diving in Havelock — What to Expect';
+const title = 'First-Time Scuba Diving in Havelock (Swaraj Dweep) — What to Expect';
 const description =
-  "New to diving? Here's exactly what your first scuba dive in Havelock, Andaman feels like — the safety, and your day, hour by hour. No jargon, no pressure.";
+  "New to diving? Here's exactly what your first scuba dive in Havelock, Swaraj Dweep, Andaman feels like — the safety, and your day, hour by hour. No jargon, no pressure.";
 
 export const metadata: Metadata = {
   title,
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function LearnToDivePage() {
-  const settings = await getSettings();
+  const [settings, posts] = await Promise.all([getSettings(), getPosts()]);
 
   return (
     <>
@@ -242,6 +244,44 @@ export default async function LearnToDivePage() {
           </p>
         </div>
       </section>
+
+      {/* SECTION 5B — SCUBA GUIDE (general diving knowledge + Havelock specifics) */}
+      {posts.length > 0 && (
+        <section className="learn-section" id="scuba-guide">
+          <div className="wrap">
+            <div className="detail-eyebrow reveal">Scuba Guide</div>
+            <h2 className="reveal">Want more detail before you book?</h2>
+            <p className="lead reveal">
+              Everything above is the short version. The Scuba Guide covers the same ground in
+              more depth — general diving knowledge, like the real difference between PADI
+              courses, alongside what&apos;s specific to diving here: Havelock&apos;s seasons and
+              which site suits the conditions.
+            </p>
+            <div className="guides-grid reveal">
+              {posts.slice(0, 3).map((p) => (
+                <Link href={`/guides/${p.slug}`} key={p.id} className="guide-card">
+                  {p.cover_image_url && (
+                    <div className="guide-card-img">
+                      <Image
+                        src={p.cover_image_url}
+                        alt={p.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 360px"
+                      />
+                    </div>
+                  )}
+                  <h3>{p.title}</h3>
+                  {p.excerpt && <p>{p.excerpt}</p>}
+                  <span className="guide-card-link">Read guide →</span>
+                </Link>
+              ))}
+            </div>
+            <p className="learn-closing reveal">
+              <Link href="/guides">See the full Scuba Guide →</Link>
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* SECTION 6 — THE PEOPLE KEEPING YOU SAFE */}
       <section className="learn-section">
