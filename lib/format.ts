@@ -22,6 +22,14 @@ export function fromPrice(dives: Dive[]): string {
   return '₹' + Math.min(...priced).toLocaleString('en-IN');
 }
 
+// The actual cheapest priced dive in a set — lets callers point a price hook
+// (e.g. hero "from ₹X") back at the specific site/package it belongs to.
+export function cheapestDive(dives: Dive[]): Dive | null {
+  const priced = dives.filter((d) => !d.on_request && d.price != null);
+  if (!priced.length) return null;
+  return priced.reduce((min, d) => (d.price! < min.price! ? d : min), priced[0]);
+}
+
 // "919434290310" -> "+91 94342 90310" (for display; storage stays digits-only).
 export function formatIndianPhone(digits: string): string {
   const d = (digits || '').replace(/[^\d]/g, '');

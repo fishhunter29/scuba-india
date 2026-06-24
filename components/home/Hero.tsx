@@ -6,9 +6,11 @@ import { HERO_BLUR } from '@/lib/heroBlur';
 export default function Hero({
   settings,
   tryFrom = '₹2,500',
+  tryFromSite,
 }: {
   settings: Settings;
   tryFrom?: string;
+  tryFromSite?: string | null;
 }) {
   return (
     <header className="hero hero--photo">
@@ -52,7 +54,8 @@ export default function Hero({
         <p className="hero-sub">
           Try scuba diving in Andaman&apos;s clearest reefs — <b>no experience needed</b>. A PADI
           instructor is by your side the whole time, and you keep the HD photos &amp; GoPro video,
-          free. From <b>{tryFrom}</b>.
+          free. From <b>{tryFrom}</b>
+          {tryFromSite ? ` at ${tryFromSite}` : ''}.
         </p>
         <div className="hero-cta">
           <Link href="/#experiences" className="btn btn-primary">

@@ -16,7 +16,7 @@ import FinalCTA from '@/components/home/FinalCTA';
 import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesBySite } from '@/lib/data';
 import { getGoogleReviews } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
-import { fromPrice } from '@/lib/format';
+import { fromPrice, cheapestDive } from '@/lib/format';
 
 // ISR: serve from edge cache, refresh every 60s (admin edits appear within ~1 min).
 export const revalidate = 60;
@@ -35,6 +35,11 @@ export default async function HomePage() {
     (d) => (d.site_key === 'tribe' || d.site_key === 'red') && d.train_min != null,
   );
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
+  // which site actually has that cheapest try dive — so the hero's price
+  // promise and the Packages tab that's open by default agree with each other
+  const cheapestTry = cheapestDive(tryDives.length ? tryDives : dives);
+  const tryFromSite = cheapestTry?.site ?? null;
+  const tryFromSiteKey = cheapestTry?.site_key ?? null;
 
   return (
     <>
@@ -43,11 +48,17 @@ export default async function HomePage() {
       <ScrollFX />
       <Nav />
 
-      <Hero settings={settings} tryFrom={tryFrom} />
+      <Hero settings={settings} tryFrom={tryFrom} tryFromSite={tryFromSite} />
 
       <div className="sheet">
         <Experiences dives={dives} courses={courses} />
-        <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
+        <Packages
+          grouped={grouped}
+          settings={settings}
+          tryFrom={tryFrom}
+          tryFromSite={tryFromSite}
+          defaultSite={tryFromSiteKey}
+        />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
         <DiveSites dives={dives} />
         <WhyUs />

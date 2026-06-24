@@ -47,13 +47,22 @@ export default function Packages({
   grouped,
   settings,
   tryFrom,
+  tryFromSite,
+  defaultSite,
 }: {
   grouped: Record<SiteKey, Dive[]>;
   settings: Settings;
   tryFrom: string;
+  tryFromSite?: string | null;
+  defaultSite?: SiteKey | null;
 }) {
   const tabs = SITE_TABS.filter((t) => grouped[t.key]?.length);
-  const [active, setActive] = useState<SiteKey>(tabs[0]?.key ?? 'tribe');
+  // Open on whichever site actually has the cheapest try dive (the one quoted
+  // in the hero/pk-value copy below), so that price is immediately visible
+  // and selectable instead of buried behind a tab switch.
+  const initialSite =
+    defaultSite && grouped[defaultSite]?.length ? defaultSite : tabs[0]?.key ?? 'tribe';
+  const [active, setActive] = useState<SiteKey>(initialSite);
 
   return (
     <section className="band packages" id="packages">
@@ -66,8 +75,14 @@ export default function Packages({
             HD photos and GoPro video unless noted.
           </p>
           <p className="pk-value">
-            PADI try dives in Havelock typically start higher — ours start at <b>{tryFrom}</b>:
-            same certification, same reefs, free HD photos included.
+            PADI try dives in Havelock typically start higher — ours start at <b>{tryFrom}</b>
+            {tryFromSite ? (
+              <>
+                {' '}
+                at <b>{tryFromSite}</b>
+              </>
+            ) : null}
+            : same certification, same reefs, free HD photos included.
           </p>
         </div>
 
