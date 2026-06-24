@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
@@ -49,6 +50,16 @@ export default async function GuidesIndexPage() {
               <div className="guides-grid">
                 {posts.map((p) => (
                   <Link href={`/guides/${p.slug}`} key={p.id} className="guide-card">
+                    {p.cover_image_url && (
+                      <div className="guide-card-img">
+                        <Image
+                          src={p.cover_image_url}
+                          alt={p.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 360px"
+                        />
+                      </div>
+                    )}
                     <h3>{p.title}</h3>
                     {p.excerpt && <p>{p.excerpt}</p>}
                     <span className="guide-card-link">Read guide →</span>

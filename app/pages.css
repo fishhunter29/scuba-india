@@ -48,6 +48,8 @@
 .guides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
 .guide-card{display:block;background:rgba(220,239,239,.72);backdrop-filter:blur(2px);border:1px solid rgba(18,58,71,.14);padding:28px;color:var(--sumi);text-decoration:none;transition:transform .2s,border-color .2s}
 .guide-card:hover{transform:translateY(-3px);border-color:var(--vermilion)}
+.guide-card-img{position:relative;width:calc(100% + 56px);height:160px;margin:-28px -28px 20px;overflow:hidden}
+.guide-card-img img{object-fit:cover}
 .guide-card h3{font-family:var(--disp);font-size:21px;font-weight:600;margin-bottom:10px;color:var(--sumi)}
 .guide-card p{color:var(--sumi-soft);font-size:15px;line-height:1.6;margin-bottom:14px}
 .guide-card-link{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--vermilion)}
