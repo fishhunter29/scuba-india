@@ -118,12 +118,9 @@ insert into public.courses (name, duration, depth, min_age, price, on_request, d
 ('PADI Rescue Diver',                '3–4 days',   '—',   '12 / 15', 22000, false, 'Learn to prevent and manage dive emergencies and help other divers. Challenging, rewarding, and a favourite among divers.', 60);
 
 -- ============================================================================
--- Reviews — 3 PLACEHOLDERS (SPEC §10: replace with real Google reviews)
+-- Reviews — intentionally empty. Add real Google reviews via /admin → Reviews
+-- before launch; do not seed fake/placeholder reviewer names or quotes here.
 -- ============================================================================
-insert into public.reviews (name, country, rating, text, featured, sort) values
-('Reviewer name', 'Country', 5, 'Pull a real 5-star Google review here — specific, naming a site, the instructor, the photos.', true, 10),
-('Reviewer name', 'Country', 5, 'Second real review. A first-timer angle converts nervous beginners best.', true, 20),
-('Reviewer name', 'Country', 5, 'Third real review. A certified diver praising the sites builds the other half of trust.', true, 30);
 
 -- ============================================================================
 -- Settings singleton (SPEC §10 placeholders; email MUST be info@scubaindia.in)
