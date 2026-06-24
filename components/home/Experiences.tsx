@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Dive, Course } from '@/lib/types';
 import { fromPrice } from '@/lib/format';
 
@@ -34,8 +35,13 @@ export default function Experiences({
         <div className="exp-grid">
           <div className="card reveal">
             <div className="card-img">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="card-photo" src="/images/home-try-dive.jpg" alt="Try Scuba Dive in Havelock" />
+              <Image
+                className="card-photo"
+                src="/images/home-try-dive.jpg"
+                alt="Try Scuba Dive in Havelock"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
               <span className="card-tag">NO EXPERIENCE</span>
             </div>
             <div className="card-body">
@@ -57,8 +63,13 @@ export default function Experiences({
 
           <div className="card reveal">
             <div className="card-img">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="card-photo" src="/images/home-fun-dive.jpg" alt="Fun Dives across Havelock's reefs" />
+              <Image
+                className="card-photo"
+                src="/images/home-fun-dive.jpg"
+                alt="Fun Dives across Havelock's reefs"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
               <span className="card-tag">CERTIFIED</span>
             </div>
             <div className="card-body">
@@ -80,8 +91,13 @@ export default function Experiences({
 
           <div className="card reveal">
             <div className="card-img">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="card-photo" src="/images/home-courses.jpg" alt="PADI certification courses in Havelock" />
+              <Image
+                className="card-photo"
+                src="/images/home-courses.jpg"
+                alt="PADI certification courses in Havelock"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
               <span className="card-tag">GET CERTIFIED</span>
             </div>
             <div className="card-body">

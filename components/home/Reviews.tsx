@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { Review, Settings } from '@/lib/types';
 import type { GoogleReviewsData } from '@/lib/google-reviews';
 
@@ -166,8 +167,14 @@ export default function Reviews({
             <div className="g-rev reveal" key={r.key}>
               <div className="g-rev-head">
                 {r.photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img className="g-avatar g-avatar-img" src={r.photo} alt={r.name} referrerPolicy="no-referrer" />
+                  <Image
+                    className="g-avatar g-avatar-img"
+                    src={r.photo}
+                    alt={r.name}
+                    width={44}
+                    height={44}
+                    referrerPolicy="no-referrer"
+                  />
                 ) : (
                   <span className="g-avatar" style={{ background: avatarColor(r.name) }}>
                     {initials(r.name)}

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
@@ -126,8 +127,13 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
           <div className="wrap">
             {dive.image_url && (
               <div className="detail-photo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={dive.image_url} alt={`${dive.name} — ${dive.site}, Havelock`} />
+                <Image
+                  src={dive.image_url}
+                  alt={`${dive.name} — ${dive.site}, Havelock`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  priority
+                />
               </div>
             )}
             <div className="detail-grid">
