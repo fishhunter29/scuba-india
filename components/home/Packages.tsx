@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Dive, Settings, SiteKey } from '@/lib/types';
 import { SITE_TABS, SITE_INTRO } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
@@ -121,6 +122,16 @@ export default function Packages({
                   const feat = d.tier ? FEAT_TIERS.includes(d.tier) : false;
                   return (
                     <div key={d.id} className={`pk${feat ? ' feat' : ''}`}>
+                      {d.image_url && (
+                        <div className="pk-img">
+                          <Image
+                            src={d.image_url}
+                            alt={d.name}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 280px"
+                          />
+                        </div>
+                      )}
                       {d.tier && <span className="tier">{tierLabel(d.tier)}</span>}
                       <span className="dur">{diveDuration(d)}</span>
                       <h4>{d.name}</h4>
