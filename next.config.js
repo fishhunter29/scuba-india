@@ -9,6 +9,14 @@ const nextConfig = {
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
+  async redirects() {
+    return [
+      // Stale URLs still indexed/sitelinked by Google from the pre-rebuild site.
+      // 301 to the homepage (contact details live in the footer) instead of 404,
+      // so old search traffic lands somewhere useful and Google folds these in faster.
+      { source: '/contact', destination: '/', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
