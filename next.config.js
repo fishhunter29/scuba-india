@@ -17,11 +17,16 @@ const nextConfig = {
       { source: '/contact', destination: '/#contact', permanent: true },
       // Old site used flat "-course" URLs at the root; current course pages live under /courses/.
       { source: '/padi-scuba-diver-course', destination: '/courses/padi-scuba-diver', permanent: true },
-      { source: '/padi-open-water-diver-course', destination: '/courses/padi-open-water-diver', permanent: true },
+      { source: '/open-water-diver-course', destination: '/courses/padi-open-water-diver', permanent: true },
+      { source: '/rescue-diver-course', destination: '/courses/padi-rescue-diver', permanent: true },
+      // Speculative siblings for the other 2 real courses — old URL not yet confirmed,
+      // harmless no-ops if the pattern doesn't match.
       { source: '/padi-adventure-diver-course', destination: '/courses/padi-adventure-diver', permanent: true },
       { source: '/padi-advanced-open-water-course', destination: '/courses/padi-advanced-open-water', permanent: true },
       { source: '/emergency-first-responder-course', destination: '/courses/emergency-first-responder-efr', permanent: true },
-      { source: '/padi-rescue-diver-course', destination: '/courses/padi-rescue-diver', permanent: true },
+      // Real dives at old root-level URLs.
+      { source: '/snorkelling', destination: '/red-pillar-snorkelling', permanent: true },
+      { source: '/fun-dive', destination: '/fun-dives', permanent: true },
     ];
   },
   async headers() {
