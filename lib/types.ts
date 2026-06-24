@@ -83,15 +83,6 @@ export interface Booking {
   created_at: string;
 }
 
-export interface Lead {
-  id: string;
-  name: string | null;
-  phone: string | null;
-  email: string | null;
-  source: string;
-  created_at: string;
-}
-
 export interface Photo {
   id: string;
   url: string;
