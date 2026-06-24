@@ -45,6 +45,19 @@ export interface Course {
   sort: number;
 }
 
+export interface Post {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  body: string;
+  cover_image_url: string | null;
+  published: boolean;
+  published_at: string;
+  sort: number;
+  updated_at: string;
+}
+
 export interface Review {
   id: string;
   name: string;

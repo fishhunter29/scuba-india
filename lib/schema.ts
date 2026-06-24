@@ -1,5 +1,5 @@
 // schema.org JSON-LD builders (SPEC §5.4).
-import type { Dive, Course, Settings } from './types';
+import type { Dive, Course, Post, Settings } from './types';
 import { SITE_URL, SITE_NAME } from './constants';
 import { courseSlug } from './format';
 
@@ -112,6 +112,38 @@ export function courseBreadcrumbSchema(course: Course) {
         position: 2,
         name: course.name,
         item: `${SITE_URL}/courses/${courseSlug(course.name)}`,
+      },
+    ],
+  };
+}
+
+export function articleSchema(post: Post) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt || undefined,
+    image: post.cover_image_url || `${SITE_URL}/images/logo-full.png`,
+    datePublished: post.published_at,
+    dateModified: post.updated_at,
+    author: { '@type': 'Organization', name: SITE_NAME },
+    publisher: { '@type': 'Organization', name: SITE_NAME },
+    mainEntityOfPage: `${SITE_URL}/guides/${post.slug}`,
+  };
+}
+
+export function articleBreadcrumbSchema(post: Post) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Guides', item: `${SITE_URL}/guides` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: `${SITE_URL}/guides/${post.slug}`,
       },
     ],
   };

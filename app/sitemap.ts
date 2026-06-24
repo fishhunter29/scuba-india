@@ -1,10 +1,14 @@
 import type { MetadataRoute } from 'next';
-import { getDiveSitemapEntries, getCourses } from '@/lib/data';
+import { getDiveSitemapEntries, getCourses, getPostSitemapEntries } from '@/lib/data';
 import { courseSlug } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [dives, courses] = await Promise.all([getDiveSitemapEntries(), getCourses()]);
+  const [dives, courses, posts] = await Promise.all([
+    getDiveSitemapEntries(),
+    getCourses(),
+    getPostSitemapEntries(),
+  ]);
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -14,6 +18,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/guides`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.7,
     },
   ];
 
@@ -31,5 +41,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...divePages, ...coursePages];
+  const guidePages: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${SITE_URL}/guides/${p.slug}`,
+    lastModified: new Date(p.updatedAt),
+    changeFrequency: 'monthly',
+    priority: 0.65,
+  }));
+
+  return [...staticPages, ...divePages, ...coursePages, ...guidePages];
 }

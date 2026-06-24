@@ -5,7 +5,7 @@ import { createPublicClient } from './supabase/public';
 import { isSupabaseConfigured } from './supabase/server';
 import { FALLBACK_SETTINGS } from './constants';
 import { courseSlug } from './format';
-import type { Dive, Course, Review, Settings, SiteKey } from './types';
+import type { Dive, Course, Post, Review, Settings, SiteKey } from './types';
 
 const createClient = createPublicClient;
 
@@ -104,6 +104,54 @@ export async function getCourseBySlug(slug: string): Promise<Course | null> {
 export async function getAllCourseSlugs(): Promise<string[]> {
   const courses = await getCourses();
   return courses.map((c) => courseSlug(c.name));
+}
+
+export async function getPosts(): Promise<Post[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('published', true)
+    .order('published_at', { ascending: false });
+  if (error) {
+    console.error('getPosts', error.message);
+    return [];
+  }
+  return (data ?? []) as Post[];
+}
+
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  if (!isSupabaseConfigured()) return null;
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('published', true)
+    .maybeSingle();
+  if (error) {
+    console.error('getPostBySlug', error.message);
+    return null;
+  }
+  return (data as Post) ?? null;
+}
+
+export async function getAllPostSlugs(): Promise<string[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  const { data } = await supabase.from('posts').select('slug').eq('published', true);
+  return (data ?? []).map((p) => p.slug as string);
+}
+
+export async function getPostSitemapEntries(): Promise<{ slug: string; updatedAt: string }[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('posts')
+    .select('slug, updated_at')
+    .eq('published', true);
+  return (data ?? []).map((p) => ({ slug: p.slug as string, updatedAt: p.updated_at as string }));
 }
 
 export async function getFeaturedReviews(): Promise<Review[]> {
