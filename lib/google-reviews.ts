@@ -20,6 +20,18 @@ export interface GoogleReviewsData {
   mapsUri: string | null;
 }
 
+// Merges the live Google rating/count into a Settings-shaped object so every
+// "[XX]+ reviews" trust line and AggregateRating schema on the site reflects
+// the real listing once GOOGLE_MAPS_API_KEY/GOOGLE_PLACE_ID are configured,
+// not just the admin-managed components/home/Reviews.tsx block.
+export function withLiveRating<T extends { review_count: number; rating_avg: number }>(
+  settings: T,
+  google: GoogleReviewsData | null,
+): T {
+  if (!google?.count) return settings;
+  return { ...settings, review_count: google.count, rating_avg: google.rating ?? settings.rating_avg };
+}
+
 export async function getGoogleReviews(): Promise<GoogleReviewsData | null> {
   const key = process.env.GOOGLE_MAPS_API_KEY;
   const place = process.env.GOOGLE_PLACE_ID;

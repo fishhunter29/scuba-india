@@ -14,7 +14,7 @@ import Reviews from '@/components/home/Reviews';
 import Gallery from '@/components/home/Gallery';
 import FinalCTA from '@/components/home/FinalCTA';
 import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesBySite } from '@/lib/data';
-import { getGoogleReviews } from '@/lib/google-reviews';
+import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
 import { fromPrice, cheapestDive } from '@/lib/format';
 
@@ -22,13 +22,17 @@ import { fromPrice, cheapestDive } from '@/lib/format';
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [dives, courses, reviews, settings, google] = await Promise.all([
+  const [dives, courses, reviews, rawSettings, google] = await Promise.all([
     getDives(),
     getCourses(),
     getFeaturedReviews(),
     getSettings(),
     getGoogleReviews(),
   ]);
+  // Once Google Places is configured, every "[XX]+ reviews" trust line and the
+  // AggregateRating schema below reflect the real live count, not just whatever
+  // was last typed into admin → Settings.
+  const settings = withLiveRating(rawSettings, google);
   const grouped = groupDivesBySite(dives);
   // cheapest guided try dive (shallow first-timer sites) for the hero price hook
   const tryDives = dives.filter(

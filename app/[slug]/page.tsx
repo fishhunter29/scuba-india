@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
 import { getDiveBySlug, getAllDiveSlugs, getDivesBySite, getSettings } from '@/lib/data';
+import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { formatPrice, diveDuration } from '@/lib/format';
 import { waBookDive, waGeneral } from '@/lib/whatsapp';
 import { diveProductSchema, breadcrumbSchema } from '@/lib/schema';
@@ -44,8 +45,13 @@ export async function generateMetadata({
 }
 
 export default async function DiveDetailPage({ params }: { params: { slug: string } }) {
-  const [dive, settings] = await Promise.all([getDiveBySlug(params.slug), getSettings()]);
+  const [dive, rawSettings, google] = await Promise.all([
+    getDiveBySlug(params.slug),
+    getSettings(),
+    getGoogleReviews(),
+  ]);
   if (!dive) notFound();
+  const settings = withLiveRating(rawSettings, google);
 
   const relatedDives = await getDivesBySite(dive.site_key, dive.slug);
 

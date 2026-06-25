@@ -11,6 +11,7 @@ import FearCheck from '@/components/learn/FearCheck';
 import DiveChooser from '@/components/learn/DiveChooser';
 import { FEAR_CHECKS } from '@/lib/faqs';
 import { getSettings, getPosts, getDives, getCourses } from '@/lib/data';
+import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { faqSchema } from '@/lib/schema';
 import { waGeneral, waTryDive, waCoursesGeneral } from '@/lib/whatsapp';
 import { SITE_URL } from '@/lib/constants';
@@ -36,12 +37,14 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function LearnToDivePage() {
-  const [settings, posts, dives, courses] = await Promise.all([
+  const [rawSettings, posts, dives, courses, google] = await Promise.all([
     getSettings(),
     getPosts(),
     getDives(),
     getCourses(),
+    getGoogleReviews(),
   ]);
+  const settings = withLiveRating(rawSettings, google);
 
   // Same cheapest-try-dive logic as the homepage hero/Packages section, so the
   // quiz never recommends a pricier dive than what the rest of the site promises.
