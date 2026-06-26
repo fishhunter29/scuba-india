@@ -1,13 +1,22 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import {
+  WebGLRenderer,
+  Scene,
+  OrthographicCamera,
+  ShaderMaterial,
+  PlaneGeometry,
+  Mesh,
+  Vector2,
+  Clock,
+} from 'three';
 
 /**
  * Sumi-e ink-in-water background.
  * The GLSL fragment shader and the Three.js init below are copied VERBATIM from
  * scubaindia-sumie-full.html (SPEC §4, §12) — do not rewrite. Only the wrapping
- * (React effect + cleanup, importing THREE r128 as a module) is new.
+ * (React effect + cleanup, importing the three r128 classes used) is new.
  */
 export default function InkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -15,13 +24,9 @@ export default function InkBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    if (!THREE) {
-      canvas.style.background = 'var(--paper)';
-      return;
-    }
-    let renderer: THREE.WebGLRenderer;
+    let renderer: WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      renderer = new WebGLRenderer({ canvas, antialias: true, alpha: false });
     } catch {
       // No WebGL support (old GPU/driver, hardware acceleration disabled, some
       // locked-down mobile webviews) — fall back to a static background instead
@@ -51,12 +56,12 @@ export default function InkBackground() {
     // from retina sharpness, and full-res shading is the single biggest cost
     // of this effect on mid-range mobile GPUs since it re-runs every frame.
     renderer.setPixelRatio(1);
-    const scene = new THREE.Scene();
-    const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new Scene();
+    const cam = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const uniforms = {
       u_time: { value: 0 },
-      u_res: { value: new THREE.Vector2() },
-      u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+      u_res: { value: new Vector2() },
+      u_mouse: { value: new Vector2(0.5, 0.5) },
       u_mvel: { value: 0 },
     };
 
@@ -102,12 +107,12 @@ export default function InkBackground() {
       col+=0.04*(1.0-uv.y)*vec3(1.0,0.98,0.92);
       gl_FragColor=vec4(clamp(col,0.,1.),1.0);
     }`;
-    const mat = new THREE.ShaderMaterial({
+    const mat = new ShaderMaterial({
       uniforms,
       vertexShader: `void main(){gl_Position=vec4(position,1.0);}`,
       fragmentShader: frag,
     });
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
+    scene.add(new Mesh(new PlaneGeometry(2, 2), mat));
     function resize() {
       const w = innerWidth,
         h = innerHeight;
@@ -133,7 +138,7 @@ export default function InkBackground() {
     };
     addEventListener('pointermove', onMove);
     const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-    const clock = new THREE.Clock();
+    const clock = new Clock();
     let raf = 0;
 
     function loop() {
