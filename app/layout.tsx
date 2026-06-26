@@ -7,11 +7,17 @@ import ConversionTracker from '@/components/ConversionTracker';
 import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
 // Fonts — do NOT change (SPEC §3). Exposed as CSS vars consumed by globals.css.
+// preload:false on Shippori Mincho only — Google never ships a true latin-only
+// build of this family (its "latin" subset CSS still carries ~370 CJK
+// unicode-range chunks), and next/font's default preload eagerly fetches
+// every one of them regardless of subsets[], forcing ~7.6MB of glyph data
+// the page never renders. display:swap covers the brief on-demand fetch.
 const disp = Shippori_Mincho({
   subsets: ['latin'],
   weight: ['500', '600', '700'],
   variable: '--font-disp',
   display: 'swap',
+  preload: false,
 });
 const body = Hanken_Grotesk({
   subsets: ['latin'],
