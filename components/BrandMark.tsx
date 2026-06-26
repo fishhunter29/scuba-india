@@ -6,7 +6,7 @@ import Image from 'next/image';
 export function Seal({ size = 40 }: { size?: number }) {
   return (
     <span className="seal" style={{ width: size, height: size }}>
-      <Image src="/images/logo-badge.png" alt="" width={size} height={size} priority />
+      <Image src="/images/logo-icon.png" alt="" width={size} height={size} priority />
     </span>
   );
 }
