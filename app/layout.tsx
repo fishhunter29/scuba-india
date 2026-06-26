@@ -53,6 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
+  verification: { other: { 'facebook-domain-verification': 'r5vyqq9kqtn6y2o5rbupdmxx4mwzcj' } },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
