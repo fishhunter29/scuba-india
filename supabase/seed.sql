@@ -126,7 +126,7 @@ insert into public.courses (name, duration, depth, min_age, price, on_request, d
 -- Settings singleton (SPEC §10 placeholders; email MUST be info@scubaindia.in)
 -- ============================================================================
 insert into public.settings (id, review_count, rating_avg, dives_guided, phone, whatsapp, email, instagram, address)
-values (1, 0, 4.8, '[X,000]', '+91 76950 03828', '917695003828', 'info@scubaindia.in', '', 'Havelock Island, Andaman')
+values (1, 0, 4.8, '[X,000]', '+91 94342 90310', '917695003828', 'info@scubaindia.in', '', 'Havelock Island, Andaman')
 on conflict (id) do update set
   review_count = excluded.review_count,
   email = excluded.email;
