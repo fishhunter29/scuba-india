@@ -8,7 +8,7 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://scubaindia.in';
 
 // WhatsApp number (SPEC §5.2). Keep in sync with settings.whatsapp.
-export const DEFAULT_WHATSAPP = '919434290310';
+export const DEFAULT_WHATSAPP = '917695003828';
 
 // Footer email MUST be info@scubaindia.in (SPEC §10 — never the competitor's).
 const DEFAULT_EMAIL = 'info@scubaindia.in';
@@ -18,7 +18,7 @@ export const FALLBACK_SETTINGS: Settings = {
   review_count: 0,
   rating_avg: 4.8,
   dives_guided: '[X,000]',
-  phone: '+91 76950 03828',
+  phone: '+91 94342 90310',
   phone2: '',
   whatsapp: DEFAULT_WHATSAPP,
   email: DEFAULT_EMAIL,
