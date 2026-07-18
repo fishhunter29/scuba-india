@@ -10,6 +10,7 @@ const LINKS = [
   { href: '/#courses', label: 'Courses' },
   { href: '/#sites', label: 'Sites' },
   { href: '/learn-to-dive', label: 'Scuba Guide' },
+  { href: '/prices', label: 'Prices' },
 ];
 
 export default function Nav() {
