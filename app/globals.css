@@ -63,7 +63,7 @@ nav.scrolled{background:rgba(220,239,239,.86);backdrop-filter:blur(12px);padding
 .drawer a.drawer-cta{color:var(--vermilion)}
 .drawer-close{position:absolute;top:24px;right:24px;font-size:30px;background:none;border:none;color:var(--sumi);cursor:pointer;line-height:1}
 
-.hero{position:relative;z-index:3;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 44px 90px;max-width:1180px;margin:0 auto}
+.hero{position:relative;z-index:3;min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:100px 44px 70px;max-width:1180px;margin:0 auto}
 .vert-label{position:absolute;right:44px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:var(--disp);font-size:15px;letter-spacing:.4em;color:var(--ash)}
 @media(max-width:920px){.vert-label{display:none}}
 .hero-social{display:flex;gap:12px;margin-bottom:22px}
@@ -128,7 +128,8 @@ section{position:relative;z-index:3}
 .sec-head p{margin-top:18px;color:var(--sumi-soft);font-size:17px;max-width:580px}
 .pk-value b{color:var(--vermilion);font-weight:700}
 
-/* experiences */
+/* experiences — tighter band so packages appear sooner on scroll */
+.band#experiences{padding:72px 0}
 .exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .card{background:var(--paper-deep);border:1px solid rgba(18,58,71,.12);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 20px rgba(18,58,71,.07);transition:transform .35s,box-shadow .35s,border-color .3s}
 .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(18,58,71,.14);border-color:var(--sumi)}
@@ -268,7 +269,7 @@ footer{position:relative;z-index:3;background:var(--sumi);padding:80px 0;color:v
   .exp-grid,.why-grid,.rev-grid{grid-template-columns:1fr}
   .site-row{grid-template-columns:1fr;gap:40px}
   .foot-grid{grid-template-columns:1fr;gap:34px}
-  .band{padding:82px 0}.wrap{padding:0 22px}.hero{padding:110px 22px 70px}
+  .band{padding:82px 0}.band#experiences{padding:58px 0}.wrap{padding:0 22px}.hero{padding:90px 22px 56px}
   .depth-item{grid-template-columns:100px 1fr 46px;gap:12px}
   .depth-item .name{font-size:17px}
   footer{padding:56px 0}
