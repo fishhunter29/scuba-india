@@ -287,25 +287,27 @@
 .pl-trust{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:28px;font-family:var(--mono);font-size:12.5px;color:var(--sumi-soft)}
 .pl-trust span{display:flex;align-items:center;gap:7px}
 
-.pl-site{margin-bottom:56px}
+.pl-jump{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:30px}
+.pl-jump a{font-family:var(--mono);font-size:12px;letter-spacing:.03em;color:var(--sumi);background:rgba(220,239,239,.7);border:1px solid rgba(18,58,71,.16);padding:7px 13px;border-radius:99px;transition:background .18s,color .18s,border-color .18s}
+.pl-jump a:hover{background:var(--sumi);color:var(--paper);border-color:var(--sumi)}
+
+.pl-site{margin-bottom:56px;scroll-margin-top:90px}
 .pl-site-header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--sumi)}
 .pl-site-name{font-family:var(--disp);font-size:clamp(22px,3.5vw,32px);font-weight:600;color:var(--sumi);margin:0}
-.pl-site-meta{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash)}
+.pl-site-meta{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ash);max-width:520px}
 
 .pl-table{display:grid;gap:0}
-.pl-row{display:grid;grid-template-columns:2fr 1.4fr 2.2fr 1fr auto;align-items:center;gap:12px 20px;padding:16px 18px;border-bottom:1px solid rgba(18,58,71,.1)}
+.pl-row{display:grid;grid-template-columns:2.2fr 2.4fr 1.1fr auto;align-items:center;gap:12px 20px;padding:16px 18px;border-bottom:1px solid rgba(18,58,71,.1)}
 .pl-row:last-child{border-bottom:none}
-.pl-row-head{padding:10px 18px;background:rgba(18,58,71,.05);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash)}
-.pl-row:not(.pl-row-head):hover{background:rgba(220,239,239,.5)}
+.pl-row:hover{background:rgba(220,239,239,.5)}
 
 .pl-col-name{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .pl-name-link{font-family:var(--disp);font-size:17px;font-weight:600;color:var(--sumi);text-decoration:none}
-.pl-name-link:hover{color:var(--vermilion)}
-.pl-tier{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:rgba(18,58,71,.08);color:var(--ash)}
+a.pl-name-link:hover{color:var(--vermilion)}
 
-.pl-col-dur{font-size:14px;color:var(--sumi-soft)}
 .pl-col-incl{font-size:13.5px;color:var(--sumi-soft)}
 .pl-col-price{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--vermilion);white-space:nowrap}
+.pl-unit{font-family:var(--mono);font-size:10.5px;font-weight:400;letter-spacing:.03em;color:var(--ash);display:block}
 .pl-col-book{text-align:right}
 
 .pl-book-btn{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--indigo);border:1px solid var(--indigo);padding:8px 14px;border-radius:6px;white-space:nowrap;transition:background .18s,color .18s}
@@ -317,14 +319,12 @@
 .pl-footer-note p{color:var(--sumi-soft);font-size:14.5px;max-width:560px;margin:0}
 
 @media(max-width:920px){
-  .pl-row{grid-template-columns:1fr auto;gap:6px 12px;padding:14px 0}
-  .pl-row-head{display:none}
-  .pl-col-dur,.pl-col-incl{font-size:12.5px;color:var(--ash)}
-  .pl-col-dur::before{content:"Duration: ";font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);opacity:.7}
-  .pl-col-incl::before{content:"Includes: ";font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);opacity:.7}
-  .pl-col-dur,.pl-col-incl,.pl-col-price{grid-column:1}
+  .pl-row{grid-template-columns:1fr auto;gap:4px 12px;padding:14px 0}
+  .pl-col-incl{font-size:12.5px;color:var(--ash);grid-column:1}
+  .pl-col-incl:empty{display:none}
+  .pl-col-price{grid-column:1}
   .pl-col-name{grid-column:1;grid-row:1}
-  .pl-col-book{grid-column:2;grid-row:1 / span 4;align-self:center}
-  .pl-col-price{font-size:18px}
+  .pl-col-book{grid-column:2;grid-row:1 / span 3;align-self:center}
+  .pl-col-price{font-size:18px;margin-top:2px}
   .pl-footer-note{flex-direction:column;align-items:flex-start}
 }

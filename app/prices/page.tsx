@@ -5,31 +5,26 @@ import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
-import { getDives, getCourses, getSettings } from '@/lib/data';
+import { getSettings } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
-import { groupDivesBySite } from '@/lib/data';
-import { formatPrice, diveDuration, courseSlug } from '@/lib/format';
-import { waBookDive, waCourse, waGeneral } from '@/lib/whatsapp';
-import { SITE_TABS, SITE_INTRO } from '@/lib/types';
+import { PRICE_LIST } from '@/lib/pricelist';
+import { waLink } from '@/lib/whatsapp';
 import { SITE_URL } from '@/lib/constants';
 
 export const revalidate = 60;
 
 const title = 'Price List — Scuba Diving & PADI Courses in Havelock (Swaraj Dweep)';
 const description =
-  'Full price list for try dives, fun dives, snorkelling and PADI courses with Scuba India, Havelock Island, Andaman. All packages include HD photos, GoPro video and pickup.';
+  'Full price list for Discover Scuba dives, PADI courses, course combos, fun dives, boat charters and island hopping with Scuba India, Havelock Island, Andaman.';
 
 export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `${SITE_URL}/prices` },
-  openGraph: {
-    title,
-    description,
-    url: `${SITE_URL}/prices`,
-    type: 'website',
-  },
+  openGraph: { title, description, url: `${SITE_URL}/prices`, type: 'website' },
 };
+
+const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
 function CheckIcon() {
   return (
@@ -40,14 +35,9 @@ function CheckIcon() {
 }
 
 export default async function PricesPage() {
-  const [dives, courses, rawSettings, google] = await Promise.all([
-    getDives(),
-    getCourses(),
-    getSettings(),
-    getGoogleReviews(),
-  ]);
+  const [rawSettings, google] = await Promise.all([getSettings(), getGoogleReviews()]);
   const settings = withLiveRating(rawSettings, google);
-  const grouped = groupDivesBySite(dives);
+  const wa = settings.whatsapp;
 
   return (
     <>
@@ -64,156 +54,72 @@ export default async function PricesPage() {
             <div className="detail-eyebrow">Pricing</div>
             <h1>Scuba India price list</h1>
             <p className="detail-pitch">
-              Every dive and course we offer in Havelock (Swaraj Dweep), with prices. All try-dive
-              packages include free pickup within 5 km, HD photos and GoPro video. No hidden charges.
+              Every dive, course and experience we offer in Havelock (Swaraj Dweep), with prices.
+              Discover Scuba dives include HD photos and video, free — no experience needed.
             </p>
             <div className="pl-trust">
-              <span><CheckIcon /> Free pickup &amp; drop within 5 km</span>
-              <span><CheckIcon /> HD photos &amp; GoPro video included</span>
+              <span><CheckIcon /> HD photos &amp; video included</span>
               <span><CheckIcon /> PADI-certified instructors</span>
-              <span><CheckIcon /> No experience needed for try dives</span>
+              <span><CheckIcon /> No experience needed for beginners</span>
+              <span><CheckIcon /> No hidden charges</span>
+            </div>
+
+            {/* quick jump */}
+            <div className="pl-jump" role="navigation" aria-label="Jump to section">
+              {PRICE_LIST.map((s) => (
+                <a key={s.id} href={`#${s.id}`}>{s.title}</a>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* ── Dive sites ── */}
+        {/* ── Price sections ── */}
         <div className="detail-body" style={{ paddingTop: 0 }}>
           <div className="wrap">
-
-            {SITE_TABS.map((tab) => {
-              const siteDives = grouped[tab.key] ?? [];
-              if (!siteDives.length) return null;
-              const intro = SITE_INTRO[tab.key];
-              return (
-                <section key={tab.key} className="pl-site">
-                  <header className="pl-site-header">
-                    <h2 className="pl-site-name">{intro.title}</h2>
-                    <span className="pl-site-meta">{intro.meta}</span>
-                  </header>
-
-                  <div className="pl-table">
-                    {/* header row — desktop only */}
-                    <div className="pl-row pl-row-head" aria-hidden="true">
-                      <span className="pl-col-name">Package</span>
-                      <span className="pl-col-dur">Duration</span>
-                      <span className="pl-col-incl">Included</span>
-                      <span className="pl-col-price">Price</span>
-                      <span className="pl-col-book" />
-                    </div>
-
-                    {siteDives.map((dive) => {
-                      const dur = diveDuration(dive);
-                      const inclParts: string[] = [];
-                      if (dive.photos > 0) inclParts.push(`${dive.photos} HD photos`);
-                      if (dive.gopro_min > 0) inclParts.push(`${dive.gopro_min} min GoPro`);
-                      inclParts.push('Pickup & drop');
-                      const incl = inclParts.join(' · ');
-
-                      return (
-                        <div className="pl-row" key={dive.id}>
-                          <div className="pl-col-name">
-                            <Link href={`/${dive.slug}`} className="pl-name-link">
-                              {dive.name}
-                            </Link>
-                            {dive.tier && (
-                              <span className="pl-tier">{dive.tier}</span>
-                            )}
-                          </div>
-                          <div className="pl-col-dur">{dur || '—'}</div>
-                          <div className="pl-col-incl">{incl}</div>
-                          <div className="pl-col-price">
-                            {formatPrice(dive.price, dive.on_request)}
-                          </div>
-                          <div className="pl-col-book">
-                            {dive.on_request ? (
-                              <a
-                                href={waGeneral(settings.whatsapp)}
-                                className="pl-book-btn"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Enquire →
-                              </a>
-                            ) : (
-                              <a
-                                href={waBookDive(dive, settings.whatsapp)}
-                                className="pl-book-btn"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Book →
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </section>
-              );
-            })}
-
-            {/* ── PADI Courses ── */}
-            {courses.length > 0 && (
-              <section className="pl-site">
+            {PRICE_LIST.map((section) => (
+              <section key={section.id} id={section.id} className="pl-site">
                 <header className="pl-site-header">
-                  <h2 className="pl-site-name">PADI Courses</h2>
-                  <span className="pl-site-meta">Get certified, for life — internationally recognised</span>
+                  <h2 className="pl-site-name">{section.title}</h2>
+                  {section.subtitle && <span className="pl-site-meta">{section.subtitle}</span>}
                 </header>
 
                 <div className="pl-table">
-                  <div className="pl-row pl-row-head" aria-hidden="true">
-                    <span className="pl-col-name">Course</span>
-                    <span className="pl-col-dur">Duration</span>
-                    <span className="pl-col-incl">Depth / Min age</span>
-                    <span className="pl-col-price">Price</span>
-                    <span className="pl-col-book" />
-                  </div>
-
-                  {courses.map((c) => (
-                    <div className="pl-row" key={c.id}>
+                  {section.items.map((item) => (
+                    <div className="pl-row" key={item.name}>
                       <div className="pl-col-name">
-                        <Link href={`/courses/${courseSlug(c.name)}`} className="pl-name-link">
-                          {c.name}
-                        </Link>
+                        <span className="pl-name-link" style={{ cursor: 'default' }}>{item.name}</span>
                       </div>
-                      <div className="pl-col-dur">{c.duration ?? '—'}</div>
-                      <div className="pl-col-incl">
-                        {c.depth && c.depth !== '—' ? `${c.depth} depth` : ''}
-                        {c.depth && c.depth !== '—' && c.min_age ? ' · ' : ''}
-                        {c.min_age && c.min_age !== 'None' ? `Age ${c.min_age}` : ''}
-                      </div>
+                      {item.sub ? <div className="pl-col-incl">{item.sub}</div> : <div className="pl-col-incl" />}
                       <div className="pl-col-price">
-                        {formatPrice(c.price, c.on_request)}
+                        {item.unit && <span className="pl-unit">{item.unit} </span>}
+                        {inr(item.price)}
                       </div>
                       <div className="pl-col-book">
                         <a
-                          href={waCourse(c.name, settings.whatsapp)}
+                          href={waLink(wa, `Hi Scuba India, I'd like to book: ${item.name} (${inr(item.price)}).`)}
                           className="pl-book-btn"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {c.on_request ? 'Enquire →' : 'Book →'}
+                          Book →
                         </a>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <p className="pl-courses-note">
-                  Course prices are per person. Message us for available dates and group discounts.
-                </p>
+                {section.note && <p className="pl-courses-note">{section.note}</p>}
               </section>
-            )}
+            ))}
 
             {/* ── Footer note ── */}
             <div className="pl-footer-note">
               <p>
-                All prices are in Indian Rupees (INR) and include applicable taxes. Prices may vary
-                during peak season. Contact us to confirm availability and current rates.
+                All prices are in Indian Rupees (INR). Prices may vary during peak season and for
+                larger groups — message us to confirm availability and current rates.
               </p>
               <a
-                href={waGeneral(settings.whatsapp)}
+                href={waLink(wa, 'Hi Scuba India, I have a question about your prices.')}
                 className="btn btn-primary"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -221,7 +127,6 @@ export default async function PricesPage() {
                 Ask us anything on WhatsApp →
               </a>
             </div>
-
           </div>
         </div>
       </main>
