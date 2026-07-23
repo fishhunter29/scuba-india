@@ -142,5 +142,5 @@ export const CATEGORY_INTRO: Record<DiveCategory, { title: string; meta: string 
     meta: 'For beginners · no experience needed · with PADI online DSD registration',
   },
   fun: { title: 'Fun Dives', meta: 'For certified divers · bring your certification card' },
-  experience: { title: 'Experiences', meta: 'Snorkelling & island hopping around Havelock' },
+  experience: { title: 'Experiences', meta: 'Snorkelling, island hopping & private boat charters' },
 };

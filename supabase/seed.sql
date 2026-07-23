@@ -74,11 +74,40 @@ insert into public.dives
  'A day around Havelock — snorkelling, scuba and sunset at the lighthouse.',
  'A relaxed cruise around Havelock''s coast and islands, with snorkel and scuba stops and a sunset finish at the Lighthouse — golden light over still water.',
  'For everyone — divers, non-divers, families and couples who want a beautiful day on the sea. Starting price is per couple; message us to tailor it.',
- '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"A relaxed cruise around the coast and islands."},{"title":"Snorkel & dive","body":"Snorkelling and scuba stops along the way."},{"title":"Sunset","body":"Finish with sunset at Havelock Lighthouse."},{"title":"Return","body":"Drop back within 5km."}]', 100);
+ '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"A relaxed cruise around the coast and islands."},{"title":"Snorkel & dive","body":"Snorkelling and scuba stops along the way."},{"title":"Sunset","body":"Finish with sunset at Havelock Lighthouse."},{"title":"Return","body":"Drop back within 5km."}]', 100),
+
+-- ---------- Boat charters (private hire) -----------------------------------
+('charter-1h', 'Boat Charter — 1 Hour', 'Havelock', 'multi', null, null, null, 0, 0, 13500, null,
+ 'Your own private boat for an hour on the water around Havelock.',
+ 'The coast and islands of Havelock from your own boat — turquoise water, forested shores and whatever the day brings, all at your own pace.',
+ 'For groups, families and couples who want the boat to themselves — a private cruise, a photo trip, or a run to a quieter stretch of coast.',
+ '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"Your private boat and crew for the hour."},{"title":"On the water","body":"Cruise the coast at your own pace."},{"title":"Return","body":"Back to shore and a drop within 5km."}]', 110),
+
+('charter-1-5h', 'Boat Charter — 1.5 Hours', 'Havelock', 'multi', null, null, null, 0, 0, 17500, null,
+ 'A private boat for ninety minutes around Havelock''s coast and islands.',
+ 'More time on the water — coastline, islands and calm bays, with the boat entirely yours to slow down and enjoy.',
+ 'For groups and families who want a little longer on their own private boat, at their own pace.',
+ '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"Your private boat and crew for 90 minutes."},{"title":"On the water","body":"Explore the coast and bays unhurried."},{"title":"Return","body":"Back to shore and a drop within 5km."}]', 120),
+
+('charter-2h', 'Boat Charter — 2 Hours', 'Havelock', 'multi', null, null, null, 0, 0, 21000, null,
+ 'Two hours of private boat time to explore Havelock from the water.',
+ 'A proper stretch on the water — reach further along the coast, linger at the spots you like, and take it all in from your own boat.',
+ 'For groups and families who want unhurried time on a private boat to explore Havelock''s coast and islands.',
+ '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"Your private boat and crew for two hours."},{"title":"On the water","body":"Explore further along the coast at your own pace."},{"title":"Return","body":"Back to shore and a drop within 5km."}]', 130),
+
+('charter-half-day', 'Boat Charter — Half Day', 'Havelock', 'multi', null, null, null, 0, 0, 45000, null,
+ 'A half day with a private boat and crew — Havelock, your way.',
+ 'A whole half day on the water — multiple stops, snorkel spots, quiet beaches and coastline, entirely on your own schedule.',
+ 'For groups, families and celebrations who want the freedom of a private boat for the day''s highlights.',
+ '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"Your private boat and crew for the half day."},{"title":"On the water","body":"Multiple stops and beaches, all on your schedule."},{"title":"Return","body":"Back to shore and a drop within 5km."}]', 140);
 
 -- Island Hopping is "on request" (priced per couple from ₹25,000) — flag it
 update public.dives set on_request = true, duration_label = 'Per couple · from ₹25,000' where slug = 'island-hopping';
 update public.dives set duration_label = 'Full day · all gear included' where slug = 'boat-snorkelling';
+update public.dives set duration_label = '1 hour · private boat'    where slug = 'charter-1h';
+update public.dives set duration_label = '1.5 hours · private boat' where slug = 'charter-1-5h';
+update public.dives set duration_label = '2 hours · private boat'   where slug = 'charter-2h';
+update public.dives set duration_label = 'Half day · private boat'  where slug = 'charter-half-day';
 
 -- ============================================================================
 -- PADI courses (SPEC §9) — REAL data
@@ -89,7 +118,12 @@ insert into public.courses (name, duration, depth, min_age, price, on_request, d
 ('PADI Advanced Open Water',         '2–3 days',   '30m', '12 / 15', 22000, false, 'Extend your range to 30m and complete five adventure dives including deep and navigation. Builds real confidence and skill.', 30),
 ('Emergency First Response (EFR)',   '1–1.5 days', '—',   'None',    10000, false, 'Primary and secondary care training — CPR and first aid. A prerequisite for Rescue Diver and useful for life.', 40),
 ('PADI Rescue Diver',                '3–4 days',   '—',   '12 / 15', 22000, false, 'Learn to prevent and manage dive emergencies and help other divers. Challenging, rewarding, and a favourite among divers.', 50),
-('PADI Divemaster — Go Pro Internship', '4–6 weeks', '—', '18',      70000, false, 'Your first professional rating. Work alongside our team, master dive leadership and take the first step to a career in diving.', 60);
+('PADI Divemaster — Go Pro Internship', '4–6 weeks', '—', '18',      70000, false, 'Your first professional rating. Work alongside our team, master dive leadership and take the first step to a career in diving.', 60),
+-- Course combos (rate sheet)
+('PADI Open Water & Advanced Open Water Combo', '5–7 days',   '30m', '12 / 15', 40000,  false, 'Go from beginner to Advanced in one trip — Open Water then Advanced Open Water, for less than booking the two separately.', 70),
+('EFR + PADI Rescue Combo',                     '4–5 days',   '—',   '12 / 15', 28000,  false, 'Emergency First Response and Rescue Diver together — the safety-focused pair that makes you a calmer, more capable diver.', 80),
+('EFR + PADI Rescue + PADI Dive Master Combo',  '4–6 weeks',  '—',   '18',      95000,  false, 'Everything you need to go pro — EFR, Rescue and Divemaster in one pathway, the smart route into a diving career.', 90),
+('Zero to Hero',                                '6–10 weeks', '30m', '18',      130000, false, 'From your first breath underwater to a PADI professional — Open Water all the way to Divemaster in a single journey.', 100);
 
 -- ============================================================================
 -- Reviews — intentionally empty. Add real Google reviews via /admin → Reviews
