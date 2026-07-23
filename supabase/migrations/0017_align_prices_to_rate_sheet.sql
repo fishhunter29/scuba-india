@@ -1,17 +1,18 @@
--- ============================================================================
--- Scuba India — seed data (SPEC §8 dives, §9 courses, §10 placeholders)
--- REAL prices — do not alter.  Idempotent-ish: truncates content tables first.
--- ============================================================================
+-- Align the live catalogue with the official rate sheet.
+-- Discover Scuba is now priced by duration (not per reef); Fun Dives are a
+-- clear certified-only set; courses gain Divemaster and drop Adventure Diver.
+-- Reefs remain real dive locations (see the "Four reefs" section) but no
+-- longer carry their own price tiers. Idempotent: safe to re-run.
 
-truncate table public.dives    restart identity cascade;
-truncate table public.courses  restart identity cascade;
-truncate table public.reviews  restart identity cascade;
+-- ---------- Dives: replace old per-reef catalogue with rate-sheet products ---
+delete from public.dives where slug in (
+  'tribe-gate-light','tribe-gate-light-plus','tribe-gate-premium','tribe-gate-premium-plus',
+  'red-pillar-light','red-pillar-light-plus','red-pillar-premium','red-pillar-premium-plus',
+  'red-pillar-snorkelling','lighthouse-scuba','turtle-beach-group','turtle-beach-duo','fun-dives',
+  'discover-30','discover-45','discover-double','discover-combo',
+  'fun-single','fun-night','fun-2dives','fun-4dives','boat-snorkelling','island-hopping'
+);
 
--- Dive products follow the official rate sheet: Discover Scuba priced by
--- duration (not by reef), Fun Dives for certified divers, and experiences.
--- Which reef you dive is chosen on the day to suit conditions and level.
-
--- ---------- Discover Scuba (beginners, with PADI online DSD registration) ---
 insert into public.dives
   (slug, name, site, site_key, depth_m, dive_min, train_min, photos, gopro_min, price, tier, pitch, see_text, for_text, steps, sort) values
 ('discover-30', '30-Min Discover Scuba Dive', 'Havelock', 'multi', 12, 30, 40, 30, 3, 3800, null,
@@ -38,7 +39,6 @@ insert into public.dives
  'For first-timers who want the complete experience, and couples who want the most memorable day on the water with the biggest set of photos and video to keep.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, meet your instructor."},{"title":"Safety brief","body":"Full training so you''re completely at ease."},{"title":"Gear up","body":"Fitted and double-checked gear."},{"title":"Two dives","body":"A 30-minute dive, then a longer 45-minute dive from the boat."},{"title":"Photos & video","body":"HD photos and GoPro footage from both dives, included."}]', 40),
 
--- ---------- Fun Dives (certified divers only) ------------------------------
 ('fun-single', 'Single Fun Dive', 'Havelock', 'multi', 18, 45, null, 30, 3, 4000, 'Certified',
  'One guided dive on Havelock''s best reefs for already-certified divers.',
  'Whichever site is diving best that day — coral pillars and fish clouds, deeper reefs with snapper and groupers, or turtle-rich seagrass, led by our divemasters.',
@@ -63,7 +63,6 @@ insert into public.dives
  'For certified divers making the most of their trip. Four guided dives, all gear included, across the best sites the conditions allow.',
  '[{"title":"Arrive & meet","body":"Daily pickup within 5km, meet your divemaster."},{"title":"Dive brief","body":"Site briefings each day and a certification check."},{"title":"Gear up","body":"Full kit fitted and checked each day."},{"title":"Four dives","body":"Four guided dives over two days across the best reefs."},{"title":"Photos & video","body":"HD photos and GoPro across all four dives, free."}]', 80),
 
--- ---------- Experiences ----------------------------------------------------
 ('boat-snorkelling', 'Boat Snorkelling', 'Havelock', 'multi', null, null, null, 0, 0, 2000, null,
  'A full day on the water — no diving experience needed.',
  'Float over the coral and reef from the surface and watch the fish below — clouds of fusiliers, anemonefish and coral gardens in clear, calm water.',
@@ -76,31 +75,20 @@ insert into public.dives
  'For everyone — divers, non-divers, families and couples who want a beautiful day on the sea. Starting price is per couple; message us to tailor it.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"A relaxed cruise around the coast and islands."},{"title":"Snorkel & dive","body":"Snorkelling and scuba stops along the way."},{"title":"Sunset","body":"Finish with sunset at Havelock Lighthouse."},{"title":"Return","body":"Drop back within 5km."}]', 100);
 
--- Island Hopping is "on request" (priced per couple from ₹25,000) — flag it
 update public.dives set on_request = true, duration_label = 'Per couple · from ₹25,000' where slug = 'island-hopping';
 update public.dives set duration_label = 'Full day · all gear included' where slug = 'boat-snorkelling';
 
--- ============================================================================
--- PADI courses (SPEC §9) — REAL data
--- ============================================================================
-insert into public.courses (name, duration, depth, min_age, price, on_request, description, sort) values
-('PADI Scuba Diver',                 '2 days',     '12m', '12 / 15', 18000, false, 'Your first PADI certification — dive to 12m under the direct supervision of a PADI professional. A great stepping stone to Open Water.', 10),
-('PADI Open Water Diver',            '3–4 days',   '18m', '12 / 15', 25000, false, 'The world''s most popular scuba course. Certifies you to dive independently with a buddy to 18m, for life, anywhere in the world.', 20),
-('PADI Advanced Open Water',         '2–3 days',   '30m', '12 / 15', 22000, false, 'Extend your range to 30m and complete five adventure dives including deep and navigation. Builds real confidence and skill.', 30),
-('Emergency First Response (EFR)',   '1–1.5 days', '—',   'None',    10000, false, 'Primary and secondary care training — CPR and first aid. A prerequisite for Rescue Diver and useful for life.', 40),
-('PADI Rescue Diver',                '3–4 days',   '—',   '12 / 15', 22000, false, 'Learn to prevent and manage dive emergencies and help other divers. Challenging, rewarding, and a favourite among divers.', 50),
-('PADI Divemaster — Go Pro Internship', '4–6 weeks', '—', '18',      70000, false, 'Your first professional rating. Work alongside our team, master dive leadership and take the first step to a career in diving.', 60);
+-- ---------- Courses: rate-sheet alignment ----------------------------------
+-- Drop Adventure Diver (not on the rate sheet).
+delete from public.courses where name = 'PADI Adventure Diver';
 
--- ============================================================================
--- Reviews — intentionally empty. Add real Google reviews via /admin → Reviews
--- before launch; do not seed fake/placeholder reviewer names or quotes here.
--- ============================================================================
+-- EFR: correct name + price.
+update public.courses
+  set name = 'Emergency First Response (EFR)', price = 10000, on_request = false
+  where name like 'Emergency First Res%';
 
--- ============================================================================
--- Settings singleton (SPEC §10 placeholders; email MUST be info@scubaindia.in)
--- ============================================================================
-insert into public.settings (id, review_count, rating_avg, dives_guided, phone, whatsapp, email, instagram, address)
-values (1, 0, 4.8, '[X,000]', '+91 94342 90310', '917695003828', 'info@scubaindia.in', '', 'Havelock Island, Andaman')
-on conflict (id) do update set
-  review_count = excluded.review_count,
-  email = excluded.email;
+-- Add Divemaster if it isn't already there.
+insert into public.courses (name, duration, depth, min_age, price, on_request, description, sort)
+select 'PADI Divemaster — Go Pro Internship', '4–6 weeks', '—', '18', 70000, false,
+       'Your first professional rating. Work alongside our team, master dive leadership and take the first step to a career in diving.', 60
+where not exists (select 1 from public.courses where name like 'PADI Divemaster%');

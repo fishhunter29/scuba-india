@@ -125,3 +125,22 @@ export const SITE_INTRO: Record<SiteKey, { title: string; meta: string }> = {
   turtle: { title: 'Turtle Beach', meta: '16m · turtles & coral · group dives' },
   multi: { title: 'Multi-site & Experiences', meta: 'across Havelock' },
 };
+
+// Homepage packages are grouped by what kind of dive it is (matching the rate
+// sheet), not by reef — the reef is chosen on the day to suit conditions.
+export type DiveCategory = 'discover' | 'fun' | 'experience';
+
+export const CATEGORY_TABS: { key: DiveCategory; label: string }[] = [
+  { key: 'discover', label: 'Discover Scuba' },
+  { key: 'fun', label: 'Fun Dives' },
+  { key: 'experience', label: 'Experiences' },
+];
+
+export const CATEGORY_INTRO: Record<DiveCategory, { title: string; meta: string }> = {
+  discover: {
+    title: 'Discover Scuba Diving',
+    meta: 'For beginners · no experience needed · with PADI online DSD registration',
+  },
+  fun: { title: 'Fun Dives', meta: 'For certified divers · bring your certification card' },
+  experience: { title: 'Experiences', meta: 'Snorkelling & island hopping around Havelock' },
+};

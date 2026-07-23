@@ -5,7 +5,7 @@ import { createPublicClient } from './supabase/public';
 import { isSupabaseConfigured } from './supabase/server';
 import { FALLBACK_SETTINGS } from './constants';
 import { courseSlug } from './format';
-import type { Dive, Course, Post, Review, Settings, SiteKey } from './types';
+import type { Dive, Course, Post, Review, Settings, SiteKey, DiveCategory } from './types';
 
 const createClient = createPublicClient;
 
@@ -73,12 +73,18 @@ export async function getDivesBySite(siteKey: SiteKey, excludeSlug?: string): Pr
   return (data ?? []) as Dive[];
 }
 
-export function groupDivesBySite(dives: Dive[]): Record<SiteKey, Dive[]> {
-  const groups = { tribe: [], red: [], light: [], turtle: [], multi: [] } as Record<
-    SiteKey,
-    Dive[]
-  >;
-  for (const d of dives) groups[d.site_key]?.push(d);
+// What kind of dive is this? Beginner (needs training) → discover; certified
+// fun dives are tagged 'Certified'; everything else (snorkelling, on-request
+// experiences) → experience. Drives the homepage packages grouping.
+export function diveCategory(d: Dive): DiveCategory {
+  if (d.train_min != null && !d.on_request) return 'discover';
+  if (d.tier === 'Certified') return 'fun';
+  return 'experience';
+}
+
+export function groupDivesByCategory(dives: Dive[]): Record<DiveCategory, Dive[]> {
+  const groups = { discover: [], fun: [], experience: [] } as Record<DiveCategory, Dive[]>;
+  for (const d of dives) groups[diveCategory(d)].push(d);
   return groups;
 }
 
