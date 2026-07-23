@@ -1,37 +1,34 @@
-import type { Dive } from '@/lib/types';
-
-// Short, real descriptor per site — the marine-life hook a first-timer wants.
-const SITE_INFO: Record<string, { name: string; blurb: string }> = {
-  tribe: {
+// The four reefs we dive, with typical maximum depths (fixed dive-site facts).
+// This is a "where you'll dive" showcase — pricing lives in Packages / /prices.
+const SITES: { key: string; name: string; blurb: string; depth: number }[] = [
+  {
+    key: 'tribe',
     name: 'Tribe Gate',
+    depth: 12,
     blurb: 'Shallow, sunlit coral garden — the easiest first dive. Clownfish, parrotfish and grazing green turtles.',
   },
-  red: {
+  {
+    key: 'red',
     name: 'Red Pillar',
+    depth: 14,
     blurb: 'Coral pillars alive with fusiliers and angelfish — our most colourful, best-value reef.',
   },
-  light: {
+  {
+    key: 'light',
     name: 'Lighthouse',
+    depth: 18,
     blurb: 'Deeper water, bigger fish — snapper schools, groupers and the odd reef shark in the blue.',
   },
-  turtle: {
+  {
+    key: 'turtle',
     name: 'Turtle Beach',
+    depth: 16,
     blurb: 'Green sea turtles grazing the seagrass, rays over the sand — unhurried and life-rich.',
   },
-};
+];
 
-function sitesFromDives(dives: Dive[]) {
-  const order = ['tribe', 'red', 'light', 'turtle'];
-  return order
-    .map((key) => {
-      const d = dives.find((x) => x.site_key === key && x.depth_m != null);
-      return d ? { key, name: SITE_INFO[key].name, blurb: SITE_INFO[key].blurb, depth: d.depth_m as number } : null;
-    })
-    .filter(Boolean) as { key: string; name: string; blurb: string; depth: number }[];
-}
-
-export default function DiveSites({ dives }: { dives: Dive[] }) {
-  const sites = sitesFromDives(dives);
+export default function DiveSites() {
+  const sites = SITES;
   // Bar fill scaled against a 25m visual maximum (matches prototype proportions).
   const pct = (d: number) => Math.round((d / 25) * 100);
 

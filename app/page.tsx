@@ -13,7 +13,7 @@ import WhyUs from '@/components/home/WhyUs';
 import Reviews from '@/components/home/Reviews';
 import Gallery from '@/components/home/Gallery';
 import FinalCTA from '@/components/home/FinalCTA';
-import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesBySite } from '@/lib/data';
+import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesByCategory, diveCategory } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
 import { fromPrice, cheapestDive } from '@/lib/format';
@@ -33,17 +33,12 @@ export default async function HomePage() {
   // AggregateRating schema below reflect the real live count, not just whatever
   // was last typed into admin → Settings.
   const settings = withLiveRating(rawSettings, google);
-  const grouped = groupDivesBySite(dives);
-  // cheapest guided try dive (shallow first-timer sites) for the hero price hook
-  const tryDives = dives.filter(
-    (d) => (d.site_key === 'tribe' || d.site_key === 'red') && d.train_min != null,
-  );
+  const grouped = groupDivesByCategory(dives);
+  // cheapest Discover Scuba dive for the hero price hook ("from ₹X")
+  const tryDives = dives.filter((d) => diveCategory(d) === 'discover');
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
-  // which site actually has that cheapest try dive — so the hero's price
-  // promise and the Packages tab that's open by default agree with each other
   const cheapestTry = cheapestDive(tryDives.length ? tryDives : dives);
   const tryFromSite = cheapestTry?.site ?? null;
-  const tryFromSiteKey = cheapestTry?.site_key ?? null;
 
   return (
     <>
@@ -56,15 +51,9 @@ export default async function HomePage() {
 
       <div className="sheet">
         <Experiences dives={dives} courses={courses} />
-        <Packages
-          grouped={grouped}
-          settings={settings}
-          tryFrom={tryFrom}
-          tryFromSite={tryFromSite}
-          defaultSite={tryFromSiteKey}
-        />
+        <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <DiveSites dives={dives} />
+        <DiveSites />
         <WhyUs />
         <Reviews reviews={reviews} settings={settings} google={google} />
         <Gallery />

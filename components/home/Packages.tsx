@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Dive, Settings, SiteKey } from '@/lib/types';
-import { SITE_TABS, SITE_INTRO } from '@/lib/types';
+import type { Dive, Settings, DiveCategory } from '@/lib/types';
+import { CATEGORY_TABS, CATEGORY_INTRO } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
 
 const FEAT_TIERS = ['Premium', 'Premium+', 'Signature', 'Certified'];
@@ -47,22 +47,13 @@ export default function Packages({
   grouped,
   settings,
   tryFrom,
-  tryFromSite,
-  defaultSite,
 }: {
-  grouped: Record<SiteKey, Dive[]>;
+  grouped: Record<DiveCategory, Dive[]>;
   settings: Settings;
   tryFrom: string;
-  tryFromSite?: string | null;
-  defaultSite?: SiteKey | null;
 }) {
-  const tabs = SITE_TABS.filter((t) => grouped[t.key]?.length);
-  // Open on whichever site actually has the cheapest try dive (the one quoted
-  // in the hero/pk-value copy below), so that price is immediately visible
-  // and selectable instead of buried behind a tab switch.
-  const initialSite =
-    defaultSite && grouped[defaultSite]?.length ? defaultSite : tabs[0]?.key ?? 'tribe';
-  const [active, setActive] = useState<SiteKey>(initialSite);
+  const tabs = CATEGORY_TABS.filter((t) => grouped[t.key]?.length);
+  const [active, setActive] = useState<DiveCategory>(tabs[0]?.key ?? 'discover');
 
   return (
     <section className="band packages" id="packages">
@@ -71,18 +62,13 @@ export default function Packages({
           <div className="sec-eyebrow">Dives &amp; Packages</div>
           <h2>Every dive we offer in Havelock</h2>
           <p>
-            Choose a dive site to see its packages. All include pickup &amp; drop within 5km, plus
-            HD photos and GoPro video unless noted.
+            Beginner, certified or just along for the ride — pick the kind of dive that suits you.
+            All dives include pickup &amp; drop within 5km, plus HD photos and GoPro video unless noted.
           </p>
           <p className="pk-value">
-            PADI try dives in Havelock typically start higher — ours start at <b>{tryFrom}</b>
-            {tryFromSite ? (
-              <>
-                {' '}
-                at <b>{tryFromSite}</b>
-              </>
-            ) : null}
-            : same certification, same reefs, free HD photos included.
+            PADI try dives in Havelock typically start higher — ours start at <b>{tryFrom}</b>, with
+            the same certification, the same reefs and free HD photos included. See the{' '}
+            <Link href="/prices">full price list</Link>.
           </p>
         </div>
 
@@ -96,12 +82,11 @@ export default function Packages({
               onClick={() => setActive(t.key)}
             >
               {t.label}
-              {t.depth && <span className="tab-depth">{t.depth}</span>}
             </button>
           ))}
         </div>
         <div className="pk-note reveal">
-          Prices are per person. Premium tiers include longer dives and more footage.
+          Prices are per person unless noted. Longer packages include more time underwater and more footage.
         </div>
 
         <div className="pk-trust reveal">
@@ -121,7 +106,7 @@ export default function Packages({
         </div>
 
         {tabs.map((t) => {
-          const intro = SITE_INTRO[t.key];
+          const intro = CATEGORY_INTRO[t.key];
           return (
             <div
               key={t.key}

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Dive, Course } from '@/lib/types';
 import { fromPrice } from '@/lib/format';
+import { diveCategory } from '@/lib/data';
 
 export default function Experiences({
   dives,
@@ -10,10 +11,8 @@ export default function Experiences({
   dives: Dive[];
   courses: Course[];
 }) {
-  const tryDives = dives.filter(
-    (d) => (d.site_key === 'tribe' || d.site_key === 'red') && d.train_min != null,
-  );
-  const funDives = dives.filter((d) => d.site_key === 'multi' && !d.on_request);
+  const tryDives = dives.filter((d) => diveCategory(d) === 'discover');
+  const funDives = dives.filter((d) => diveCategory(d) === 'fun');
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
   const funFrom = fromPrice(funDives);
   const courseFrom = (() => {
@@ -50,7 +49,7 @@ export default function Experiences({
                 Never dived before? You&apos;ll be breathing underwater within the hour, an
                 instructor at your side the whole time.
               </p>
-              <div className="card-meta">20–50 min · Tribe Gate / Red Pillar · Photos + GoPro</div>
+              <div className="card-meta">30–45 min · from the boat · Photos + GoPro</div>
               <div className="card-price">
                 <span className="from">from</span>
                 <span className="amt">{tryFrom}</span>
@@ -78,7 +77,7 @@ export default function Experiences({
                 Already certified? Explore two of Havelock&apos;s best sites in a single trip with
                 our divemasters leading.
               </p>
-              <div className="card-meta">2 dive sites · Red Pillar + Tribe Gate · Full guiding</div>
+              <div className="card-meta">Single, night &amp; multi-dive · Certified only · Full guiding</div>
               <div className="card-price">
                 <span className="from">from</span>
                 <span className="amt">{funFrom}</span>

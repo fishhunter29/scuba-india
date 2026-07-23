@@ -10,7 +10,7 @@ import WhatsAppFloat from '@/components/WhatsAppFloat';
 import FearCheck from '@/components/learn/FearCheck';
 import DiveChooser from '@/components/learn/DiveChooser';
 import { FEAR_CHECKS } from '@/lib/faqs';
-import { getSettings, getPosts, getDives, getCourses } from '@/lib/data';
+import { getSettings, getPosts, getDives, getCourses, diveCategory } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { faqSchema } from '@/lib/schema';
 import { waGeneral, waTryDive, waCoursesGeneral } from '@/lib/whatsapp';
@@ -48,14 +48,12 @@ export default async function LearnToDivePage() {
 
   // Same cheapest-try-dive logic as the homepage hero/Packages section, so the
   // quiz never recommends a pricier dive than what the rest of the site promises.
-  const tryDives = dives.filter(
-    (d) => (d.site_key === 'tribe' || d.site_key === 'red') && d.train_min != null,
-  );
+  const tryDives = dives.filter((d) => diveCategory(d) === 'discover');
   const cheapestTry = cheapestDive(tryDives.length ? tryDives : dives);
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
-  const tryHref = cheapestTry ? `/${cheapestTry.slug}` : '/tribe-gate-light';
+  const tryHref = cheapestTry ? `/${cheapestTry.slug}` : '/discover-30';
   const courseFrom = fromPrice(courses);
-  const funDive = dives.find((d) => d.slug === 'fun-dives');
+  const funDive = dives.find((d) => d.slug === 'fun-single');
   const funFrom = funDive ? formatPrice(funDive.price, funDive.on_request) : 'On request';
 
   return (
