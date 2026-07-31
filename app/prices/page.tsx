@@ -51,6 +51,11 @@ export default async function PricesPage() {
         <section className="detail-hero">
           <div className="wrap">
             <Link href="/" className="detail-back">← Back to home</Link>
+            <div className="pl-direct-note" role="note">
+              <strong>Direct-booking rates only.</strong> These prices apply when you book
+              with Scuba India directly. Booked through a travel agent or operator? Please
+              contact us for your applicable rate.
+            </div>
             <div className="detail-eyebrow">Pricing</div>
             <h1>Scuba India price list</h1>
             <p className="detail-pitch">
