@@ -6,6 +6,7 @@ import Image from 'next/image';
 import type { Dive, Settings, DiveCategory } from '@/lib/types';
 import { CATEGORY_TABS, CATEGORY_INTRO } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
+import { waLink } from '@/lib/whatsapp';
 
 const FEAT_TIERS = ['Premium', 'Premium+', 'Signature', 'Certified'];
 
@@ -70,6 +71,13 @@ export default function Packages({
             the same certification, the same reefs and free HD photos included. See the{' '}
             <Link href="/prices">full price list</Link>.
           </p>
+        </div>
+
+        <div className="pl-direct-note reveal" role="note">
+          <strong>Direct-booking rates only.</strong> The prices shown apply when you book with
+          Scuba India directly. Booked through a travel agent or operator? Please{' '}
+          <a href={waLink(settings.whatsapp, 'Hi Scuba India, I booked through an agent and would like to know my applicable rate.')} target="_blank" rel="noopener noreferrer">contact us</a>{' '}
+          for your applicable rate.
         </div>
 
         <div className="pk-filter reveal" role="tablist">
