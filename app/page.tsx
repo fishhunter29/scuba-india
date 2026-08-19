@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
 import Hero from '@/components/home/Hero';
-import Experiences from '@/components/home/Experiences';
+import DiveTypes from '@/components/home/DiveTypes';
 import Packages from '@/components/home/Packages';
 import Courses from '@/components/home/Courses';
 import DiveSites from '@/components/home/DiveSites';
@@ -50,7 +50,7 @@ export default async function HomePage() {
       <Hero settings={settings} tryFrom={tryFrom} tryFromSite={tryFromSite} />
 
       <div className="sheet">
-        <Experiences dives={dives} courses={courses} />
+        <DiveTypes />
         <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
         <DiveSites />

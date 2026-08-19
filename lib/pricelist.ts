@@ -21,8 +21,9 @@ export const PRICE_LIST: PriceSection[] = [
     id: 'discover',
     title: 'Dive Experiences for Beginners',
     subtitle: 'Discover Scuba Diving — with PADI online DSD registration. No experience needed.',
-    note: 'All beginner dives are from the boat and include HD photos and video, free.',
+    note: 'Boat dives include HD photos and video, free. Shore dive is an indicative starting rate — confirm with us.',
     items: [
+      { name: 'Try Dive — shore / beach entry', sub: 'Shallowest, easiest start · indicative rate', price: 3500 },
       { name: '30 min Discover Scuba Dive', sub: 'From boat · photos & video included', price: 3800 },
       { name: '45 min Discover Scuba Dive', sub: 'From boat · photos & video included', price: 4500 },
       { name: '2 × 30 min Discover Scuba Dives', sub: 'From boat · photos & video included', price: 7500 },
@@ -76,10 +77,17 @@ export const PRICE_LIST: PriceSection[] = [
     ],
   },
   {
-    id: 'island-hopping',
-    title: 'Island Hopping',
-    subtitle: 'A full experience around Havelock (Swaraj Dweep).',
+    id: 'experiences',
+    title: 'Snorkelling & Island Hopping',
+    subtitle: 'Open-sea experiences around Havelock (Swaraj Dweep) — no diving needed.',
+    note: 'Open-sea snorkelling is an indicative starting rate — confirm with us.',
     items: [
+      {
+        name: 'Open-Sea Snorkelling',
+        sub: 'By boat · all gear included · indicative rate',
+        price: 2500,
+        unit: 'per person · from',
+      },
       {
         name: 'Island Hopping Trip, Havelock',
         sub: 'Snorkelling, scuba diving and sunset at the lighthouse',
