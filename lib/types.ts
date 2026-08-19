@@ -27,6 +27,7 @@ export interface Dive {
   for_text: string | null;
   steps: DiveStep[];
   image_url: string | null;
+  category: DiveKind | null; // explicit type, set in admin; drives all grouping
   active: boolean;
   sort: number;
   updated_at: string;
@@ -42,8 +43,11 @@ export interface Course {
   on_request: boolean;
   description: string | null;
   image_url: string | null;
+  kind: CourseKind | null; // 'course' (single certification) or 'combo' (bundle)
   sort: number;
 }
+
+export type CourseKind = 'course' | 'combo';
 
 export interface Post {
   id: string;
@@ -126,9 +130,40 @@ export const SITE_INTRO: Record<SiteKey, { title: string; meta: string }> = {
   multi: { title: 'Multi-site & Experiences', meta: 'across Havelock' },
 };
 
+// Fine-grained dive type — set explicitly in admin via a friendly dropdown.
+// This is the single source of truth that drives homepage grouping, the /prices
+// page sections and the "ways to dive" cards, so a novice only sets it in one
+// place. `kindToGroup` collapses it to the broad homepage tab.
+export type DiveKind =
+  | 'discover' // Discover Scuba from boat (beginners)
+  | 'try_shore' // Try Dive, shore/beach entry (beginners)
+  | 'fun' // Fun dive (certified)
+  | 'night' // Night dive (certified)
+  | 'snorkel' // Snorkelling (everyone)
+  | 'island' // Island hopping (everyone)
+  | 'charter'; // Private boat charter
+
+// Friendly options for the admin "What kind of dive is this?" dropdown.
+export const DIVE_KINDS: { value: DiveKind; label: string; help: string }[] = [
+  { value: 'discover', label: 'Discover Scuba — boat (beginners)', help: 'First-timer dive from the boat. Shows under “Discover Scuba”.' },
+  { value: 'try_shore', label: 'Try Dive — shore / beach (beginners)', help: 'First-timer dive entered from the beach. Shows under “Discover Scuba”.' },
+  { value: 'fun', label: 'Fun Dive (certified divers)', help: 'For certified divers. Shows under “Fun Dives”.' },
+  { value: 'night', label: 'Night Dive (certified divers)', help: 'After-dark dive for certified divers. Shows under “Fun Dives”.' },
+  { value: 'snorkel', label: 'Snorkelling', help: 'No diving needed. Shows under “Experiences”.' },
+  { value: 'island', label: 'Island Hopping', help: 'Full-day trip. Shows under “Experiences”.' },
+  { value: 'charter', label: 'Boat Charter (private hire)', help: 'Private boat hire. Shows under “Experiences”.' },
+];
+
 // Homepage packages are grouped by what kind of dive it is (matching the rate
 // sheet), not by reef — the reef is chosen on the day to suit conditions.
 export type DiveCategory = 'discover' | 'fun' | 'experience';
+
+// Collapse a fine dive kind to its broad homepage group.
+export function kindToGroup(kind: DiveKind): DiveCategory {
+  if (kind === 'discover' || kind === 'try_shore') return 'discover';
+  if (kind === 'fun' || kind === 'night') return 'fun';
+  return 'experience'; // snorkel | island | charter
+}
 
 export const CATEGORY_TABS: { key: DiveCategory; label: string }[] = [
   { key: 'discover', label: 'Discover Scuba' },

@@ -1,99 +1,101 @@
-// Official Scuba India price list (single source of truth for /prices).
-// Mirrors the printed rate sheet. Prices in INR. Edit here to update the page.
+// The /prices page is built from the live database (dives + courses) so that
+// editing a price in admin updates the homepage AND the price list together —
+// one source of truth, nothing to keep in sync by hand. Section titles and the
+// order live here; every row comes from the DB, grouped by each dive's
+// `category` and each course's `kind`.
+
+import type { Dive, Course, DiveKind } from './types';
 
 export interface PriceItem {
   name: string;
-  sub?: string; // small descriptor under the name
-  price: number;
-  unit?: string; // e.g. "per couple", "from" — shown next to the amount
+  sub?: string;
+  price: number | null;
+  onRequest?: boolean;
 }
 
 export interface PriceSection {
   id: string;
   title: string;
   subtitle?: string;
-  note?: string; // small note under the section table
+  note?: string;
   items: PriceItem[];
 }
 
-export const PRICE_LIST: PriceSection[] = [
-  {
-    id: 'discover',
-    title: 'Dive Experiences for Beginners',
-    subtitle: 'Discover Scuba Diving — with PADI online DSD registration. No experience needed.',
-    note: 'Boat dives include HD photos and video, free. Shore dive is an indicative starting rate — confirm with us.',
-    items: [
-      { name: 'Try Dive — shore / beach entry', sub: 'Shallowest, easiest start · indicative rate', price: 3500 },
-      { name: '30 min Discover Scuba Dive', sub: 'From boat · photos & video included', price: 3800 },
-      { name: '45 min Discover Scuba Dive', sub: 'From boat · photos & video included', price: 4500 },
-      { name: '2 × 30 min Discover Scuba Dives', sub: 'From boat · photos & video included', price: 7500 },
-      { name: '30 min + 45 min Discover Scuba Dives', sub: 'From boat · photos & video included', price: 9000 },
-    ],
-  },
-  {
-    id: 'courses',
-    title: 'PADI Courses',
-    subtitle: 'Internationally recognised certifications, beginner to professional.',
-    items: [
-      { name: 'PADI Scuba Diver', price: 18000 },
-      { name: 'Open Water Diver', price: 25000 },
-      { name: 'Advanced Open Water Diver', price: 22000 },
-      { name: 'Emergency First Response', price: 10000 },
-      { name: 'Rescue Diver', price: 22000 },
-      { name: 'Dive Master — Go Pro Internship', price: 70000 },
-    ],
-  },
-  {
-    id: 'combos',
-    title: 'Course Combos',
-    subtitle: 'Bundle courses and save — the fastest route to your next certification.',
-    items: [
-      { name: 'PADI Open Water & Advanced Open Water Combo', price: 40000 },
-      { name: 'EFR + PADI Rescue Combo', price: 28000 },
-      { name: 'EFR + PADI Rescue + PADI Dive Master Combo', price: 95000 },
-      { name: 'Zero to Hero', sub: 'PADI Open Water all the way to Dive Master', price: 130000 },
-    ],
-  },
-  {
-    id: 'fun-dives',
-    title: 'Fun Dives',
-    subtitle: 'For certified divers only. Bring your certification card.',
-    items: [
-      { name: 'Single Dive', price: 4000 },
-      { name: 'Night Dive', price: 4500 },
-      { name: '1 Day — 2 Dives', price: 7500 },
-      { name: '2 Days — 4 Dives', price: 14500 },
-    ],
-  },
-  {
-    id: 'charters',
-    title: 'Boat Charters',
-    subtitle: 'Private boat hire for your group, by the hour or half day.',
-    items: [
-      { name: 'Boat Charter — 1 hour', price: 13500 },
-      { name: 'Boat Charter — 1.5 hours', price: 17500 },
-      { name: 'Boat Charter — 2 hours', price: 21000 },
-      { name: 'Boat Charter — Half Day', price: 45000 },
-    ],
-  },
-  {
-    id: 'experiences',
-    title: 'Snorkelling & Island Hopping',
-    subtitle: 'Open-sea experiences around Havelock (Swaraj Dweep) — no diving needed.',
-    note: 'Open-sea snorkelling is an indicative starting rate — confirm with us.',
-    items: [
-      {
-        name: 'Open-Sea Snorkelling',
-        sub: 'By boat · all gear included · indicative rate',
-        price: 2500,
-        unit: 'per person · from',
-      },
-      {
-        name: 'Island Hopping Trip, Havelock',
-        sub: 'Snorkelling, scuba diving and sunset at the lighthouse',
-        price: 25000,
-        unit: 'per couple · from',
-      },
-    ],
-  },
-];
+function diveToItem(d: Dive): PriceItem {
+  const bits: string[] = [];
+  if (d.duration_label) bits.push(d.duration_label);
+  else {
+    if (d.dive_min) bits.push(`${d.dive_min} min underwater`);
+    if (d.photos) bits.push(`${d.photos} photos`);
+  }
+  return { name: d.name, sub: bits.join(' · ') || undefined, price: d.price, onRequest: d.on_request };
+}
+
+function courseToItem(c: Course): PriceItem {
+  const bits = [
+    c.duration || null,
+    c.depth && c.depth !== '—' ? c.depth : null,
+    c.min_age && c.min_age !== 'None' ? `age ${c.min_age}` : null,
+  ].filter(Boolean) as string[];
+  return { name: c.name, sub: bits.join(' · ') || undefined, price: c.price, onRequest: c.on_request };
+}
+
+export function buildPriceSections(dives: Dive[], courses: Course[]): PriceSection[] {
+  const inCats = (cats: DiveKind[]) =>
+    dives
+      .filter((d) => d.active !== false && d.category != null && cats.includes(d.category))
+      .sort((a, b) => a.sort - b.sort)
+      .map(diveToItem);
+
+  const single = courses
+    .filter((c) => (c.kind ?? 'course') !== 'combo')
+    .sort((a, b) => a.sort - b.sort)
+    .map(courseToItem);
+  const combos = courses
+    .filter((c) => c.kind === 'combo')
+    .sort((a, b) => a.sort - b.sort)
+    .map(courseToItem);
+
+  const sections: PriceSection[] = [
+    {
+      id: 'discover',
+      title: 'Dive Experiences for Beginners',
+      subtitle: 'Discover Scuba Diving — with PADI online DSD registration. No experience needed.',
+      note: 'Boat dives include HD photos and video, free. Shore dive is an indicative starting rate — confirm with us.',
+      items: inCats(['try_shore', 'discover']),
+    },
+    {
+      id: 'courses',
+      title: 'PADI Courses',
+      subtitle: 'Internationally recognised certifications, beginner to professional.',
+      items: single,
+    },
+    {
+      id: 'combos',
+      title: 'Course Combos',
+      subtitle: 'Bundle courses and save — the fastest route to your next certification.',
+      items: combos,
+    },
+    {
+      id: 'fun-dives',
+      title: 'Fun Dives',
+      subtitle: 'For certified divers only. Bring your certification card.',
+      items: inCats(['fun', 'night']),
+    },
+    {
+      id: 'charters',
+      title: 'Boat Charters',
+      subtitle: 'Private boat hire for your group, by the hour or half day.',
+      items: inCats(['charter']),
+    },
+    {
+      id: 'experiences',
+      title: 'Snorkelling & Island Hopping',
+      subtitle: 'Open-sea experiences around Havelock (Swaraj Dweep) — no diving needed.',
+      note: 'Open-sea snorkelling is an indicative starting rate — confirm with us.',
+      items: inCats(['snorkel', 'island']),
+    },
+  ];
+
+  return sections.filter((s) => s.items.length > 0);
+}
