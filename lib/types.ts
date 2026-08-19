@@ -165,6 +165,28 @@ export function kindToGroup(kind: DiveKind): DiveCategory {
   return 'experience'; // snorkel | island | charter
 }
 
+// The dive's kind — the explicit `category` if set, otherwise inferred from
+// slug / tier / training so the site keeps working even before migration 0018
+// has run against the live database.
+export function inferDiveKind(d: {
+  category: DiveKind | null;
+  slug: string;
+  tier: string | null;
+  train_min: number | null;
+  on_request: boolean;
+}): DiveKind {
+  if (d.category) return d.category;
+  const slug = d.slug || '';
+  if (slug.startsWith('charter')) return 'charter';
+  if (slug.includes('island')) return 'island';
+  if (slug.includes('snorkel')) return 'snorkel';
+  if (slug.includes('night')) return 'night';
+  if (d.tier === 'Certified') return 'fun';
+  if (slug.includes('shore')) return 'try_shore';
+  if (d.train_min != null && !d.on_request) return 'discover';
+  return 'discover';
+}
+
 export const CATEGORY_TABS: { key: DiveCategory; label: string }[] = [
   { key: 'discover', label: 'Discover Scuba' },
   { key: 'fun', label: 'Fun Dives' },

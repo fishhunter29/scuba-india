@@ -5,6 +5,7 @@
 // `category` and each course's `kind`.
 
 import type { Dive, Course, DiveKind } from './types';
+import { inferDiveKind } from './types';
 
 export interface PriceItem {
   name: string;
@@ -43,7 +44,7 @@ function courseToItem(c: Course): PriceItem {
 export function buildPriceSections(dives: Dive[], courses: Course[]): PriceSection[] {
   const inCats = (cats: DiveKind[]) =>
     dives
-      .filter((d) => d.active !== false && d.category != null && cats.includes(d.category))
+      .filter((d) => d.active !== false && cats.includes(inferDiveKind(d)))
       .sort((a, b) => a.sort - b.sort)
       .map(diveToItem);
 
