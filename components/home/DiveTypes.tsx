@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Dive } from '@/lib/types';
+import { inferDiveKind } from '@/lib/types';
 import { DIVE_TYPES, type DiveTypeInfo } from '@/lib/diveTypes';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
@@ -69,13 +70,13 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
   // Falls back to the card's own figure when the DB has nothing yet.
   const liveFrom = (t: DiveTypeInfo): number | null => {
     const prices = dives
-      .filter((d) => d.active !== false && d.category === t.category && !d.on_request && d.price != null)
+      .filter((d) => d.active !== false && inferDiveKind(d) === t.category && !d.on_request && d.price != null)
       .map((d) => d.price as number);
     return prices.length ? Math.min(...prices) : t.fromPrice;
   };
   // An approx figure only stays "approx" while we're showing the fallback.
   const isApprox = (t: DiveTypeInfo): boolean =>
-    !!t.approx && !dives.some((d) => d.active !== false && d.category === t.category && !d.on_request && d.price != null);
+    !!t.approx && !dives.some((d) => d.active !== false && inferDiveKind(d) === t.category && !d.on_request && d.price != null);
 
   return (
     <section className="band divetypes" id="experiences">
