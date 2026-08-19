@@ -6,6 +6,7 @@ import { isSupabaseConfigured } from './supabase/server';
 import { FALLBACK_SETTINGS } from './constants';
 import { courseSlug } from './format';
 import type { Dive, Course, Post, Review, Settings, SiteKey, DiveCategory } from './types';
+import { kindToGroup } from './types';
 
 const createClient = createPublicClient;
 
@@ -73,10 +74,11 @@ export async function getDivesBySite(siteKey: SiteKey, excludeSlug?: string): Pr
   return (data ?? []) as Dive[];
 }
 
-// What kind of dive is this? Beginner (needs training) → discover; certified
-// fun dives are tagged 'Certified'; everything else (snorkelling, on-request
-// experiences) → experience. Drives the homepage packages grouping.
+// What kind of dive is this? Prefer the explicit `category` set in admin;
+// fall back to the old heuristic for any legacy row that hasn't been tagged
+// yet. Drives the homepage packages grouping.
 export function diveCategory(d: Dive): DiveCategory {
+  if (d.category) return kindToGroup(d.category);
   if (d.train_min != null && !d.on_request) return 'discover';
   if (d.tier === 'Certified') return 'fun';
   return 'experience';

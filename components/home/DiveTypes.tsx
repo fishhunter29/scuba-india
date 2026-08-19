@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Dive } from '@/lib/types';
 import { DIVE_TYPES, type DiveTypeInfo } from '@/lib/diveTypes';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
@@ -63,7 +64,19 @@ function TypeIcon({ icon }: { icon: DiveTypeInfo['icon'] }) {
   }
 }
 
-export default function DiveTypes() {
+export default function DiveTypes({ dives }: { dives: Dive[] }) {
+  // Live "from" price per type: cheapest active, priced dive in that category.
+  // Falls back to the card's own figure when the DB has nothing yet.
+  const liveFrom = (t: DiveTypeInfo): number | null => {
+    const prices = dives
+      .filter((d) => d.active !== false && d.category === t.category && !d.on_request && d.price != null)
+      .map((d) => d.price as number);
+    return prices.length ? Math.min(...prices) : t.fromPrice;
+  };
+  // An approx figure only stays "approx" while we're showing the fallback.
+  const isApprox = (t: DiveTypeInfo): boolean =>
+    !!t.approx && !dives.some((d) => d.active !== false && d.category === t.category && !d.on_request && d.price != null);
+
   return (
     <section className="band divetypes" id="experiences">
       <div className="wrap">
@@ -93,11 +106,11 @@ export default function DiveTypes() {
                 <p className="dt-detail">{t.detail}</p>
                 <div className="dt-foot">
                   <span className="dt-aud">{t.audience}</span>
-                  {t.fromPrice != null && (
+                  {liveFrom(t) != null && (
                     <span className="dt-price">
-                      <span className="dt-from">from</span> {inr(t.fromPrice)}
+                      <span className="dt-from">from</span> {inr(liveFrom(t) as number)}
                       {t.priceUnit ? <span className="dt-unit"> / {t.priceUnit}</span> : null}
-                      {t.approx ? <span className="dt-approx">*</span> : null}
+                      {isApprox(t) ? <span className="dt-approx">*</span> : null}
                     </span>
                   )}
                 </div>
@@ -107,8 +120,8 @@ export default function DiveTypes() {
         </div>
 
         <p className="dt-note reveal">
-          <span>*</span> Indicative starting price — message us to confirm current rates and
-          availability. All prices are for direct bookings.
+          {DIVE_TYPES.some(isApprox) && <><span>*</span> Indicative starting price. </>}
+          All prices are for direct bookings — message us to confirm current rates and availability.
         </p>
       </div>
     </section>

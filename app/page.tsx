@@ -50,7 +50,7 @@ export default async function HomePage() {
       <Hero settings={settings} tryFrom={tryFrom} tryFromSite={tryFromSite} />
 
       <div className="sheet">
-        <DiveTypes />
+        <DiveTypes dives={dives} />
         <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
         <DiveSites />

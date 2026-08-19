@@ -4,17 +4,20 @@
 // indicative market rates (Havelock operators) where no rate-sheet figure
 // exists yet — edit here to set your own.
 
+import type { DiveKind } from './types';
+
 export type DiveEntry = 'shore' | 'boat' | 'boat / shore' | '—';
 
 export interface DiveTypeInfo {
   key: string;
   name: string;
   icon: 'try' | 'boat' | 'fun' | 'night' | 'snorkel' | 'island';
+  category: DiveKind; // links the card to its dives in the DB for live pricing
   entry: DiveEntry;
   audience: string; // who it's for (short)
   hook: string; // one-line pitch
   detail: string; // a sentence more, for the expanded card
-  fromPrice: number | null; // INR
+  fromPrice: number | null; // INR — fallback when the DB has no matching dive
   priceUnit?: string; // e.g. 'per couple'
   approx?: boolean; // indicative market price, not a rate-sheet figure
   href: string; // where the CTA goes
@@ -25,6 +28,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     key: 'try-shore',
     name: 'Try Dive — Shore',
     icon: 'try',
+    category: 'try_shore',
     entry: 'shore',
     audience: 'First-timers · no experience',
     hook: 'Your first breath underwater, walking in from the beach.',
@@ -38,6 +42,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     key: 'dsd-boat',
     name: 'Discover Scuba — Boat',
     icon: 'boat',
+    category: 'discover',
     entry: 'boat',
     audience: 'First-timers · no experience',
     hook: 'A short boat ride to quieter reefs, then your first dive.',
@@ -50,6 +55,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     key: 'fun',
     name: 'Fun Dives',
     icon: 'fun',
+    category: 'fun',
     entry: 'boat',
     audience: 'Certified divers',
     hook: 'Explore Havelock’s best reefs, led by our divemasters.',
@@ -62,6 +68,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     key: 'night',
     name: 'Night Dive',
     icon: 'night',
+    category: 'night',
     entry: 'boat',
     audience: 'Certified divers',
     hook: 'The reef after dark — a whole different world by torchlight.',
@@ -74,6 +81,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     key: 'snorkel',
     name: 'Open-Sea Snorkelling',
     icon: 'snorkel',
+    category: 'snorkel',
     entry: 'boat',
     audience: 'Everyone · non-swimmers welcome',
     hook: 'Float over the reef and watch the fish — no diving needed.',
@@ -87,6 +95,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     key: 'island',
     name: 'Island Hopping',
     icon: 'island',
+    category: 'island',
     entry: 'boat',
     audience: 'Everyone',
     hook: 'A day on the water — snorkel, dive and sunset at the lighthouse.',

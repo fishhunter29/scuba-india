@@ -6,21 +6,24 @@ import AdminShell from '@/components/admin/AdminShell';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { useToast } from '@/components/admin/useToast';
 import { createClient } from '@/lib/supabase/client';
-import type { Dive, DiveStep, SiteKey } from '@/lib/types';
+import { courseSlug } from '@/lib/format';
+import type { Dive, DiveStep, DiveKind, SiteKey } from '@/lib/types';
+import { DIVE_KINDS } from '@/lib/types';
 
 const SITE_KEYS: { v: SiteKey; l: string }[] = [
+  { v: 'multi', l: 'Any reef / multi-site (most common)' },
   { v: 'tribe', l: 'Tribe Gate' },
   { v: 'red', l: 'Red Pillar' },
   { v: 'light', l: 'Lighthouse' },
   { v: 'turtle', l: 'Turtle Beach' },
-  { v: 'multi', l: 'Multi-site' },
 ];
 
 const EMPTY: Partial<Dive> = {
   slug: '',
   name: '',
-  site: '',
-  site_key: 'tribe',
+  site: 'Havelock',
+  site_key: 'multi',
+  category: 'discover',
   depth_m: null,
   dive_min: null,
   train_min: null,
@@ -39,18 +42,8 @@ const EMPTY: Partial<Dive> = {
   sort: 0,
 };
 
-function stepsToText(steps: DiveStep[]): string {
-  return (steps || []).map((s) => `${s.title} | ${s.body}`).join('\n');
-}
-function textToSteps(text: string): DiveStep[] {
-  return text
-    .split('\n')
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .map((l) => {
-      const [title, ...rest] = l.split('|');
-      return { title: title.trim(), body: rest.join('|').trim() };
-    });
+function Help({ children }: { children: React.ReactNode }) {
+  return <p className="a-help">{children}</p>;
 }
 
 export default function DivesAdmin() {
@@ -60,7 +53,8 @@ export default function DivesAdmin() {
   const [dives, setDives] = useState<Dive[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<Dive> | null>(null);
-  const [stepsText, setStepsText] = useState('');
+  const [steps, setSteps] = useState<DiveStep[]>([]);
+  const [slugTouched, setSlugTouched] = useState(false);
 
   async function load() {
     setLoading(true);
@@ -75,43 +69,52 @@ export default function DivesAdmin() {
 
   function openNew() {
     setEditing({ ...EMPTY });
-    setStepsText('');
+    setSteps([]);
+    setSlugTouched(false);
   }
   function openEdit(d: Dive) {
     setEditing({ ...d });
-    setStepsText(stepsToText(d.steps));
+    setSteps(d.steps ?? []);
+    setSlugTouched(true); // existing dives keep their slug
   }
 
   function field<K extends keyof Dive>(k: K, v: Dive[K]) {
     setEditing((e) => (e ? { ...e, [k]: v } : e));
   }
+
+  // Typing the name auto-fills the URL slug until the user edits the slug by hand.
+  function onName(v: string) {
+    setEditing((e) => {
+      if (!e) return e;
+      const next = { ...e, name: v };
+      if (!slugTouched) next.slug = courseSlug(v);
+      return next;
+    });
+  }
+
   const numOrNull = (s: string) => (s === '' ? null : Number(s));
 
   async function save() {
     if (!editing) return;
-    const payload: Partial<Dive> = { ...editing, steps: textToSteps(stepsText) };
-    if (!payload.slug || !payload.name || !payload.site) {
-      show('Slug, name and site are required');
-      return;
-    }
+    const payload: Partial<Dive> = { ...editing, steps };
+    if (!payload.slug) payload.slug = courseSlug(payload.name ?? '');
+    if (!payload.name) return show('Please give the dive a name.');
+    if (!payload.site) payload.site = 'Havelock';
     let error;
     if (payload.id) {
       ({ error } = await supabase.from('dives').update(payload).eq('id', payload.id));
     } else {
       ({ error } = await supabase.from('dives').insert(payload));
     }
-    if (error) {
-      show('Error: ' + error.message);
-      return;
-    }
+    if (error) return show('Could not save: ' + error.message);
     setEditing(null);
-    show('Saved');
+    show('Saved — it’s live on the site.');
     await load();
     router.refresh();
   }
 
   async function remove(d: Dive) {
-    if (!confirm(`Delete "${d.name} — ${d.site}"? This cannot be undone.`)) return;
+    if (!confirm(`Delete "${d.name}"? This cannot be undone.`)) return;
     const { error } = await supabase.from('dives').delete().eq('id', d.id);
     if (error) return show('Error: ' + error.message);
     show('Deleted');
@@ -125,6 +128,15 @@ export default function DivesAdmin() {
     router.refresh();
   }
 
+  // steps row helpers
+  const addStep = () => setSteps((s) => [...s, { title: '', body: '' }]);
+  const setStep = (i: number, k: keyof DiveStep, v: string) =>
+    setSteps((s) => s.map((x, idx) => (idx === i ? { ...x, [k]: v } : x)));
+  const removeStep = (i: number) => setSteps((s) => s.filter((_, idx) => idx !== i));
+
+  const kindLabel = (c: string | null) =>
+    DIVE_KINDS.find((k) => k.value === c)?.label.replace(/ \(.*\)$/, '').replace(/ —.*$/, '') ?? '—';
+
   return (
     <AdminShell
       active="dives"
@@ -136,6 +148,10 @@ export default function DivesAdmin() {
       }
     >
       <Toast />
+      <p className="a-intro">
+        These are every dive, snorkelling trip and boat charter shown on the site. Add or edit one
+        below — it appears on the homepage, the price list and its own page straight away.
+      </p>
       {loading ? (
         <p>Loading…</p>
       ) : (
@@ -144,11 +160,9 @@ export default function DivesAdmin() {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Site</th>
-                <th>Depth</th>
+                <th>Type</th>
                 <th>Price</th>
-                <th>Tier</th>
-                <th>Active</th>
+                <th>Shown?</th>
                 <th></th>
               </tr>
             </thead>
@@ -157,18 +171,12 @@ export default function DivesAdmin() {
                 <tr key={d.id}>
                   <td>
                     <strong>{d.name}</strong>
-                    <br />
-                    <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ash)' }}>
-                      /{d.slug}
-                    </span>
                   </td>
-                  <td>{d.site}</td>
-                  <td>{d.depth_m ? d.depth_m + 'm' : '—'}</td>
+                  <td>{kindLabel(d.category)}</td>
                   <td>{d.on_request ? 'On request' : d.price ? '₹' + d.price.toLocaleString('en-IN') : '—'}</td>
-                  <td>{d.tier || '—'}</td>
                   <td>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => toggleActive(d)}>
-                      {d.active ? 'Live' : 'Hidden'}
+                      {d.active ? 'Shown' : 'Hidden'}
                     </button>
                   </td>
                   <td style={{ whiteSpace: 'nowrap' }}>
@@ -190,152 +198,183 @@ export default function DivesAdmin() {
         <div className="a-modal-bg" onClick={(e) => e.target === e.currentTarget && setEditing(null)}>
           <div className="a-modal">
             <h2>{editing.id ? 'Edit dive' : 'New dive'}</h2>
+
+            {/* ---- The basics ---- */}
+            <div className="a-section-title">The basics</div>
+            <div className="a-field">
+              <label>Name</label>
+              <input
+                value={editing.name ?? ''}
+                placeholder="e.g. 30-Min Discover Scuba Dive"
+                onChange={(e) => onName(e.target.value)}
+              />
+              <Help>The title shown everywhere on the site.</Help>
+            </div>
+
+            <div className="a-field">
+              <label>What kind of dive is this?</label>
+              <select
+                value={editing.category ?? 'discover'}
+                onChange={(e) => field('category', e.target.value as DiveKind)}
+              >
+                {DIVE_KINDS.map((k) => (
+                  <option key={k.value} value={k.value}>
+                    {k.label}
+                  </option>
+                ))}
+              </select>
+              <Help>{DIVE_KINDS.find((k) => k.value === (editing.category ?? 'discover'))?.help}</Help>
+            </div>
+
             <div className="a-grid2">
               <div className="a-field">
-                <label>Name</label>
-                <input value={editing.name ?? ''} onChange={(e) => field('name', e.target.value)} />
-              </div>
-              <div className="a-field">
-                <label>Slug (URL)</label>
-                <input value={editing.slug ?? ''} onChange={(e) => field('slug', e.target.value)} />
-              </div>
-            </div>
-            <div className="a-grid2">
-              <div className="a-field">
-                <label>Site (display name)</label>
-                <input value={editing.site ?? ''} onChange={(e) => field('site', e.target.value)} />
-              </div>
-              <div className="a-field">
-                <label>Site group (tab)</label>
-                <select
-                  value={editing.site_key ?? 'tribe'}
-                  onChange={(e) => field('site_key', e.target.value as SiteKey)}
-                >
-                  {SITE_KEYS.map((s) => (
-                    <option key={s.v} value={s.v}>
-                      {s.l}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="a-grid3">
-              <div className="a-field">
-                <label>Depth (m)</label>
-                <input
-                  type="number"
-                  value={editing.depth_m ?? ''}
-                  onChange={(e) => field('depth_m', numOrNull(e.target.value))}
-                />
-              </div>
-              <div className="a-field">
-                <label>Dive minutes</label>
-                <input
-                  type="number"
-                  value={editing.dive_min ?? ''}
-                  onChange={(e) => field('dive_min', numOrNull(e.target.value))}
-                />
-              </div>
-              <div className="a-field">
-                <label>Training minutes</label>
-                <input
-                  type="number"
-                  value={editing.train_min ?? ''}
-                  onChange={(e) => field('train_min', numOrNull(e.target.value))}
-                />
-              </div>
-            </div>
-            <div className="a-grid3">
-              <div className="a-field">
-                <label>Photos</label>
-                <input
-                  type="number"
-                  value={editing.photos ?? 0}
-                  onChange={(e) => field('photos', Number(e.target.value))}
-                />
-              </div>
-              <div className="a-field">
-                <label>GoPro minutes</label>
-                <input
-                  type="number"
-                  value={editing.gopro_min ?? 0}
-                  onChange={(e) => field('gopro_min', Number(e.target.value))}
-                />
-              </div>
-              <div className="a-field">
-                <label>Price (₹, blank = on request)</label>
+                <label>Price (₹ per person)</label>
                 <input
                   type="number"
                   value={editing.price ?? ''}
+                  placeholder="e.g. 3800"
+                  disabled={!!editing.on_request}
                   onChange={(e) => field('price', numOrNull(e.target.value))}
                 />
-              </div>
-            </div>
-            <div className="a-grid3">
-              <div className="a-field">
-                <label>Tier</label>
-                <input
-                  value={editing.tier ?? ''}
-                  placeholder="Light / Premium / Signature…"
-                  onChange={(e) => field('tier', e.target.value || null)}
-                />
+                <Help>Leave blank or tick “price on request” below if there’s no fixed price.</Help>
               </div>
               <div className="a-field">
-                <label>Duration label (override)</label>
-                <input
-                  value={editing.duration_label ?? ''}
-                  placeholder="Full day · all gear"
-                  onChange={(e) => field('duration_label', e.target.value || null)}
-                />
-              </div>
-              <div className="a-field">
-                <label>Sort order</label>
-                <input
-                  type="number"
-                  value={editing.sort ?? 0}
-                  onChange={(e) => field('sort', Number(e.target.value))}
-                />
-              </div>
-            </div>
-            <div className="a-field">
-              <label>On request? (hides price)</label>
-              <select
-                value={editing.on_request ? 'yes' : 'no'}
-                onChange={(e) => field('on_request', e.target.value === 'yes')}
-              >
-                <option value="no">No — show price</option>
-                <option value="yes">Yes — show “On request”</option>
-              </select>
-            </div>
-            <div className="a-field">
-              <label>Pitch (one-line)</label>
-              <input value={editing.pitch ?? ''} onChange={(e) => field('pitch', e.target.value)} />
-            </div>
-            <div className="a-field">
-              <label>What you&apos;ll see</label>
-              <textarea value={editing.see_text ?? ''} onChange={(e) => field('see_text', e.target.value)} />
-            </div>
-            <div className="a-field">
-              <label>Who it&apos;s for</label>
-              <textarea value={editing.for_text ?? ''} onChange={(e) => field('for_text', e.target.value)} />
-            </div>
-            <div className="a-field">
-              <label>How it works — one step per line, as “Title | Body”</label>
-              <textarea
-                style={{ minHeight: 130 }}
-                value={stepsText}
-                onChange={(e) => setStepsText(e.target.value)}
-              />
-            </div>
-            <div className="a-field">
-              <label>Image URL</label>
-              <input value={editing.image_url ?? ''} onChange={(e) => field('image_url', e.target.value || null)} />
-              <div style={{ marginTop: 8 }}>
-                <ImageUpload folder="dives" onUploaded={(url) => field('image_url', url)} />
+                <label>Price on request?</label>
+                <select
+                  value={editing.on_request ? 'yes' : 'no'}
+                  onChange={(e) => field('on_request', e.target.value === 'yes')}
+                >
+                  <option value="no">No — show the price above</option>
+                  <option value="yes">Yes — show “On request” instead</option>
+                </select>
+                <Help>Use this for tailored trips like island hopping.</Help>
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 12, marginTop: 18 }}>
+            {/* ---- What's included ---- */}
+            <div className="a-section-title">What’s included &amp; how long</div>
+            <div className="a-grid3">
+              <div className="a-field">
+                <label>Minutes underwater</label>
+                <input type="number" value={editing.dive_min ?? ''} placeholder="e.g. 30" onChange={(e) => field('dive_min', numOrNull(e.target.value))} />
+              </div>
+              <div className="a-field">
+                <label>HD photos</label>
+                <input type="number" value={editing.photos ?? 0} onChange={(e) => field('photos', Number(e.target.value))} />
+              </div>
+              <div className="a-field">
+                <label>GoPro video (min)</label>
+                <input type="number" value={editing.gopro_min ?? 0} onChange={(e) => field('gopro_min', Number(e.target.value))} />
+              </div>
+            </div>
+            <Help>Set photos / video to 0 for snorkelling, charters and island hopping.</Help>
+
+            {/* ---- Words on the page ---- */}
+            <div className="a-section-title">Words shown on the page</div>
+            <div className="a-field">
+              <label>One-line summary</label>
+              <input value={editing.pitch ?? ''} placeholder="A short, tempting one-liner." onChange={(e) => field('pitch', e.target.value)} />
+              <Help>The big line at the top of the dive’s own page.</Help>
+            </div>
+            <div className="a-field">
+              <label>What you’ll see</label>
+              <textarea value={editing.see_text ?? ''} placeholder="The coral, fish and marine life on this dive." onChange={(e) => field('see_text', e.target.value)} />
+            </div>
+            <div className="a-field">
+              <label>Who it’s for</label>
+              <textarea value={editing.for_text ?? ''} placeholder="Beginners? Certified divers? Families?" onChange={(e) => field('for_text', e.target.value)} />
+            </div>
+
+            {/* ---- How it works ---- */}
+            <div className="a-section-title">How it works — the day, step by step</div>
+            <Help>Each step is a small titled card on the dive’s page. Add as many as you like.</Help>
+            <div className="a-steps">
+              {steps.map((s, i) => (
+                <div className="a-step-row" key={i}>
+                  <span className="a-step-n">{i + 1}</span>
+                  <input
+                    className="a-step-title"
+                    value={s.title}
+                    placeholder="Step title (e.g. Gear up)"
+                    onChange={(e) => setStep(i, 'title', e.target.value)}
+                  />
+                  <input
+                    className="a-step-body"
+                    value={s.body}
+                    placeholder="What happens in this step"
+                    onChange={(e) => setStep(i, 'body', e.target.value)}
+                  />
+                  <button type="button" className="a-btn a-btn-sm a-btn-danger" onClick={() => removeStep(i)}>
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <button type="button" className="a-btn a-btn-sm a-btn-ghost" onClick={addStep}>
+                + Add a step
+              </button>
+            </div>
+
+            {/* ---- Photo ---- */}
+            <div className="a-section-title">Photo</div>
+            <div className="a-field">
+              <ImageUpload folder="dives" onUploaded={(url) => field('image_url', url)} />
+              {editing.image_url ? <Help>Current image set. Upload a new one to replace it.</Help> : <Help>Optional — a hero photo for this dive’s page.</Help>}
+            </div>
+
+            {/* ---- Advanced ---- */}
+            <details className="a-advanced">
+              <summary>Advanced options (most people can skip these)</summary>
+              <div className="a-grid2" style={{ marginTop: 14 }}>
+                <div className="a-field">
+                  <label>Page link (URL slug)</label>
+                  <input
+                    value={editing.slug ?? ''}
+                    onChange={(e) => {
+                      setSlugTouched(true);
+                      field('slug', e.target.value);
+                    }}
+                  />
+                  <Help>Auto-filled from the name. Only change if you know what a URL slug is.</Help>
+                </div>
+                <div className="a-field">
+                  <label>Order on the page</label>
+                  <input type="number" value={editing.sort ?? 0} onChange={(e) => field('sort', Number(e.target.value))} />
+                  <Help>Lower numbers appear first.</Help>
+                </div>
+              </div>
+              <div className="a-grid3">
+                <div className="a-field">
+                  <label>Depth (m)</label>
+                  <input type="number" value={editing.depth_m ?? ''} onChange={(e) => field('depth_m', numOrNull(e.target.value))} />
+                </div>
+                <div className="a-field">
+                  <label>Training minutes</label>
+                  <input type="number" value={editing.train_min ?? ''} onChange={(e) => field('train_min', numOrNull(e.target.value))} />
+                </div>
+                <div className="a-field">
+                  <label>Badge (optional)</label>
+                  <input value={editing.tier ?? ''} placeholder="e.g. Certified, Premium" onChange={(e) => field('tier', e.target.value || null)} />
+                </div>
+              </div>
+              <div className="a-grid2">
+                <div className="a-field">
+                  <label>Reef / site</label>
+                  <select value={editing.site_key ?? 'multi'} onChange={(e) => field('site_key', e.target.value as SiteKey)}>
+                    {SITE_KEYS.map((s) => (
+                      <option key={s.v} value={s.v}>
+                        {s.l}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="a-field">
+                  <label>Duration label (override)</label>
+                  <input value={editing.duration_label ?? ''} placeholder="e.g. Full day · all gear" onChange={(e) => field('duration_label', e.target.value || null)} />
+                </div>
+              </div>
+            </details>
+
+            <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
               <button className="a-btn a-btn-primary" onClick={save}>
                 Save
               </button>
