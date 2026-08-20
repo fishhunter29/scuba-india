@@ -2,12 +2,13 @@ import Link from 'next/link';
 
 // The four reefs we dive, with typical maximum depths (fixed dive-site facts).
 // This is a "where you'll dive" showcase — pricing lives in Packages / /prices.
-const SITES: { key: string; name: string; level: string; blurb: string; depth: number }[] = [
+const SITES: { key: string; name: string; level: string; blurb: string; depth: number; image: string }[] = [
   {
     key: 'tribe',
     name: 'Tribe Gate',
     depth: 12,
     level: 'Beginner-friendly',
+    image: '/images/reef-tribe',
     blurb: 'Shallow, sunlit coral garden — the easiest first dive. Clownfish, parrotfish and grazing green turtles.',
   },
   {
@@ -15,6 +16,7 @@ const SITES: { key: string; name: string; level: string; blurb: string; depth: n
     name: 'Red Pillar',
     depth: 14,
     level: 'All levels',
+    image: '/images/reef-red',
     blurb: 'Coral pillars alive with fusiliers and angelfish — our most colourful, best-value reef.',
   },
   {
@@ -22,6 +24,7 @@ const SITES: { key: string; name: string; level: string; blurb: string; depth: n
     name: 'Lighthouse',
     depth: 18,
     level: 'Confident divers',
+    image: '/images/reef-light',
     blurb: 'Deeper water, bigger fish — snapper schools, groupers and the odd reef shark in the blue.',
   },
   {
@@ -29,6 +32,7 @@ const SITES: { key: string; name: string; level: string; blurb: string; depth: n
     name: 'Turtle Beach',
     depth: 16,
     level: 'All levels',
+    image: '/images/reef-turtle',
     blurb: 'Green sea turtles grazing the seagrass, rays over the sand — unhurried and life-rich.',
   },
 ];
@@ -60,13 +64,22 @@ export default function DiveSites() {
           <div className="depth-chart reveal">
             {sites.map((s) => (
               <div className="depth-item" key={s.name}>
-                <span className="name">{s.name}</span>
-                <div className="depth-bar">
-                  <span className="depth-fill" data-depth={pct(s.depth)} />
+                <span className="depth-thumb">
+                  <picture>
+                    <source type="image/webp" srcSet={`${s.image}.webp`} />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`${s.image}.jpg`} alt={`${s.name} reef, Havelock`} loading="lazy" decoding="async" />
+                  </picture>
+                </span>
+                <div className="depth-main">
+                  <span className="name">{s.name}</span>
+                  <div className="depth-bar">
+                    <span className="depth-fill" data-depth={pct(s.depth)} />
+                  </div>
+                  <span className="m">{s.depth}m</span>
+                  <span className="site-level">{s.level}</span>
+                  <span className="site-blurb">{s.blurb}</span>
                 </div>
-                <span className="m">{s.depth}m</span>
-                <span className="site-level">{s.level}</span>
-                <span className="site-blurb">{s.blurb}</span>
               </div>
             ))}
           </div>

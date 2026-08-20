@@ -95,14 +95,19 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
         <div className="dt-grid reveal">
           {DIVE_TYPES.map((t) => (
             <Link href={t.href} className="dt-card" key={t.key}>
-              <span className="dt-icon">
-                <TypeIcon icon={t.icon} />
+              <span className="dt-photo">
+                <picture>
+                  <source type="image/webp" srcSet={`${t.image}.webp`} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`${t.image}.jpg`} alt={`${t.name} — Havelock`} loading="lazy" decoding="async" />
+                </picture>
+                <span className="dt-icon">
+                  <TypeIcon icon={t.icon} />
+                </span>
+                {t.entry !== '—' && <span className="dt-entry">{t.entry}</span>}
               </span>
               <div className="dt-body">
-                <div className="dt-head">
-                  <h3>{t.name}</h3>
-                  {t.entry !== '—' && <span className="dt-entry">{t.entry}</span>}
-                </div>
+                <h3>{t.name}</h3>
                 <p className="dt-hook">{t.hook}</p>
                 <p className="dt-detail">{t.detail}</p>
                 <div className="dt-foot">

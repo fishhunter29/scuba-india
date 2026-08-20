@@ -13,6 +13,7 @@ export interface DiveTypeInfo {
   name: string;
   icon: 'try' | 'boat' | 'fun' | 'night' | 'snorkel' | 'island';
   category: DiveKind; // links the card to its dives in the DB for live pricing
+  image: string; // /images/<name> base path (.webp/.jpg)
   entry: DiveEntry;
   audience: string; // who it's for (short)
   hook: string; // one-line pitch
@@ -29,6 +30,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     name: 'Try Dive — Shore',
     icon: 'try',
     category: 'try_shore',
+    image: '/images/type-tryshore',
     entry: 'shore',
     audience: 'First-timers · no experience',
     hook: 'Your first breath underwater, walking in from the beach.',
@@ -43,6 +45,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     name: 'Discover Scuba — Boat',
     icon: 'boat',
     category: 'discover',
+    image: '/images/type-dsdboat',
     entry: 'boat',
     audience: 'First-timers · no experience',
     hook: 'A short boat ride to quieter reefs, then your first dive.',
@@ -56,6 +59,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     name: 'Fun Dives',
     icon: 'fun',
     category: 'fun',
+    image: '/images/type-fun',
     entry: 'boat',
     audience: 'Certified divers',
     hook: 'Explore Havelock’s best reefs, led by our divemasters.',
@@ -69,6 +73,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     name: 'Night Dive',
     icon: 'night',
     category: 'night',
+    image: '/images/type-night',
     entry: 'boat',
     audience: 'Certified divers',
     hook: 'The reef after dark — a whole different world by torchlight.',
@@ -82,6 +87,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     name: 'Open-Sea Snorkelling',
     icon: 'snorkel',
     category: 'snorkel',
+    image: '/images/type-snorkel',
     entry: 'boat',
     audience: 'Everyone · non-swimmers welcome',
     hook: 'Float over the reef and watch the fish — no diving needed.',
@@ -96,6 +102,7 @@ export const DIVE_TYPES: DiveTypeInfo[] = [
     name: 'Island Hopping',
     icon: 'island',
     category: 'island',
+    image: '/images/type-island',
     entry: 'boat',
     audience: 'Everyone',
     hook: 'A day on the water — snorkel, dive and sunset at the lighthouse.',
