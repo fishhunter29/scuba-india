@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Dive, Settings, DiveCategory } from '@/lib/types';
@@ -55,6 +55,27 @@ export default function Packages({
 }) {
   const tabs = CATEGORY_TABS.filter((t) => grouped[t.key]?.length);
   const [active, setActive] = useState<DiveCategory>(tabs[0]?.key ?? 'discover');
+
+  // A dive-type card above links to #pk-discover / #pk-fun / #pk-experience —
+  // open that tab and glide the section into view (works on first load too).
+  useEffect(() => {
+    const valid = new Set(tabs.map((t) => t.key));
+    const apply = (scroll: boolean) => {
+      const m = /^#pk-(discover|fun|experience)$/.exec(window.location.hash);
+      if (!m) return;
+      const key = m[1] as DiveCategory;
+      if (!valid.has(key)) return;
+      setActive(key);
+      if (scroll) {
+        document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    apply(true);
+    const onHash = () => apply(true);
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="band packages" id="packages">

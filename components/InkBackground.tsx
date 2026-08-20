@@ -32,6 +32,7 @@ export default function InkBackground() {
       // locked-down mobile webviews) — fall back to a static background instead
       // of leaving an uncaught exception to take down the whole page.
       canvas.style.background = 'var(--paper)';
+      canvas.style.display = 'none';
       return;
     }
     // A WebGL context can exist with no real GPU behind it — headless/CI
@@ -48,6 +49,7 @@ export default function InkBackground() {
       : '';
     if (/swiftshader|llvmpipe|software/i.test(rendererName)) {
       canvas.style.background = 'var(--paper)';
+      canvas.style.display = 'none';
       renderer.dispose();
       return;
     }

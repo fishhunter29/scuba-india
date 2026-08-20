@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Dive } from '@/lib/types';
-import { inferDiveKind } from '@/lib/types';
+import { inferDiveKind, kindToGroup } from '@/lib/types';
 import { DIVE_TYPES, type DiveTypeInfo } from '@/lib/diveTypes';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
@@ -94,7 +94,7 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
 
         <div className="dt-grid reveal">
           {DIVE_TYPES.map((t) => (
-            <Link href={t.href} className="dt-card" key={t.key}>
+            <a href={`#pk-${kindToGroup(t.category)}`} className="dt-card" key={t.key}>
               <span className="dt-photo">
                 <picture>
                   <source type="image/webp" srcSet={`${t.image}.webp`} />
@@ -121,7 +121,7 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
                   )}
                 </div>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
 
