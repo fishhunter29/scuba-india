@@ -3,6 +3,7 @@ import Link from 'next/link';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
+import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { getSettings, getDives, getCourses } from '@/lib/data';
@@ -51,7 +52,8 @@ export default async function PricesPage() {
       <ScrollFX />
       <Nav />
 
-      <main className="detail">
+      <main className="detail has-banner">
+        <PageBanner image="/images/banner-prices" alt="The Scuba India team on the dive boat, Havelock" />
         {/* ── Hero ── */}
         <section className="detail-hero">
           <div className="wrap">

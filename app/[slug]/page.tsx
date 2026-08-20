@@ -5,6 +5,7 @@ import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
+import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
@@ -73,7 +74,8 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
       <ScrollFX />
       <Nav />
 
-      <main className="detail">
+      <main className="detail has-banner">
+        <PageBanner image="/images/banner-guides" alt="Scuba India divers on the boat, Havelock" />
         {/* HERO */}
         <section className="detail-hero">
           <div className="wrap">
