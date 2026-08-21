@@ -44,7 +44,9 @@ export default function ScrollFX() {
             io.unobserve(e.target);
           }
         }),
-      { threshold: 0.12 },
+      // Start the reveal ~40% of a screen BEFORE the element scrolls in, so
+      // content (and its icons) is already visible by the time you reach it.
+      { threshold: 0, rootMargin: '0px 0px 40% 0px' },
     );
     document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 

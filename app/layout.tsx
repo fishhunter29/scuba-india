@@ -59,6 +59,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${disp.variable} ${body.variable} ${mono.variable}`}>
+      <head>
+        {/* Mark JS as available before first paint so scroll-reveal only hides
+            content when it can actually reveal it (no stuck-invisible icons). */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
       <body>
         {children}
         <Analytics />
