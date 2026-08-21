@@ -18,19 +18,24 @@ export default function ScrollFX() {
     function onScrollDepth() {
       nav?.classList.toggle('scrolled', scrollY > 40);
       const pct = Math.min(scrollY / (document.body.scrollHeight - innerHeight || 1), 1);
-      if (depthveil) {
-        // deepen into ocean teal-navy (not black) as you descend
-        depthveil.style.background =
-          'linear-gradient(180deg,rgba(26,78,90,' +
-          (pct * 0.3).toFixed(3) +
-          ') 0%,rgba(9,40,52,' +
-          (pct * 0.62).toFixed(3) +
-          ') 100%)';
-      }
+      // Cheap, compositor-only update: fade a fixed gradient (see #depthveil CSS)
+      // instead of rebuilding the gradient string every frame.
+      if (depthveil) depthveil.style.opacity = pct.toFixed(3);
       if (dmDot) dmDot.style.top = pct * 150 + 'px';
       if (dmVal) dmVal.textContent = Math.round(pct * MAX_DEPTH) + 'm';
     }
-    addEventListener('scroll', onScrollDepth, { passive: true });
+    // Batch scroll work to one update per frame so the smooth-scroll animations
+    // (e.g. a dive-type card gliding to its packages tab) don't stutter.
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        onScrollDepth();
+        ticking = false;
+      });
+    }
+    addEventListener('scroll', onScroll, { passive: true });
     onScrollDepth();
 
     // reveal-on-scroll + animate depth bars when they enter view
