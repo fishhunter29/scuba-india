@@ -8,7 +8,7 @@ import Hero from '@/components/home/Hero';
 import DiveTypes from '@/components/home/DiveTypes';
 import Packages from '@/components/home/Packages';
 import Courses from '@/components/home/Courses';
-import DiveSites from '@/components/home/DiveSites';
+import ReefExplorer from '@/components/home/ReefExplorer';
 import WhyUs from '@/components/home/WhyUs';
 import Team from '@/components/home/Team';
 import Reviews from '@/components/home/Reviews';
@@ -54,7 +54,7 @@ export default async function HomePage() {
         <DiveTypes dives={dives} />
         <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <DiveSites whatsapp={settings.whatsapp} />
+        <ReefExplorer whatsapp={settings.whatsapp} />
         <WhyUs />
         <Team />
         <Reviews reviews={reviews} settings={settings} google={google} />

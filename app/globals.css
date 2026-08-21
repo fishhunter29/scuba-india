@@ -211,30 +211,58 @@ section{position:relative;z-index:3}
   .course-row .cprice{grid-column:3;grid-row:1/3;align-self:center;min-width:0}
 }
 
-/* sites */
+/* sites — interactive reef explorer */
 .sites{background:rgba(248,250,250,.72);backdrop-filter:blur(2px)}
-.site-row{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.depth-item{display:grid;grid-template-columns:84px 1fr;align-items:start;gap:16px;padding:18px 0;border-bottom:1px solid rgba(0,0,0,.14)}
-.depth-thumb{width:84px;height:84px;border-radius:12px;overflow:hidden;background:var(--sumi);box-shadow:0 6px 16px rgba(8,34,46,.18)}
-.depth-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.depth-main{display:grid;grid-template-columns:1fr 54px;align-items:center;gap:6px 16px}
-.depth-main .name{grid-column:1/-1}
-.depth-item .site-level{grid-column:1/-1;justify-self:start;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:rgba(31,78,120,.1);padding:3px 9px;border-radius:99px;margin-top:4px}
-.depth-item .site-blurb{grid-column:1/-1;font-size:12.5px;color:var(--sumi-soft);line-height:1.5;margin-top:4px}
-.depth-item .name{font-family:var(--disp);font-size:20px;color:var(--sumi);font-weight:700;overflow-wrap:anywhere;margin-bottom:2px}
-.depth-bar{height:6px;background:rgba(0,0,0,.1);position:relative;overflow:hidden}
-.depth-fill{position:absolute;left:0;top:0;bottom:0;background:var(--indigo);width:0;transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
-.depth-item .m{font-family:var(--mono);font-size:14px;color:var(--sumi-soft);text-align:right}
-.sites-copy h2{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.5vw,52px);line-height:1.12;color:var(--sumi);margin-bottom:20px}
-.sites-copy p{color:var(--sumi-soft);font-size:16px;margin-bottom:14px}
-.sites-cross{font-size:14.5px}
-.sites-cross a{color:var(--vermilion);font-weight:600;border-bottom:1px solid rgba(214,73,51,.4)}
-.sites-cross a:hover{border-bottom-color:var(--vermilion)}
-.depth-item .site-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin-top:10px}
-.site-best{font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--sumi-soft)}
-.site-best::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--vermilion);margin-right:7px;vertical-align:middle}
-.site-book{font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;background:var(--indigo);padding:7px 14px;border-radius:999px;white-space:nowrap;transition:background .2s,transform .1s}
-.site-book:hover{background:var(--sumi);transform:translateY(-1px)}
+.reef-explorer{display:grid;grid-template-columns:1.55fr 1fr;gap:28px;align-items:stretch;margin-top:10px}
+
+/* feature panel */
+.reef-feature{display:flex;flex-direction:column;background:var(--paper);border:1px solid rgba(0,0,0,.1);border-radius:20px;overflow:hidden;box-shadow:0 18px 46px rgba(0,0,0,.12);animation:reefIn .45s ease}
+@keyframes reefIn{from{opacity:.35}to{opacity:1}}
+.reef-feature-img{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--sumi)}
+.reef-feature-img img{width:100%;height:100%;object-fit:cover;display:block;animation:reefZoom 6s ease-out both}
+@keyframes reefZoom{from{transform:scale(1.06)}to{transform:scale(1)}}
+.reef-feature-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,30,40,.05) 0%,rgba(6,30,40,0) 30%,rgba(6,30,40,.62) 100%)}
+.reef-feature-badges{position:absolute;top:16px;left:16px;z-index:2;display:flex;gap:8px;flex-wrap:wrap}
+.reef-badge{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;padding:6px 12px;border-radius:999px;backdrop-filter:blur(3px)}
+.reef-badge-depth{background:rgba(255,255,255,.92);color:var(--sumi)}
+.reef-badge-level{background:rgba(21,94,107,.9);color:#fff}
+.reef-feature-name{position:absolute;left:22px;bottom:18px;z-index:2;font-family:var(--disp);font-size:clamp(28px,3.4vw,40px);font-weight:700;color:#fff;line-height:1.05;text-shadow:0 2px 18px rgba(0,0,0,.4)}
+.reef-feature-body{padding:22px 26px 26px;display:flex;flex-direction:column;gap:14px}
+.reef-depthbar{height:6px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}
+.reef-depthbar-fill{display:block;height:100%;background:linear-gradient(90deg,var(--indigo),var(--sumi));border-radius:999px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.reef-blurb{font-size:16px;line-height:1.6;color:var(--sumi-soft);margin:0}
+.reef-see-label,.reef-best span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash)}
+.reef-see{display:flex;flex-direction:column;gap:9px}
+.reef-tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0}
+.reef-tag{font-size:13px;font-weight:500;color:var(--sumi);background:var(--paper-deep);border:1px solid rgba(0,0,0,.08);padding:6px 12px;border-radius:999px}
+.reef-best{font-size:14px;color:var(--sumi);margin:0}
+.reef-best span{margin-right:8px}
+.reef-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:4px}
+.reef-cta-secondary{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--indigo);border-bottom:1px solid rgba(21,94,107,.4)}
+.reef-cta-secondary:hover{color:var(--sumi);border-bottom-color:var(--sumi)}
+
+/* selector list */
+.reef-selectors{display:flex;flex-direction:column;gap:12px}
+.reef-sel{display:flex;align-items:center;gap:14px;text-align:left;background:var(--paper);border:1px solid rgba(0,0,0,.1);border-radius:14px;padding:10px;cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s;flex:1}
+.reef-sel:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
+.reef-sel.active{border-color:var(--vermilion);box-shadow:0 10px 26px rgba(214,73,51,.16)}
+.reef-sel-thumb{flex:0 0 76px;width:76px;height:64px;border-radius:10px;overflow:hidden;background:var(--sumi)}
+.reef-sel-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.reef-sel-text{display:flex;flex-direction:column;gap:3px;min-width:0}
+.reef-sel-name{font-family:var(--disp);font-size:18px;font-weight:700;color:var(--sumi);line-height:1.1}
+.reef-sel.active .reef-sel-name{color:var(--vermilion)}
+.reef-sel-meta{font-family:var(--mono);font-size:11px;color:var(--ash)}
+
+@media(max-width:900px){
+  .reef-explorer{grid-template-columns:1fr;gap:18px}
+  .reef-selectors{flex-direction:row;overflow-x:auto;gap:10px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .reef-sel{flex:0 0 auto;min-width:210px}
+}
+@media(max-width:520px){
+  .reef-feature-body{padding:18px 18px 22px}
+  .reef-sel{min-width:180px}
+  .reef-sel-thumb{flex-basis:60px;width:60px;height:54px}
+}
 
 /* ways to dive — dive-types grid (engagement entry point) */
 .dt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:8px}
