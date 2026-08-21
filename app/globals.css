@@ -237,6 +237,24 @@ section{position:relative;z-index:3}
 .reef-tag{font-size:13px;font-weight:500;color:var(--sumi);background:var(--paper-deep);border:1px solid rgba(0,0,0,.08);padding:6px 12px;border-radius:999px}
 .reef-best{font-size:14px;color:var(--sumi);margin:0}
 .reef-best span{margin-right:8px}
+/* per-reef price list */
+.reef-dives{display:flex;flex-direction:column;gap:10px}
+.reef-dive-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.reef-dive{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.reef-dive:last-child{border-bottom:none}
+.rd-name{font-size:14.5px;color:var(--sumi);font-weight:500}
+.rd-dots{border-bottom:1px dotted rgba(0,0,0,.25);height:1px;align-self:end;margin-bottom:5px}
+.rd-price{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--vermilion);white-space:nowrap}
+.rd-unit{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ash)}
+.rd-book{font-family:var(--mono);font-size:11.5px;font-weight:600;color:#fff;background:var(--indigo);padding:6px 13px;border-radius:999px;white-space:nowrap;transition:background .2s,transform .1s}
+.rd-book:hover{background:var(--sumi);transform:translateY(-1px)}
+@media(max-width:520px){
+  .reef-dive{grid-template-columns:1fr auto;gap:4px 10px}
+  .rd-dots{display:none}
+  .rd-book{grid-column:2;grid-row:1}
+  .rd-price{grid-column:1;grid-row:2;justify-self:start}
+  .rd-name{grid-column:1;grid-row:1}
+}
 .reef-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:4px}
 .reef-cta-secondary{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--indigo);border-bottom:1px solid rgba(21,94,107,.4)}
 .reef-cta-secondary:hover{color:var(--sumi);border-bottom-color:var(--sumi)}

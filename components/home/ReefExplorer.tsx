@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { waLink } from '@/lib/whatsapp';
 
+type ReefDive = { name: string; price: number; unit?: string };
 type Reef = {
   key: string;
   name: string;
@@ -13,6 +14,7 @@ type Reef = {
   blurb: string;
   image: string;
   life: string[];
+  dives: ReefDive[];
 };
 
 const REEFS: Reef[] = [
@@ -26,6 +28,12 @@ const REEFS: Reef[] = [
     blurb:
       'A shallow, sunlit coral garden in calm, sheltered water — the easiest place to take your very first breath underwater.',
     life: ['Clownfish', 'Parrotfish', 'Green turtles', 'Coral gardens'],
+    dives: [
+      { name: '20-min Taster Dive', price: 3500 },
+      { name: '30-min Explorer Dive', price: 4000 },
+      { name: '40-min Adventure Dive', price: 4500 },
+      { name: '50-min Signature Dive', price: 6000 },
+    ],
   },
   {
     key: 'red',
@@ -37,6 +45,13 @@ const REEFS: Reef[] = [
     blurb:
       'Standing coral pillars wrapped in clouds of reef fish — our most colourful and best-value site, brilliant on every dive.',
     life: ['Fusiliers', 'Angelfish', 'Coral pillars', 'Moray eels'],
+    dives: [
+      { name: '20-min Taster Dive', price: 2500 },
+      { name: '30-min Explorer Dive', price: 3000 },
+      { name: '40-min Adventure Dive', price: 4000 },
+      { name: '45-min Signature Dive', price: 5000 },
+      { name: 'Boat Snorkelling', price: 2000 },
+    ],
   },
   {
     key: 'light',
@@ -48,6 +63,7 @@ const REEFS: Reef[] = [
     blurb:
       'Deeper, more open water with bigger fish — schooling snapper, groupers and the occasional reef shark cruising the blue.',
     life: ['Snapper schools', 'Groupers', 'Reef sharks', 'Sweetlips'],
+    dives: [{ name: 'Scuba Diving', price: 4500 }],
   },
   {
     key: 'turtle',
@@ -59,6 +75,10 @@ const REEFS: Reef[] = [
     blurb:
       'Green sea turtles grazing the seagrass and rays gliding over the sand — an unhurried, wonderfully life-rich reef.',
     life: ['Green turtles', 'Stingrays', 'Seagrass beds', 'Hard coral'],
+    dives: [
+      { name: 'Scuba Diving — group of 4+', price: 6500, unit: 'per person' },
+      { name: 'Scuba Diving — 2 persons', price: 7500, unit: 'per person' },
+    ],
   },
 ];
 
@@ -117,9 +137,33 @@ export default function ReefExplorer({ whatsapp }: { whatsapp?: string }) {
                 </ul>
               </div>
 
-              <p className="reef-best">
-                <span>Best for</span> {r.bestFor}
-              </p>
+              {/* per-reef price list — book any option straight from here */}
+              <div className="reef-dives">
+                <span className="reef-see-label">Dives at {r.name} · best for {r.bestFor}</span>
+                <ul className="reef-dive-list">
+                  {r.dives.map((d) => (
+                    <li className="reef-dive" key={d.name}>
+                      <span className="rd-name">{d.name}</span>
+                      <span className="rd-dots" aria-hidden="true" />
+                      <span className="rd-price">
+                        ₹{d.price.toLocaleString('en-IN')}
+                        {d.unit ? <span className="rd-unit"> {d.unit}</span> : null}
+                      </span>
+                      <a
+                        className="rd-book"
+                        href={waLink(
+                          whatsapp || '',
+                          `Hi Scuba India, I'd like to book the ${d.name} at ${r.name} (₹${d.price.toLocaleString('en-IN')}${d.unit ? ' ' + d.unit : ''}).`,
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Book
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <div className="reef-cta-row">
                 <a
@@ -128,10 +172,10 @@ export default function ReefExplorer({ whatsapp }: { whatsapp?: string }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Dive at {r.name} →
+                  Enquire about {r.name} →
                 </a>
                 <Link href="/#packages" className="reef-cta-secondary">
-                  See all dives &amp; prices
+                  Compare all dives
                 </Link>
               </div>
             </div>
