@@ -54,7 +54,7 @@ export default async function HomePage() {
         <DiveTypes dives={dives} />
         <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <DiveSites />
+        <DiveSites whatsapp={settings.whatsapp} />
         <WhyUs />
         <Team />
         <Reviews reviews={reviews} settings={settings} google={google} />

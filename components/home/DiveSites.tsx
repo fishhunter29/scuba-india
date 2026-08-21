@@ -1,13 +1,16 @@
 import Link from 'next/link';
+import { waLink } from '@/lib/whatsapp';
 
 // The four reefs we dive, with typical maximum depths (fixed dive-site facts).
-// This is a "where you'll dive" showcase — pricing lives in Packages / /prices.
-const SITES: { key: string; name: string; level: string; blurb: string; depth: number; image: string }[] = [
+// This is the "where you'll dive" / reef-wise view — pick a reef and book it.
+// Pricing itself lives in Packages / /prices (priced by dive, chosen on the day).
+const SITES: { key: string; name: string; level: string; bestFor: string; blurb: string; depth: number; image: string }[] = [
   {
     key: 'tribe',
     name: 'Tribe Gate',
     depth: 12,
     level: 'Beginner-friendly',
+    bestFor: 'Discover Scuba & first dives',
     image: '/images/reef-tribe',
     blurb: 'Shallow, sunlit coral garden — the easiest first dive. Clownfish, parrotfish and grazing green turtles.',
   },
@@ -16,6 +19,7 @@ const SITES: { key: string; name: string; level: string; blurb: string; depth: n
     name: 'Red Pillar',
     depth: 14,
     level: 'All levels',
+    bestFor: 'Discover Scuba, fun dives & snorkelling',
     image: '/images/reef-red',
     blurb: 'Coral pillars alive with fusiliers and angelfish — our most colourful, best-value reef.',
   },
@@ -24,6 +28,7 @@ const SITES: { key: string; name: string; level: string; blurb: string; depth: n
     name: 'Lighthouse',
     depth: 18,
     level: 'Confident divers',
+    bestFor: 'Fun dives & night dives (certified)',
     image: '/images/reef-light',
     blurb: 'Deeper water, bigger fish — snapper schools, groupers and the odd reef shark in the blue.',
   },
@@ -32,12 +37,13 @@ const SITES: { key: string; name: string; level: string; blurb: string; depth: n
     name: 'Turtle Beach',
     depth: 16,
     level: 'All levels',
+    bestFor: 'Fun dives & turtle encounters',
     image: '/images/reef-turtle',
     blurb: 'Green sea turtles grazing the seagrass, rays over the sand — unhurried and life-rich.',
   },
 ];
 
-export default function DiveSites() {
+export default function DiveSites({ whatsapp }: { whatsapp?: string }) {
   const sites = SITES;
   // Bar fill scaled against a 25m visual maximum (matches prototype proportions).
   const pct = (d: number) => Math.round((d / 25) * 100);
@@ -79,6 +85,17 @@ export default function DiveSites() {
                   <span className="m">{s.depth}m</span>
                   <span className="site-level">{s.level}</span>
                   <span className="site-blurb">{s.blurb}</span>
+                  <div className="site-foot">
+                    <span className="site-best">Best for: {s.bestFor}</span>
+                    <a
+                      className="site-book"
+                      href={waLink(whatsapp || '', `Hi Scuba India, I'd like to dive at ${s.name}.`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Dive here →
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}

@@ -4,9 +4,19 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Dive, Settings, DiveCategory } from '@/lib/types';
-import { CATEGORY_TABS, CATEGORY_INTRO } from '@/lib/types';
+import { CATEGORY_TABS, CATEGORY_INTRO, inferDiveKind } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
+
+// Fallback photo per dive kind, so every package card has an image even when
+// no custom image_url is set in admin.
+const KIND_IMG: Record<string, string> = {
+  try_shore: 'type-tryshore', discover: 'type-dsdboat', fun: 'type-fun',
+  night: 'type-night', snorkel: 'type-snorkel', island: 'type-island', charter: 'type-dsdboat',
+};
+function cardImage(d: Dive): string {
+  return d.image_url ?? `/images/${KIND_IMG[inferDiveKind(d)] ?? 'type-dsdboat'}.jpg`;
+}
 
 const FEAT_TIERS = ['Premium', 'Premium+', 'Signature', 'Certified'];
 
@@ -151,16 +161,14 @@ export default function Packages({
                   const feat = d.tier ? FEAT_TIERS.includes(d.tier) : false;
                   return (
                     <div key={d.id} className={`pk${feat ? ' feat' : ''}`}>
-                      {d.image_url && (
-                        <div className="pk-img">
-                          <Image
-                            src={d.image_url}
-                            alt={d.name}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 280px"
-                          />
-                        </div>
-                      )}
+                      <div className="pk-img">
+                        <Image
+                          src={cardImage(d)}
+                          alt={d.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 280px"
+                        />
+                      </div>
                       {d.tier && <span className="tier">{tierLabel(d.tier)}</span>}
                       <span className="dur">{diveDuration(d)}</span>
                       <h4>{d.name}</h4>

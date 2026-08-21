@@ -24,6 +24,10 @@ export default function Courses({
         <div className="reveal">
           {courses.map((c) => (
             <Link href={`/courses/${courseSlug(c.name)}`} className="course-row" key={c.id}>
+              <span className="cthumb">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.image_url ?? '/images/gallery/g34.jpg'} alt="" loading="lazy" decoding="async" />
+              </span>
               <span className="cname">{c.name}</span>
               <span className="cstat">
                 <span>DURATION</span>
