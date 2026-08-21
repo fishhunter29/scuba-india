@@ -54,7 +54,7 @@ export default async function HomePage() {
         <DiveTypes dives={dives} />
         <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <ReefExplorer whatsapp={settings.whatsapp} />
+        <ReefExplorer whatsapp={settings.whatsapp} dives={dives} />
         <WhyUs />
         <Team />
         <Reviews reviews={reviews} settings={settings} google={google} />

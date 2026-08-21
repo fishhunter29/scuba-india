@@ -2,9 +2,26 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import type { Dive, DiveKind } from '@/lib/types';
+import { inferDiveKind } from '@/lib/types';
 import { waLink } from '@/lib/whatsapp';
 
-type ReefDive = { name: string; price: number; unit?: string };
+// The dive types offered at each reef, priced from the rate sheet (the same
+// prices as Packages / the price list — one source of truth). Labels + a
+// fallback "from" price for when the live DB has no matching dive yet.
+const KIND_LABEL: Record<DiveKind, string> = {
+  try_shore: 'Try Dive — shore',
+  discover: 'Discover Scuba — boat',
+  fun: 'Fun Dive',
+  night: 'Night Dive',
+  snorkel: 'Snorkelling',
+  island: 'Island Hopping',
+  charter: 'Private Boat Charter',
+};
+const KIND_FROM: Record<DiveKind, number> = {
+  try_shore: 3500, discover: 3800, fun: 4000, night: 4500, snorkel: 2000, island: 25000, charter: 13500,
+};
+
 type Reef = {
   key: string;
   name: string;
@@ -14,7 +31,7 @@ type Reef = {
   blurb: string;
   image: string;
   life: string[];
-  dives: ReefDive[];
+  kinds: DiveKind[]; // dive types offered here (priced from the rate sheet)
 };
 
 const REEFS: Reef[] = [
@@ -28,12 +45,7 @@ const REEFS: Reef[] = [
     blurb:
       'A shallow, sunlit coral garden in calm, sheltered water — the easiest place to take your very first breath underwater.',
     life: ['Clownfish', 'Parrotfish', 'Green turtles', 'Coral gardens'],
-    dives: [
-      { name: '20-min Taster Dive', price: 3500 },
-      { name: '30-min Explorer Dive', price: 4000 },
-      { name: '40-min Adventure Dive', price: 4500 },
-      { name: '50-min Signature Dive', price: 6000 },
-    ],
+    kinds: ['try_shore', 'discover'],
   },
   {
     key: 'red',
@@ -45,13 +57,7 @@ const REEFS: Reef[] = [
     blurb:
       'Standing coral pillars wrapped in clouds of reef fish — our most colourful and best-value site, brilliant on every dive.',
     life: ['Fusiliers', 'Angelfish', 'Coral pillars', 'Moray eels'],
-    dives: [
-      { name: '20-min Taster Dive', price: 2500 },
-      { name: '30-min Explorer Dive', price: 3000 },
-      { name: '40-min Adventure Dive', price: 4000 },
-      { name: '45-min Signature Dive', price: 5000 },
-      { name: 'Boat Snorkelling', price: 2000 },
-    ],
+    kinds: ['try_shore', 'discover', 'snorkel'],
   },
   {
     key: 'light',
@@ -63,7 +69,7 @@ const REEFS: Reef[] = [
     blurb:
       'Deeper, more open water with bigger fish — schooling snapper, groupers and the occasional reef shark cruising the blue.',
     life: ['Snapper schools', 'Groupers', 'Reef sharks', 'Sweetlips'],
-    dives: [{ name: 'Scuba Diving', price: 4500 }],
+    kinds: ['fun', 'night'],
   },
   {
     key: 'turtle',
@@ -75,18 +81,24 @@ const REEFS: Reef[] = [
     blurb:
       'Green sea turtles grazing the seagrass and rays gliding over the sand — an unhurried, wonderfully life-rich reef.',
     life: ['Green turtles', 'Stingrays', 'Seagrass beds', 'Hard coral'],
-    dives: [
-      { name: 'Scuba Diving — group of 4+', price: 6500, unit: 'per person' },
-      { name: 'Scuba Diving — 2 persons', price: 7500, unit: 'per person' },
-    ],
+    kinds: ['discover', 'fun'],
   },
 ];
 
 const MAX_DEPTH = 25; // visual scale for the depth bar
 
-export default function ReefExplorer({ whatsapp }: { whatsapp?: string }) {
+export default function ReefExplorer({ whatsapp, dives = [] }: { whatsapp?: string; dives?: Dive[] }) {
   const [active, setActive] = useState(0);
   const r = REEFS[active];
+
+  // Cheapest live price for a dive kind (rate sheet, from the DB); fall back to
+  // the known rate-sheet figure when the DB has nothing for it yet.
+  const fromPrice = (kind: DiveKind): number => {
+    const prices = dives
+      .filter((d) => d.active !== false && inferDiveKind(d) === kind && !d.on_request && d.price != null)
+      .map((d) => d.price as number);
+    return prices.length ? Math.min(...prices) : KIND_FROM[kind];
+  };
 
   return (
     <section className="band sites" id="sites">
@@ -137,31 +149,34 @@ export default function ReefExplorer({ whatsapp }: { whatsapp?: string }) {
                 </ul>
               </div>
 
-              {/* per-reef price list — book any option straight from here */}
+              {/* dives offered at this reef — rate-sheet prices, book from here */}
               <div className="reef-dives">
-                <span className="reef-see-label">Dives at {r.name} · best for {r.bestFor}</span>
+                <span className="reef-see-label">Dives at {r.name}</span>
                 <ul className="reef-dive-list">
-                  {r.dives.map((d) => (
-                    <li className="reef-dive" key={d.name}>
-                      <span className="rd-name">{d.name}</span>
-                      <span className="rd-dots" aria-hidden="true" />
-                      <span className="rd-price">
-                        ₹{d.price.toLocaleString('en-IN')}
-                        {d.unit ? <span className="rd-unit"> {d.unit}</span> : null}
-                      </span>
-                      <a
-                        className="rd-book"
-                        href={waLink(
-                          whatsapp || '',
-                          `Hi Scuba India, I'd like to book the ${d.name} at ${r.name} (₹${d.price.toLocaleString('en-IN')}${d.unit ? ' ' + d.unit : ''}).`,
-                        )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Book
-                      </a>
-                    </li>
-                  ))}
+                  {r.kinds.map((kind) => {
+                    const from = fromPrice(kind);
+                    const label = KIND_LABEL[kind];
+                    return (
+                      <li className="reef-dive" key={kind}>
+                        <span className="rd-name">{label}</span>
+                        <span className="rd-dots" aria-hidden="true" />
+                        <span className="rd-price">
+                          <span className="rd-unit">from </span>₹{from.toLocaleString('en-IN')}
+                        </span>
+                        <a
+                          className="rd-book"
+                          href={waLink(
+                            whatsapp || '',
+                            `Hi Scuba India, I'd like to book a ${label} at ${r.name} (from ₹${from.toLocaleString('en-IN')}).`,
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Book
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
 
