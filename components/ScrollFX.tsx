@@ -34,13 +34,15 @@ export default function ScrollFX() {
     onScrollDepth();
 
     // reveal-on-scroll + animate depth bars when they enter view
+    const setFill = (root: ParentNode) =>
+      root.querySelectorAll<HTMLElement>('.depth-fill').forEach((f) => (f.style.width = (f.dataset.depth || '0') + '%'));
+
     const io = new IntersectionObserver(
       (es) =>
         es.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add('in');
-            const fills = (e.target as HTMLElement).querySelectorAll<HTMLElement>('.depth-fill');
-            fills.forEach((f) => (f.style.width = (f.dataset.depth || '0') + '%'));
+            setFill(e.target as HTMLElement);
             io.unobserve(e.target);
           }
         }),
@@ -48,10 +50,36 @@ export default function ScrollFX() {
       // content (and its icons) is already visible by the time you reach it.
       { threshold: 0, rootMargin: '0px 0px 40% 0px' },
     );
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // On back/forward navigation the visitor has already seen this page, so
+    // scroll is restored mid-page — don't replay the entrance animation (it
+    // flashes / looks broken during the transition). Show everything at once,
+    // instantly. Fresh loads keep the normal reveal-on-scroll.
+    const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+    const revealAllInstantly = () => {
+      document.querySelectorAll<HTMLElement>('.reveal').forEach((el) => {
+        el.style.transition = 'none';
+        el.classList.add('in');
+      });
+      setFill(document);
+    };
+
+    if (navEntry?.type === 'back_forward') {
+      revealAllInstantly();
+    } else {
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    }
+
+    // bfcache restore fires pageshow(persisted) without re-running React — make
+    // sure nothing is left hidden if the browser restored a reset DOM.
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) revealAllInstantly();
+    };
+    addEventListener('pageshow', onPageShow);
 
     return () => {
       removeEventListener('scroll', onScrollDepth);
+      removeEventListener('pageshow', onPageShow);
       io.disconnect();
     };
   }, []);
