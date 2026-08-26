@@ -58,7 +58,7 @@ export default function Hero({
           {tryFromSite ? ` at ${tryFromSite}` : ''}.
         </p>
         <div className="hero-cta">
-          <Link href="/#packages" className="btn btn-primary">
+          <Link href="/dives/try-dive" className="btn btn-primary">
             Book a Try Dive from {tryFrom} →
           </Link>
           <a

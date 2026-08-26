@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Dive } from '@/lib/types';
-import { inferDiveKind, kindToGroup } from '@/lib/types';
+import { inferDiveKind } from '@/lib/types';
+import { kindToCategorySlug } from '@/lib/categories';
 import { DIVE_TYPES, type DiveTypeInfo } from '@/lib/diveTypes';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
@@ -87,14 +88,14 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
           <p>
             However you like to dive — your very first breath from the beach, a boat out to quieter
             reefs, or the reef after dark — there’s a way in for you. Not sure yet? See{' '}
-            <Link href="/#sites">where you’ll dive</Link> or the{' '}
+            <Link href="/reefs">where you’ll dive</Link> or the{' '}
             <Link href="/prices">full price list</Link>.
           </p>
         </div>
 
         <div className="dt-grid reveal">
           {DIVE_TYPES.map((t) => (
-            <a href={`#pk-${kindToGroup(t.category)}`} className="dt-card" key={t.key}>
+            <Link href={`/dives/${kindToCategorySlug(t.category)}`} className="dt-card" key={t.key}>
               <span className="dt-photo">
                 <picture>
                   <source type="image/webp" srcSet={`${t.image}.webp`} />
@@ -121,7 +122,7 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
                   )}
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 

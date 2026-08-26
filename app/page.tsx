@@ -6,15 +6,15 @@ import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
 import Hero from '@/components/home/Hero';
 import DiveTypes from '@/components/home/DiveTypes';
-import Packages from '@/components/home/Packages';
+import CuratedPicks from '@/components/home/CuratedPicks';
 import Courses from '@/components/home/Courses';
-import ReefExplorer from '@/components/home/ReefExplorer';
+import ReefTeaser from '@/components/home/ReefTeaser';
 import WhyUs from '@/components/home/WhyUs';
 import Team from '@/components/home/Team';
 import Reviews from '@/components/home/Reviews';
 import Gallery from '@/components/home/Gallery';
 import FinalCTA from '@/components/home/FinalCTA';
-import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesByCategory, diveCategory } from '@/lib/data';
+import { getDives, getCourses, getFeaturedReviews, getSettings, diveCategory } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
 import { fromPrice, cheapestDive } from '@/lib/format';
@@ -34,7 +34,6 @@ export default async function HomePage() {
   // AggregateRating schema below reflect the real live count, not just whatever
   // was last typed into admin → Settings.
   const settings = withLiveRating(rawSettings, google);
-  const grouped = groupDivesByCategory(dives);
   // cheapest Discover Scuba dive for the hero price hook ("from ₹X")
   const tryDives = dives.filter((d) => diveCategory(d) === 'discover');
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
@@ -52,9 +51,9 @@ export default async function HomePage() {
 
       <div className="sheet">
         <DiveTypes dives={dives} />
-        <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
+        <CuratedPicks dives={dives} whatsapp={settings.whatsapp} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <ReefExplorer whatsapp={settings.whatsapp} dives={dives} />
+        <ReefTeaser />
         <WhyUs />
         <Team />
         <Reviews reviews={reviews} settings={settings} google={google} />

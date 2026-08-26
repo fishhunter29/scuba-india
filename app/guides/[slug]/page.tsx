@@ -93,7 +93,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
               <aside className="detail-aside">
                 <div className="book-card">
                   <div className="bc-per">Ready to dive?</div>
-                  <Link href="/#packages" className="btn btn-primary">
+                  <Link href="/dives/try-dive" className="btn btn-primary">
                     See dives &amp; packages →
                   </Link>
                   <a

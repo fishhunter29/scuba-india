@@ -63,13 +63,17 @@ Log in at `/admin`. Empty fields render visible placeholders like
 ## 6. Smoke test on the live site (mobile + desktop)
 
 - [ ] Homepage loads; hero, all sections and images render.
-- [ ] Tapping a dive-type card opens the matching Packages tab and scrolls to it.
+- [ ] Nav → **Dives** menu opens; each category page loads:
+      `/dives/try-dive`, `/dives/boat-dive`, `/dives/fun-dive`,
+      `/dives/boat-experience`, `/reefs`, `/courses`.
+- [ ] Option tabs on each category page filter the list correctly.
+- [ ] Tapping a dive-type card on the homepage opens its category page.
 - [ ] Reef explorer: switching reefs updates the panel + shows its dive list.
 - [ ] Every **Book / WhatsApp / Call** button opens the right chat/dialer with
       the correct number.
 - [ ] Header **Instagram / Facebook / TripAdvisor** icons open the right pages.
-- [ ] `/prices`, `/learn-to-dive`, `/guides`, dive and course pages all load
-      with their top banner image.
+- [ ] `/prices`, `/learn-to-dive`, `/guides`, the category pages, and the
+      individual dive and course pages all load with their top banner image.
 - [ ] Browser **back button** returns cleanly (no flashing sections).
 - [ ] Facebook domain verification still present (already added to `<head>`).
 

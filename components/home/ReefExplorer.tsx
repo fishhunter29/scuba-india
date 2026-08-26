@@ -99,7 +99,15 @@ const REEFS: Reef[] = [
 
 const MAX_DEPTH = 25; // visual scale for the depth bar
 
-export default function ReefExplorer({ whatsapp, dives = [] }: { whatsapp?: string; dives?: Dive[] }) {
+export default function ReefExplorer({
+  whatsapp,
+  dives = [],
+  showHeading = true,
+}: {
+  whatsapp?: string;
+  dives?: Dive[];
+  showHeading?: boolean;
+}) {
   const [active, setActive] = useState(0);
   const r = REEFS[active];
 
@@ -133,15 +141,17 @@ export default function ReefExplorer({ whatsapp, dives = [] }: { whatsapp?: stri
   return (
     <section className="band sites" id="sites">
       <div className="wrap">
-        <div className="sec-head reveal" style={{ maxWidth: 620 }}>
-          <div className="sec-eyebrow">Where you&apos;ll dive</div>
-          <h2>Four reefs. Every level of diver.</h2>
-          <p>
-            We dive Havelock&apos;s (Swaraj Dweep&apos;s) healthiest sites and match each to you —
-            gentle shallow coral for your first breath, deeper drifts for the certified. Warm water
-            27–30°C, visibility 15–25m. Tap a reef to explore it.
-          </p>
-        </div>
+        {showHeading && (
+          <div className="sec-head reveal" style={{ maxWidth: 620 }}>
+            <div className="sec-eyebrow">Where you&apos;ll dive</div>
+            <h2>Four reefs. Every level of diver.</h2>
+            <p>
+              We dive Havelock&apos;s (Swaraj Dweep&apos;s) healthiest sites and match each to you —
+              gentle shallow coral for your first breath, deeper drifts for the certified. Warm
+              water 27–30°C, visibility 15–25m. Tap a reef to explore it.
+            </p>
+          </div>
+        )}
 
         <div className="reef-explorer reveal">
           {/* Feature panel — the selected reef */}
@@ -216,7 +226,7 @@ export default function ReefExplorer({ whatsapp, dives = [] }: { whatsapp?: stri
                 >
                   Enquire about {r.name} →
                 </a>
-                <Link href="/#packages" className="reef-cta-secondary">
+                <Link href="/prices" className="reef-cta-secondary">
                   Compare all dives
                 </Link>
               </div>

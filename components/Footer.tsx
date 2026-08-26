@@ -57,9 +57,9 @@ export default function Footer({ settings }: { settings: Settings }) {
           </div>
           <div className="foot-col">
             <h4>Dive</h4>
-            <Link href="/#experiences">Try Scuba Dive</Link>
-            <Link href="/#packages">Fun Dives</Link>
-            <Link href="/#courses">PADI Courses</Link>
+            <Link href="/dives/try-dive">Try Dive</Link>
+            <Link href="/dives/fun-dive">Fun Dives</Link>
+            <Link href="/courses">PADI Courses</Link>
             <Link href="/learn-to-dive">New to diving?</Link>
           </div>
           <div className="foot-col">

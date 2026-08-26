@@ -28,7 +28,7 @@ export default function DiveChooser({
     title: 'A PADI Course',
     blurb:
       'You want to dive properly and for life. Start with PADI Scuba Diver or Open Water — a real certification you can use anywhere in the world.',
-    href: '/#courses',
+    href: '/courses',
     cta: 'View PADI courses →',
     price: `From ${courseFrom} per person`,
   };

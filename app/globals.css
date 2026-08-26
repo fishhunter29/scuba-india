@@ -45,7 +45,11 @@ a{color:inherit;text-decoration:none}
 body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 44px;transition:background .4s,padding .4s}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px 44px;transition:background .4s,padding .4s;isolation:isolate}
+/* soft white fade behind the transparent nav — keeps the dark nav text legible
+   over hero/banner photography; hidden once the solid scrolled nav takes over */
+nav::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.7) 55%,rgba(255,255,255,0) 100%);transition:opacity .4s}
+nav.scrolled::before{opacity:0}
 nav.scrolled{background:rgba(255,255,255,.86);backdrop-filter:blur(12px);padding:14px 44px;box-shadow:0 1px 0 rgba(0,0,0,.1)}
 .nav-brand-group{display:flex;align-items:center;gap:18px}
 .brand{font-family:var(--disp);font-size:24px;font-weight:700;letter-spacing:.02em;color:var(--sumi);display:flex;align-items:center;gap:10px}
@@ -390,3 +394,45 @@ footer{position:relative;z-index:3;background:var(--sumi);padding:80px 0;color:v
   *{animation:none!important;transition:none!important}
   .reveal,.hero-sub,.hero-cta,.trust-inline,.stroke-reveal{opacity:1!important;clip-path:none!important;transform:none!important}
 }
+
+/* =========================================================================
+   NAV DROPDOWN (Dives menu) + drawer grouping
+   ========================================================================= */
+.nav-dd{position:relative}
+.nav-dd-trigger{background:none;border:none;cursor:pointer;font-family:var(--body);font-size:15px;font-weight:500;color:var(--sumi);opacity:.8;display:inline-flex;align-items:center;gap:6px;padding:0;transition:opacity .2s,color .2s}
+.nav-dd-trigger:hover,.nav-dd[aria-expanded="true"] .nav-dd-trigger{opacity:1;color:var(--vermilion)}
+.nav-dd-caret{font-size:10px;transition:transform .2s}
+.nav-dd-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(6px);min-width:270px;background:var(--paper);border:1px solid rgba(0,0,0,.1);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.16);padding:8px;display:flex;flex-direction:column;gap:2px;opacity:0;visibility:hidden;transition:opacity .18s,transform .18s,visibility .18s;z-index:60}
+.nav-dd-menu.open{opacity:1;visibility:visible;transform:translateX(-50%) translateY(10px)}
+.nav-dd-menu a{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:9px;transition:background .15s}
+.nav-dd-menu a:hover{background:var(--paper-deep)}
+.nav-dd-name{font-weight:600;font-size:15px;color:var(--sumi)}
+.nav-dd-menu a:hover .nav-dd-name{color:var(--vermilion)}
+.nav-dd-meta{font-family:var(--mono);font-size:11px;color:var(--ash)}
+.drawer-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);margin-top:14px}
+.drawer a.drawer-sub{font-size:22px;padding-left:14px}
+
+/* =========================================================================
+   CURATED PICKS / shared product-card extras
+   ========================================================================= */
+.pk-name{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--sumi);margin-bottom:8px;line-height:1.25}
+.pk-name a{color:inherit}
+.pk-name a:hover{color:var(--vermilion)}
+.pk-pitch{font-size:14px;color:var(--sumi-soft);line-height:1.55;margin-bottom:14px;flex:1}
+.pk-more{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--indigo);border-bottom:1px solid rgba(21,94,107,.35)}
+.pk-more:hover{color:var(--sumi);border-bottom-color:var(--sumi)}
+.pk-book{white-space:nowrap}
+
+/* =========================================================================
+   REEF TEASER (homepage)
+   ========================================================================= */
+.reef-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.reef-teaser{display:flex;flex-direction:column;gap:8px;color:var(--sumi)}
+.reef-teaser-img{display:block;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--sumi);box-shadow:0 10px 26px rgba(0,0,0,.12);transition:transform .3s,box-shadow .3s}
+.reef-teaser:hover .reef-teaser-img{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.reef-teaser-img img{width:100%;height:100%;object-fit:cover;display:block}
+.reef-teaser-name{font-family:var(--disp);font-size:19px;font-weight:700}
+.reef-teaser:hover .reef-teaser-name{color:var(--vermilion)}
+.reef-teaser-meta{font-family:var(--mono);font-size:11.5px;color:var(--ash)}
+.reef-teaser-cta{margin-top:30px}
+@media(max-width:900px){.reef-teaser-grid{grid-template-columns:1fr 1fr}}

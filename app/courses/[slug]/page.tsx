@@ -66,7 +66,7 @@ export default async function CourseDetailPage({ params }: { params: { slug: str
         <PageBanner image="/images/banner-courses" alt="The Scuba India dive boat off Havelock" />
         <section className="detail-hero">
           <div className="wrap">
-            <Link href="/#courses" className="detail-back">
+            <Link href="/courses" className="detail-back">
               ← All PADI courses
             </Link>
             <div className="detail-eyebrow">PADI Certification</div>

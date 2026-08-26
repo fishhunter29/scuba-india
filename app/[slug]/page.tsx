@@ -79,7 +79,7 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
         {/* HERO */}
         <section className="detail-hero">
           <div className="wrap">
-            <Link href="/#packages" className="detail-back">
+            <Link href="/dives/try-dive" className="detail-back">
               ← All dives &amp; packages
             </Link>
             <div className="detail-eyebrow">

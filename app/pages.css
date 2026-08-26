@@ -355,3 +355,37 @@ a.pl-name-link:hover{color:var(--vermilion)}
   .pl-col-price{font-size:18px;margin-top:2px}
   .pl-footer-note{flex-direction:column;align-items:flex-start}
 }
+
+/* =========================================================================
+   CATEGORY PAGES (/dives/[category], /courses, /reefs)
+   ========================================================================= */
+.detail.has-banner .detail-hero h1{font-size:clamp(30px,4.4vw,52px);max-width:16ch}
+.cat-meta{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--sumi-soft)}
+.cat-meta span{display:inline-flex;align-items:center;gap:8px}
+.cat-meta span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--vermilion)}
+
+.cat-empty{background:var(--paper-deep);border:1px solid rgba(0,0,0,.1);border-radius:16px;padding:34px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px}
+.cat-empty p{color:var(--sumi-soft);font-size:16px;max-width:520px;margin:0}
+
+.cat-more{margin-top:64px;padding-top:34px;border-top:1px solid rgba(0,0,0,.1)}
+.cat-more h2{font-family:var(--disp);font-size:clamp(22px,3vw,30px);font-weight:700;color:var(--sumi);margin-bottom:20px}
+.cat-more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.cat-more-card{display:flex;flex-direction:column;gap:5px;background:var(--paper);border:1px solid rgba(0,0,0,.1);border-radius:13px;padding:18px 20px;transition:transform .2s,border-color .2s,box-shadow .2s}
+.cat-more-card:hover{transform:translateY(-3px);border-color:var(--vermilion);box-shadow:0 12px 28px rgba(0,0,0,.1)}
+.cat-more-name{font-family:var(--disp);font-size:18px;font-weight:700;color:var(--sumi)}
+.cat-more-card:hover .cat-more-name{color:var(--vermilion)}
+.cat-more-aud{font-family:var(--mono);font-size:11px;color:var(--ash)}
+
+/* course cards (courses index) */
+.course-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.course-card{display:flex;flex-direction:column;background:var(--paper);border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:24px;box-shadow:0 6px 20px rgba(0,0,0,.06);transition:transform .25s,box-shadow .25s,border-color .25s}
+.course-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,.12);border-color:var(--sumi)}
+.cc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.cc-head h3{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--sumi);line-height:1.25}
+.cc-head h3 a{color:inherit}
+.cc-head h3 a:hover{color:var(--vermilion)}
+.cc-badge{flex:0 0 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;background:var(--vermilion);color:#fff;padding:4px 9px;border-radius:999px}
+.cc-desc{font-size:14.5px;color:var(--sumi-soft);line-height:1.6;margin-bottom:16px;flex:1}
+.cc-stats{list-style:none;display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 16px;padding:0}
+.cc-stats li{font-family:var(--mono);font-size:13px;color:var(--sumi)}
+.cc-stats li span{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);margin-bottom:2px}
