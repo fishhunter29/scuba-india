@@ -14,7 +14,7 @@ export default function FinalCTA({ settings }: { settings: Settings }) {
           </h2>
           <p>Book in two minutes. Free photos. Certified guides. Still, clear water.</p>
           <div className="hero-cta">
-            <Link href="/#packages" className="btn btn-primary">
+            <Link href="/dives/try-dive" className="btn btn-primary">
               Book a Dive →
             </Link>
             <a

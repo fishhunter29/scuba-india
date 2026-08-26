@@ -101,13 +101,34 @@ insert into public.dives
  'For groups, families and celebrations who want the freedom of a private boat for the day''s highlights.',
  '[{"title":"Arrive & meet","body":"Pickup within 5km, then to the boat."},{"title":"Set off","body":"Your private boat and crew for the half day."},{"title":"On the water","body":"Multiple stops and beaches, all on your schedule."},{"title":"Return","body":"Back to shore and a drop within 5km."}]', 140);
 
--- Island Hopping is "on request" (priced per couple from ₹25,000) — flag it
-update public.dives set on_request = true, duration_label = 'Per couple · from ₹25,000' where slug = 'island-hopping';
+-- ---------- Shore-entry Try Dive (indicative ₹3,500) -----------------------
+insert into public.dives
+  (slug, name, site, site_key, depth_m, dive_min, train_min, photos, gopro_min, price, tier, pitch, see_text, for_text, steps, sort) values
+('try-shore', 'Try Dive — Shore', 'Havelock', 'multi', 12, 45, 40, 30, 3, 3500, null,
+ 'Your first breath underwater, walking in from the beach.',
+ 'Shallow, sunlit coral close to shore — clownfish in their anemones, parrotfish and butterflyfish in calm, easy water.',
+ 'The gentlest, most budget-friendly way to try scuba. No experience or swimming skill needed — a PADI instructor holds you the whole time.',
+ '[{"title":"Arrive & meet","body":"Pickup within 5km. Meet your PADI instructor, no rush."},{"title":"Safety brief","body":"Simple, jargon-free briefing on breathing and a few hand signals."},{"title":"Gear up","body":"We fit your mask, fins and gear and check everything twice."},{"title":"Your dive","body":"Wade in from the beach for a guided shallow dive, instructor beside you."},{"title":"Photos & video","body":"HD photos and GoPro video — yours to keep, free."}]', 5);
+
+-- Rename the snorkelling product to match the site's "open sea" wording.
+update public.dives set name = 'Open-Sea Snorkelling' where slug = 'boat-snorkelling';
+
+-- Island Hopping has a real "from" price per couple (not on-request).
+update public.dives set on_request = false, price = 25000, duration_label = 'Per couple · from' where slug = 'island-hopping';
 update public.dives set duration_label = 'Full day · all gear included' where slug = 'boat-snorkelling';
 update public.dives set duration_label = '1 hour · private boat'    where slug = 'charter-1h';
 update public.dives set duration_label = '1.5 hours · private boat' where slug = 'charter-1-5h';
 update public.dives set duration_label = '2 hours · private boat'   where slug = 'charter-2h';
 update public.dives set duration_label = 'Half day · private boat'  where slug = 'charter-half-day';
+
+-- Explicit dive category (drives homepage grouping, /prices, ways-to-dive).
+update public.dives set category = 'discover'  where slug in ('discover-30','discover-45','discover-double','discover-combo');
+update public.dives set category = 'try_shore' where slug = 'try-shore';
+update public.dives set category = 'fun'       where slug in ('fun-single','fun-2dives','fun-4dives');
+update public.dives set category = 'night'     where slug = 'fun-night';
+update public.dives set category = 'snorkel'   where slug = 'boat-snorkelling';
+update public.dives set category = 'island'    where slug = 'island-hopping';
+update public.dives set category = 'charter'   where slug like 'charter-%';
 
 -- ============================================================================
 -- PADI courses (SPEC §9) — REAL data
@@ -124,6 +145,14 @@ insert into public.courses (name, duration, depth, min_age, price, on_request, d
 ('EFR + PADI Rescue Combo',                     '4–5 days',   '—',   '12 / 15', 28000,  false, 'Emergency First Response and Rescue Diver together — the safety-focused pair that makes you a calmer, more capable diver.', 80),
 ('EFR + PADI Rescue + PADI Dive Master Combo',  '4–6 weeks',  '—',   '18',      95000,  false, 'Everything you need to go pro — EFR, Rescue and Divemaster in one pathway, the smart route into a diving career.', 90),
 ('Zero to Hero',                                '6–10 weeks', '30m', '18',      130000, false, 'From your first breath underwater to a PADI professional — Open Water all the way to Divemaster in a single journey.', 100);
+
+-- Mark which courses are bundles (combos) vs single certifications.
+update public.courses set kind = 'combo' where name in (
+  'PADI Open Water & Advanced Open Water Combo',
+  'EFR + PADI Rescue Combo',
+  'EFR + PADI Rescue + PADI Dive Master Combo',
+  'Zero to Hero'
+);
 
 -- ============================================================================
 -- Reviews — intentionally empty. Add real Google reviews via /admin → Reviews

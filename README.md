@@ -8,6 +8,10 @@ booking CTAs, an interactive first-timer guide, and a simple admin dashboard.
 **Stack:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · Three.js r128 ·
 Supabase (Postgres + Auth + Storage) · Vercel.
 
+> **Handing this over / going live?** Start with **[`CHECKLIST.md`](./CHECKLIST.md)** —
+> the step-by-step go-live checklist (migrations to run, admin settings to fill,
+> env vars, smoke tests). Reference material lives in **[`docs/`](./docs/)**.
+
 ---
 
 ## 1. Prerequisites

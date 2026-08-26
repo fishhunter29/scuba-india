@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
+import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { getSettings } from '@/lib/data';
@@ -24,7 +25,8 @@ export default async function PrivacyPolicyPage() {
       <ScrollFX />
       <Nav />
 
-      <main className="detail">
+      <main className="detail has-banner">
+        <PageBanner image="/images/banner-legal" alt="The Scuba India dive boat on calm water, Havelock" />
         <section className="detail-hero">
           <div className="wrap">
             <div className="detail-eyebrow">Legal</div>

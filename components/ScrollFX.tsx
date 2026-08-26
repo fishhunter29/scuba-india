@@ -18,38 +18,73 @@ export default function ScrollFX() {
     function onScrollDepth() {
       nav?.classList.toggle('scrolled', scrollY > 40);
       const pct = Math.min(scrollY / (document.body.scrollHeight - innerHeight || 1), 1);
-      if (depthveil) {
-        // deepen into ocean teal-navy (not black) as you descend
-        depthveil.style.background =
-          'linear-gradient(180deg,rgba(26,78,90,' +
-          (pct * 0.3).toFixed(3) +
-          ') 0%,rgba(9,40,52,' +
-          (pct * 0.62).toFixed(3) +
-          ') 100%)';
-      }
+      // Cheap, compositor-only update: fade a fixed gradient (see #depthveil CSS)
+      // instead of rebuilding the gradient string every frame.
+      if (depthveil) depthveil.style.opacity = pct.toFixed(3);
       if (dmDot) dmDot.style.top = pct * 150 + 'px';
       if (dmVal) dmVal.textContent = Math.round(pct * MAX_DEPTH) + 'm';
     }
-    addEventListener('scroll', onScrollDepth, { passive: true });
+    // Batch scroll work to one update per frame so the smooth-scroll animations
+    // (e.g. a dive-type card gliding to its packages tab) don't stutter.
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        onScrollDepth();
+        ticking = false;
+      });
+    }
+    addEventListener('scroll', onScroll, { passive: true });
     onScrollDepth();
 
     // reveal-on-scroll + animate depth bars when they enter view
+    const setFill = (root: ParentNode) =>
+      root.querySelectorAll<HTMLElement>('.depth-fill').forEach((f) => (f.style.width = (f.dataset.depth || '0') + '%'));
+
     const io = new IntersectionObserver(
       (es) =>
         es.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add('in');
-            const fills = (e.target as HTMLElement).querySelectorAll<HTMLElement>('.depth-fill');
-            fills.forEach((f) => (f.style.width = (f.dataset.depth || '0') + '%'));
+            setFill(e.target as HTMLElement);
             io.unobserve(e.target);
           }
         }),
-      { threshold: 0.12 },
+      // Start the reveal ~40% of a screen BEFORE the element scrolls in, so
+      // content (and its icons) is already visible by the time you reach it.
+      { threshold: 0, rootMargin: '0px 0px 40% 0px' },
     );
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // On back/forward navigation the visitor has already seen this page, so
+    // scroll is restored mid-page — don't replay the entrance animation (it
+    // flashes / looks broken during the transition). Show everything at once,
+    // instantly. Fresh loads keep the normal reveal-on-scroll.
+    const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+    const revealAllInstantly = () => {
+      document.querySelectorAll<HTMLElement>('.reveal').forEach((el) => {
+        el.style.transition = 'none';
+        el.classList.add('in');
+      });
+      setFill(document);
+    };
+
+    if (navEntry?.type === 'back_forward') {
+      revealAllInstantly();
+    } else {
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    }
+
+    // bfcache restore fires pageshow(persisted) without re-running React — make
+    // sure nothing is left hidden if the browser restored a reset DOM.
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) revealAllInstantly();
+    };
+    addEventListener('pageshow', onPageShow);
 
     return () => {
       removeEventListener('scroll', onScrollDepth);
+      removeEventListener('pageshow', onPageShow);
       io.disconnect();
     };
   }, []);

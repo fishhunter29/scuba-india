@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { getDiveSitemapEntries, getCourses, getPostSitemapEntries } from '@/lib/data';
 import { courseSlug } from '@/lib/format';
 import { SITE_URL } from '@/lib/constants';
+import { DIVE_CATEGORIES } from '@/lib/categories';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [dives, courses, posts] = await Promise.all([
@@ -31,6 +32,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Dive category pages — the main browse entry points.
+    ...DIVE_CATEGORIES.map((c) => ({
+      url: `${SITE_URL}/dives/${c.slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    })),
+    { url: `${SITE_URL}/reefs`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 },
+    { url: `${SITE_URL}/courses`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.8 },
   ];
 
   const divePages: MetadataRoute.Sitemap = dives.map((d) => ({

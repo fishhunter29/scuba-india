@@ -1,11 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Dive, Settings, DiveCategory } from '@/lib/types';
-import { CATEGORY_TABS, CATEGORY_INTRO } from '@/lib/types';
+import { CATEGORY_TABS, CATEGORY_INTRO, inferDiveKind } from '@/lib/types';
 import { formatPrice, diveDuration } from '@/lib/format';
+import { waLink } from '@/lib/whatsapp';
+
+// Fallback photo per dive kind, so every package card has an image even when
+// no custom image_url is set in admin.
+const KIND_IMG: Record<string, string> = {
+  try_shore: 'type-tryshore', discover: 'type-dsdboat', fun: 'type-fun',
+  night: 'type-night', snorkel: 'type-snorkel', island: 'type-island', charter: 'type-dsdboat',
+};
+function cardImage(d: Dive): string {
+  return d.image_url ?? `/images/${KIND_IMG[inferDiveKind(d)] ?? 'type-dsdboat'}.jpg`;
+}
 
 const FEAT_TIERS = ['Premium', 'Premium+', 'Signature', 'Certified'];
 
@@ -55,6 +66,27 @@ export default function Packages({
   const tabs = CATEGORY_TABS.filter((t) => grouped[t.key]?.length);
   const [active, setActive] = useState<DiveCategory>(tabs[0]?.key ?? 'discover');
 
+  // A dive-type card above links to #pk-discover / #pk-fun / #pk-experience —
+  // open that tab and glide the section into view (works on first load too).
+  useEffect(() => {
+    const valid = new Set(tabs.map((t) => t.key));
+    const apply = (scroll: boolean) => {
+      const m = /^#pk-(discover|fun|experience)$/.exec(window.location.hash);
+      if (!m) return;
+      const key = m[1] as DiveCategory;
+      if (!valid.has(key)) return;
+      setActive(key);
+      if (scroll) {
+        document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    apply(true);
+    const onHash = () => apply(true);
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section className="band packages" id="packages">
       <div className="wrap">
@@ -70,6 +102,13 @@ export default function Packages({
             the same certification, the same reefs and free HD photos included. See the{' '}
             <Link href="/prices">full price list</Link>.
           </p>
+        </div>
+
+        <div className="pl-direct-note reveal" role="note">
+          <strong>Direct-booking rates only.</strong> The prices shown apply when you book with
+          Scuba India directly. Booked through a travel agent or operator? Please{' '}
+          <a href={waLink(settings.whatsapp, 'Hi Scuba India, I booked through an agent and would like to know my applicable rate.')} target="_blank" rel="noopener noreferrer">contact us</a>{' '}
+          for your applicable rate.
         </div>
 
         <div className="pk-filter reveal" role="tablist">
@@ -122,16 +161,14 @@ export default function Packages({
                   const feat = d.tier ? FEAT_TIERS.includes(d.tier) : false;
                   return (
                     <div key={d.id} className={`pk${feat ? ' feat' : ''}`}>
-                      {d.image_url && (
-                        <div className="pk-img">
-                          <Image
-                            src={d.image_url}
-                            alt={d.name}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 280px"
-                          />
-                        </div>
-                      )}
+                      <div className="pk-img">
+                        <Image
+                          src={cardImage(d)}
+                          alt={d.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 280px"
+                        />
+                      </div>
                       {d.tier && <span className="tier">{tierLabel(d.tier)}</span>}
                       <span className="dur">{diveDuration(d)}</span>
                       <h4>{d.name}</h4>

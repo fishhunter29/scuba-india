@@ -4,6 +4,7 @@ import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
+import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
@@ -73,7 +74,8 @@ export default async function LearnToDivePage() {
         Book a dive →
       </a>
 
-      <main className="learn">
+      <main className="learn has-banner">
+        <PageBanner image="/images/banner-learn" alt="A Scuba India instructor guiding new divers in the shallows, Havelock" />
 
       {/* SECTION 1 — THE HOOK */}
       <section className="learn-hero">

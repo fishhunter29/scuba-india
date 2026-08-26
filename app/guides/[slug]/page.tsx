@@ -5,6 +5,7 @@ import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
+import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
@@ -56,7 +57,8 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
       <ScrollFX />
       <Nav />
 
-      <main className="detail">
+      <main className="detail has-banner">
+        <PageBanner image="/images/banner-guides" alt="Scuba India dive crew on the boat, Havelock" />
         <section className="detail-hero">
           <div className="wrap">
             <Link href="/guides" className="detail-back">
@@ -91,7 +93,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
               <aside className="detail-aside">
                 <div className="book-card">
                   <div className="bc-per">Ready to dive?</div>
-                  <Link href="/#packages" className="btn btn-primary">
+                  <Link href="/dives/try-dive" className="btn btn-primary">
                     See dives &amp; packages →
                   </Link>
                   <a

@@ -32,6 +32,7 @@ export default function InkBackground() {
       // locked-down mobile webviews) — fall back to a static background instead
       // of leaving an uncaught exception to take down the whole page.
       canvas.style.background = 'var(--paper)';
+      canvas.style.display = 'none';
       return;
     }
     // A WebGL context can exist with no real GPU behind it — headless/CI
@@ -48,6 +49,7 @@ export default function InkBackground() {
       : '';
     if (/swiftshader|llvmpipe|software/i.test(rendererName)) {
       canvas.style.background = 'var(--paper)';
+      canvas.style.display = 'none';
       renderer.dispose();
       return;
     }
@@ -68,10 +70,10 @@ export default function InkBackground() {
     const frag = `
     precision highp float;
     uniform float u_time; uniform vec2 u_res; uniform vec2 u_mouse; uniform float u_mvel;
-    vec3 water=vec3(0.863,0.937,0.937);
-    vec3 waterDeep=vec3(0.624,0.824,0.824);
-    vec3 inkNavy=vec3(0.071,0.227,0.278);
-    vec3 teal=vec3(0.118,0.435,0.482);
+    vec3 water=vec3(1.000,1.000,1.000);
+    vec3 waterDeep=vec3(0.965,0.968,0.968);
+    vec3 inkNavy=vec3(0.808,0.816,0.824);
+    vec3 teal=vec3(0.905,0.910,0.912);
     vec3 verm=vec3(0.878,0.322,0.227);
     vec2 hash(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return -1.0+2.0*fract(sin(p)*43758.5453);}
     float noise(vec2 p){const float K1=0.366025404,K2=0.211324865;vec2 i=floor(p+(p.x+p.y)*K1);vec2 a=p-i+(i.x+i.y)*K2;float m=step(a.y,a.x);vec2 o=vec2(m,1.0-m);vec2 b=a-o+K2;vec2 c=a-1.0+2.0*K2;vec3 h=max(0.5-vec3(dot(a,a),dot(b,b),dot(c,c)),0.0);vec3 n=h*h*h*h*vec3(dot(a,hash(i)),dot(b,hash(i+o)),dot(c,hash(i+1.0)));return dot(n,vec3(70.0));}

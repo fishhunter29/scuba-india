@@ -6,7 +6,6 @@ import AdminShell from '@/components/admin/AdminShell';
 import ImageUpload from '@/components/admin/ImageUpload';
 import { useToast } from '@/components/admin/useToast';
 import { createClient } from '@/lib/supabase/client';
-import { courseSlug } from '@/lib/format';
 import type { Course } from '@/lib/types';
 
 const EMPTY: Partial<Course> = {
@@ -18,6 +17,7 @@ const EMPTY: Partial<Course> = {
   on_request: false,
   description: '',
   image_url: null,
+  kind: 'course',
   sort: 0,
 };
 
@@ -77,6 +77,10 @@ export default function CoursesAdmin() {
       }
     >
       <Toast />
+      <p className="a-intro">
+        PADI courses and course combos, shown in the Courses section and the price list. A “combo”
+        is a bundle of courses at one price.
+      </p>
       {loading ? (
         <p>Loading…</p>
       ) : (
@@ -85,9 +89,8 @@ export default function CoursesAdmin() {
             <thead>
               <tr>
                 <th>Course</th>
+                <th>Type</th>
                 <th>Duration</th>
-                <th>Depth</th>
-                <th>Min age</th>
                 <th>Price</th>
                 <th></th>
               </tr>
@@ -97,14 +100,9 @@ export default function CoursesAdmin() {
                 <tr key={c.id}>
                   <td>
                     <strong>{c.name}</strong>
-                    <br />
-                    <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--ash)' }}>
-                      /courses/{courseSlug(c.name)}
-                    </span>
                   </td>
+                  <td>{c.kind === 'combo' ? 'Combo' : 'Course'}</td>
                   <td>{c.duration}</td>
-                  <td>{c.depth}</td>
-                  <td>{c.min_age}</td>
                   <td>{c.on_request ? 'On request' : c.price ? '₹' + c.price.toLocaleString('en-IN') : '—'}</td>
                   <td style={{ whiteSpace: 'nowrap' }}>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => setEditing({ ...c })}>
@@ -125,22 +123,32 @@ export default function CoursesAdmin() {
         <div className="a-modal-bg" onClick={(e) => e.target === e.currentTarget && setEditing(null)}>
           <div className="a-modal">
             <h2>{editing.id ? 'Edit course' : 'New course'}</h2>
-            <div className="a-field">
-              <label>Name</label>
-              <input value={editing.name ?? ''} onChange={(e) => field('name', e.target.value)} />
+            <div className="a-grid2">
+              <div className="a-field">
+                <label>Name</label>
+                <input value={editing.name ?? ''} placeholder="e.g. PADI Open Water Diver" onChange={(e) => field('name', e.target.value)} />
+              </div>
+              <div className="a-field">
+                <label>Type</label>
+                <select value={editing.kind ?? 'course'} onChange={(e) => field('kind', e.target.value as 'course' | 'combo')}>
+                  <option value="course">Single course</option>
+                  <option value="combo">Combo (bundle of courses)</option>
+                </select>
+                <p className="a-help">Combos appear in their own “Course Combos” section on the price list.</p>
+              </div>
             </div>
             <div className="a-grid3">
               <div className="a-field">
                 <label>Duration</label>
-                <input value={editing.duration ?? ''} onChange={(e) => field('duration', e.target.value)} />
+                <input value={editing.duration ?? ''} placeholder="e.g. 3–4 days" onChange={(e) => field('duration', e.target.value)} />
               </div>
               <div className="a-field">
-                <label>Depth</label>
-                <input value={editing.depth ?? ''} onChange={(e) => field('depth', e.target.value)} />
+                <label>Max depth</label>
+                <input value={editing.depth ?? ''} placeholder="e.g. 18m or —" onChange={(e) => field('depth', e.target.value)} />
               </div>
               <div className="a-field">
-                <label>Min age</label>
-                <input value={editing.min_age ?? ''} onChange={(e) => field('min_age', e.target.value)} />
+                <label>Minimum age</label>
+                <input value={editing.min_age ?? ''} placeholder="e.g. 10 / 12" onChange={(e) => field('min_age', e.target.value)} />
               </div>
             </div>
             <div className="a-grid2">
@@ -175,12 +183,13 @@ export default function CoursesAdmin() {
               </div>
             </div>
             <div className="a-field">
-              <label>Sort order</label>
+              <label>Order on the page</label>
               <input
                 type="number"
                 value={editing.sort ?? 0}
                 onChange={(e) => field('sort', Number(e.target.value))}
               />
+              <p className="a-help">Lower numbers appear first.</p>
             </div>
             <div style={{ display: 'flex', gap: 12, marginTop: 18 }}>
               <button className="a-btn a-btn-primary" onClick={save}>

@@ -6,10 +6,14 @@ import { waLink } from '@/lib/whatsapp';
 export default function Courses({
   courses,
   whatsapp,
+  limit = 4,
 }: {
   courses: Course[];
   whatsapp: string;
+  limit?: number;
 }) {
+  // Homepage shows a curated few — the full list lives at /courses.
+  const shown = courses.filter((c) => (c.kind ?? 'course') !== 'combo').slice(0, limit);
   return (
     <section className="band courses" id="courses">
       <div className="wrap">
@@ -22,8 +26,12 @@ export default function Courses({
           </p>
         </div>
         <div className="reveal">
-          {courses.map((c) => (
+          {shown.map((c) => (
             <Link href={`/courses/${courseSlug(c.name)}`} className="course-row" key={c.id}>
+              <span className="cthumb">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={c.image_url ?? '/images/gallery/g34.jpg'} alt="" loading="lazy" decoding="async" />
+              </span>
               <span className="cname">{c.name}</span>
               <span className="cstat">
                 <span>DURATION</span>
@@ -42,14 +50,21 @@ export default function Courses({
           ))}
         </div>
         <div className="courses-cta reveal">
-          <p>Not sure which course is right for you? We&apos;ll help you choose.</p>
+          <p>
+            {courses.length > shown.length
+              ? `${courses.length} courses and combos in total — including Divemaster and money-saving bundles.`
+              : 'Not sure which course is right for you? We\u2019ll help you choose.'}
+          </p>
+          <Link href="/courses" className="btn btn-primary">
+            View all courses →
+          </Link>
           <a
             href={waLink(whatsapp, 'Hi Scuba India, I have a question about your PADI courses.')}
-            className="btn btn-primary"
+            className="btn btn-ghost"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Ask about courses on WhatsApp →
+            Ask on WhatsApp →
           </a>
         </div>
       </div>

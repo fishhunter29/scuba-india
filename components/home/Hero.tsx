@@ -30,15 +30,15 @@ export default function Hero({
         <div className="hero-social">
           <a href={settings.instagram || '#'} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/social/instagram.png" alt="" width={26} height={26} loading="lazy" />
+            <img src="/images/social/instagram.png" alt="" width={26} height={26} loading="eager" decoding="async" fetchPriority="high" />
           </a>
           <a href={settings.facebook || '#'} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/social/facebook.png" alt="" width={26} height={26} loading="lazy" />
+            <img src="/images/social/facebook.png" alt="" width={26} height={26} loading="eager" decoding="async" fetchPriority="high" />
           </a>
           <a href={settings.tripadvisor || '#'} target="_blank" rel="noopener noreferrer" aria-label="TripAdvisor">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/social/tripadvisor.png" alt="" width={26} height={26} loading="lazy" />
+            <img src="/images/social/tripadvisor.png" alt="" width={26} height={26} loading="eager" decoding="async" fetchPriority="high" />
           </a>
         </div>
         <div className="eyebrow">Havelock (Swaraj Dweep) · Andaman</div>
@@ -58,7 +58,7 @@ export default function Hero({
           {tryFromSite ? ` at ${tryFromSite}` : ''}.
         </p>
         <div className="hero-cta">
-          <Link href="/#packages" className="btn btn-primary">
+          <Link href="/dives/try-dive" className="btn btn-primary">
             Book a Try Dive from {tryFrom} →
           </Link>
           <a

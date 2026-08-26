@@ -5,15 +5,16 @@ import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import JsonLd from '@/components/JsonLd';
 import Hero from '@/components/home/Hero';
-import Experiences from '@/components/home/Experiences';
-import Packages from '@/components/home/Packages';
+import DiveTypes from '@/components/home/DiveTypes';
+import CuratedPicks from '@/components/home/CuratedPicks';
 import Courses from '@/components/home/Courses';
-import DiveSites from '@/components/home/DiveSites';
+import ReefTeaser from '@/components/home/ReefTeaser';
 import WhyUs from '@/components/home/WhyUs';
+import Team from '@/components/home/Team';
 import Reviews from '@/components/home/Reviews';
 import Gallery from '@/components/home/Gallery';
 import FinalCTA from '@/components/home/FinalCTA';
-import { getDives, getCourses, getFeaturedReviews, getSettings, groupDivesByCategory, diveCategory } from '@/lib/data';
+import { getDives, getCourses, getFeaturedReviews, getSettings, diveCategory } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
 import { fromPrice, cheapestDive } from '@/lib/format';
@@ -33,7 +34,6 @@ export default async function HomePage() {
   // AggregateRating schema below reflect the real live count, not just whatever
   // was last typed into admin → Settings.
   const settings = withLiveRating(rawSettings, google);
-  const grouped = groupDivesByCategory(dives);
   // cheapest Discover Scuba dive for the hero price hook ("from ₹X")
   const tryDives = dives.filter((d) => diveCategory(d) === 'discover');
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
@@ -50,11 +50,12 @@ export default async function HomePage() {
       <Hero settings={settings} tryFrom={tryFrom} tryFromSite={tryFromSite} />
 
       <div className="sheet">
-        <Experiences dives={dives} courses={courses} />
-        <Packages grouped={grouped} settings={settings} tryFrom={tryFrom} />
+        <DiveTypes dives={dives} />
+        <CuratedPicks dives={dives} whatsapp={settings.whatsapp} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <DiveSites />
+        <ReefTeaser />
         <WhyUs />
+        <Team />
         <Reviews reviews={reviews} settings={settings} google={google} />
         <Gallery />
       </div>

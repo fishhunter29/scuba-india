@@ -4,6 +4,7 @@ import Image from 'next/image';
 import InkBackground from '@/components/InkBackground';
 import ScrollFX from '@/components/ScrollFX';
 import Nav from '@/components/Nav';
+import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import { getPosts, getSettings } from '@/lib/data';
@@ -28,7 +29,8 @@ export default async function GuidesIndexPage() {
       <ScrollFX />
       <Nav />
 
-      <main className="detail">
+      <main className="detail has-banner">
+        <PageBanner image="/images/banner-guides" alt="Scuba India dive crew on the boat, Havelock" />
         <section className="detail-hero">
           <div className="wrap">
             <div className="detail-eyebrow">Scuba Guide</div>
