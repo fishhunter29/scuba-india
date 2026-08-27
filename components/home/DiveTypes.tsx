@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import type { Dive } from '@/lib/types';
+import type { Dive, DiveKind } from '@/lib/types';
 import { inferDiveKind } from '@/lib/types';
-import { kindToCategorySlug } from '@/lib/categories';
-import { DIVE_TYPES, type DiveTypeInfo } from '@/lib/diveTypes';
+import { DIVE_CATEGORIES } from '@/lib/categories';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
-function TypeIcon({ icon }: { icon: DiveTypeInfo['icon'] }) {
+type IconName = 'try' | 'boat' | 'fun' | 'night' | 'snorkel' | 'island' | 'reef';
+
+function TypeIcon({ icon }: { icon: IconName }) {
   const common = {
     width: 26,
     height: 26,
@@ -48,7 +49,7 @@ function TypeIcon({ icon }: { icon: DiveTypeInfo['icon'] }) {
           <path d="M16 5.5v2M15 6.5h2" />
         </svg>
       );
-    case 'snorkel': // snorkel mask
+    case 'snorkel':
       return (
         <svg {...common}>
           <path d="M4 9h9a2 2 0 0 1 2 2v.5a2.5 2.5 0 0 1-2.5 2.5h0A2.5 2.5 0 0 1 10 11.5" />
@@ -63,21 +64,56 @@ function TypeIcon({ icon }: { icon: DiveTypeInfo['icon'] }) {
           <path d="M12 9V5M12 5c-1.2 0-2 .6-2 1.4M12 5c1.2 0 2 .6 2 1.4" />
         </svg>
       );
+    case 'reef': // coral
+      return (
+        <svg {...common}>
+          <path d="M4 20c0-3 1.5-4.5 1.5-7M9 20c0-4 1-6 1-9M15 20c0-4-1-6-1-9M20 20c0-3-1.5-4.5-1.5-7" />
+          <path d="M5.5 13c-1 -1.2 -1.2 -2.6 -.4 -3.6M10 11c-1.2-1-1.6-2.4-1-3.8M14 11c1.2-1 1.6-2.4 1-3.8M18.5 13c1-1.2 1.2-2.6.4-3.6" />
+          <path d="M2.5 20h19" />
+        </svg>
+      );
   }
 }
 
+// One card per real category — the same five that are in the nav and have their
+// own pages, so browsing here matches the site structure exactly.
 export default function DiveTypes({ dives }: { dives: Dive[] }) {
-  // Live "from" price per type: cheapest active, priced dive in that category.
-  // Falls back to the card's own figure when the DB has nothing yet.
-  const liveFrom = (t: DiveTypeInfo): number | null => {
+  const fromPrice = (kinds: DiveKind[]): number | null => {
     const prices = dives
-      .filter((d) => d.active !== false && inferDiveKind(d) === t.category && !d.on_request && d.price != null)
+      .filter(
+        (d) => d.active !== false && kinds.includes(inferDiveKind(d)) && !d.on_request && d.price != null,
+      )
       .map((d) => d.price as number);
-    return prices.length ? Math.min(...prices) : t.fromPrice;
+    return prices.length ? Math.min(...prices) : null;
   };
-  // An approx figure only stays "approx" while we're showing the fallback.
-  const isApprox = (t: DiveTypeInfo): boolean =>
-    !!t.approx && !dives.some((d) => d.active !== false && inferDiveKind(d) === t.category && !d.on_request && d.price != null);
+
+  const cards = [
+    ...DIVE_CATEGORIES.map((c) => ({
+      key: c.slug,
+      href: `/dives/${c.slug}`,
+      name: c.nav,
+      icon: c.icon as IconName,
+      entry: c.entry,
+      hook: c.hook,
+      detail: c.tagline,
+      audience: c.audience,
+      image: c.card,
+      from: fromPrice(c.kinds),
+    })),
+    {
+      key: 'reefs',
+      href: '/reefs',
+      name: 'Reef Dives',
+      icon: 'reef' as IconName,
+      entry: 'boat / shore',
+      hook: 'Four reefs, matched to your level — pick where you dive.',
+      detail:
+        'Tribe Gate, Red Pillar, Lighthouse and Turtle Beach — shallow coral gardens through to deeper water with bigger fish. Explore each reef, its marine life and what it costs.',
+      audience: 'Beginner to certified',
+      image: '/images/reef-red',
+      from: null,
+    },
+  ];
 
   return (
     <section className="band divetypes" id="experiences">
@@ -87,38 +123,37 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
           <h2>Find your way into the water</h2>
           <p>
             However you like to dive — your very first breath from the beach, a boat out to quieter
-            reefs, or the reef after dark — there’s a way in for you. Not sure yet? See{' '}
-            <Link href="/reefs">where you’ll dive</Link> or the{' '}
+            reefs, or a day on the water without a tank. Pick a category to explore it, or see the{' '}
             <Link href="/prices">full price list</Link>.
           </p>
         </div>
 
         <div className="dt-grid reveal">
-          {DIVE_TYPES.map((t) => (
-            <Link href={`/dives/${kindToCategorySlug(t.category)}`} className="dt-card" key={t.key}>
+          {cards.map((c) => (
+            <Link href={c.href} className="dt-card" key={c.key}>
               <span className="dt-photo">
                 <picture>
-                  <source type="image/webp" srcSet={`${t.image}.webp`} />
+                  <source type="image/webp" srcSet={`${c.image}.webp`} />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`${t.image}.jpg`} alt={`${t.name} — Havelock`} loading="lazy" decoding="async" />
+                  <img src={`${c.image}.jpg`} alt={`${c.name} — Havelock`} loading="lazy" decoding="async" />
                 </picture>
                 <span className="dt-icon">
-                  <TypeIcon icon={t.icon} />
+                  <TypeIcon icon={c.icon} />
                 </span>
-                {t.entry !== '—' && <span className="dt-entry">{t.entry}</span>}
+                <span className="dt-entry">{c.entry}</span>
               </span>
               <div className="dt-body">
-                <h3>{t.name}</h3>
-                <p className="dt-hook">{t.hook}</p>
-                <p className="dt-detail">{t.detail}</p>
+                <h3>{c.name}</h3>
+                <p className="dt-hook">{c.hook}</p>
+                <p className="dt-detail">{c.detail}</p>
                 <div className="dt-foot">
-                  <span className="dt-aud">{t.audience}</span>
-                  {liveFrom(t) != null && (
+                  <span className="dt-aud">{c.audience}</span>
+                  {c.from != null ? (
                     <span className="dt-price">
-                      <span className="dt-from">from</span> {inr(liveFrom(t) as number)}
-                      {t.priceUnit ? <span className="dt-unit"> / {t.priceUnit}</span> : null}
-                      {isApprox(t) ? <span className="dt-approx">*</span> : null}
+                      <span className="dt-from">from</span> {inr(c.from)}
                     </span>
+                  ) : (
+                    <span className="dt-price dt-explore">Explore →</span>
                   )}
                 </div>
               </div>
@@ -127,7 +162,6 @@ export default function DiveTypes({ dives }: { dives: Dive[] }) {
         </div>
 
         <p className="dt-note reveal">
-          {DIVE_TYPES.some(isApprox) && <><span>*</span> Indicative starting price. </>}
           All prices are for direct bookings — message us to confirm current rates and availability.
         </p>
       </div>
