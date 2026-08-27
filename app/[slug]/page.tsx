@@ -15,6 +15,8 @@ import { formatPrice, diveDuration } from '@/lib/format';
 import { waBookDive, waGeneral } from '@/lib/whatsapp';
 import { diveProductSchema, breadcrumbSchema } from '@/lib/schema';
 import { SITE_URL } from '@/lib/constants';
+import { DIVE_CATEGORIES } from '@/lib/categories';
+import { inferDiveKind } from '@/lib/types';
 
 export const revalidate = 60;
 
@@ -55,6 +57,9 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
   const settings = withLiveRating(rawSettings, google);
 
   const relatedDives = await getDivesBySite(dive.site_key, dive.slug);
+  // which category page this dive belongs to (drives the back-link)
+  const diveCat =
+    DIVE_CATEGORIES.find((c) => c.kinds.includes(inferDiveKind(dive))) ?? DIVE_CATEGORIES[0];
 
   const priceLabel = formatPrice(dive.price, dive.on_request);
   const included: string[] = [];
@@ -79,8 +84,8 @@ export default async function DiveDetailPage({ params }: { params: { slug: strin
         {/* HERO */}
         <section className="detail-hero">
           <div className="wrap">
-            <Link href="/dives/try-dive" className="detail-back">
-              ← All dives &amp; packages
+            <Link href={`/dives/${diveCat.slug}`} className="detail-back">
+              ← All {diveCat.plural}
             </Link>
             <div className="detail-eyebrow">
               {dive.site}

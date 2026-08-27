@@ -84,11 +84,6 @@ export function diveCategory(d: Dive): DiveCategory {
   return 'experience';
 }
 
-export function groupDivesByCategory(dives: Dive[]): Record<DiveCategory, Dive[]> {
-  const groups = { discover: [], fun: [], experience: [] } as Record<DiveCategory, Dive[]>;
-  for (const d of dives) groups[diveCategory(d)].push(d);
-  return groups;
-}
 
 export async function getCourses(): Promise<Course[]> {
   if (!isSupabaseConfigured()) return [];
