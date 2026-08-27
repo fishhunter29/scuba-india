@@ -17,6 +17,7 @@ export interface CategoryTab {
 export interface DiveCategoryPage {
   slug: string;
   nav: string; // short label for the nav
+  plural: string; // natural plural for "see all …" links
   title: string; // page H1
   eyebrow: string;
   tagline: string; // hero paragraph
@@ -33,6 +34,7 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'try-dive',
     nav: 'Try Dive',
+    plural: 'try dives',
     title: 'Try Dive — your first breath underwater',
     eyebrow: 'Beginners · no experience needed',
     tagline:
@@ -49,6 +51,7 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'boat-dive',
     nav: 'Boat Dive',
+    plural: 'boat dives',
     title: 'Boat Dives — Discover Scuba from the water',
     eyebrow: 'Beginners · from the boat',
     tagline:
@@ -69,6 +72,7 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'fun-dive',
     nav: 'Fun Dive',
+    plural: 'fun dives',
     title: 'Fun Dives — for certified divers',
     eyebrow: 'Certified divers · bring your card',
     tagline:
@@ -89,6 +93,7 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'boat-experience',
     nav: 'Boat Experience',
+    plural: 'boat experiences',
     title: 'Boat Experiences — snorkelling, island hopping & charters',
     eyebrow: 'Everyone · no diving needed',
     tagline:
