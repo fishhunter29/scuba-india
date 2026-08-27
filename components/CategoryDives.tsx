@@ -15,6 +15,16 @@ const KIND_IMG: Record<string, string> = {
 };
 const cardImage = (d: Dive) => d.image_url ?? `/images/${KIND_IMG[inferDiveKind(d)] ?? 'type-dsdboat'}.jpg`;
 
+// Some products are priced per couple / per group rather than per person —
+// take the unit from the dive's duration label when it says so.
+function priceUnit(d: Dive): string {
+  const l = (d.duration_label ?? '').toLowerCase();
+  if (l.includes('per couple')) return 'per couple';
+  if (l.includes('per group')) return 'per group';
+  if (l.includes('private boat')) return 'per boat';
+  return 'per person';
+}
+
 function CameraIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -144,7 +154,7 @@ export default function CategoryDives({
             <div className="pk-foot">
               <span className="pk-price">
                 {formatPrice(d.price, d.on_request)}
-                <small>{d.on_request ? 'contact us' : 'per person'}</small>
+                <small>{d.on_request ? 'contact us' : priceUnit(d)}</small>
               </span>
               <a
                 className="pk-book"

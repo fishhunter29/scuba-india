@@ -32,6 +32,16 @@ function curate(dives: Dive[]): Dive[] {
   return picked.slice(0, 4);
 }
 
+// Some products are priced per couple / per group rather than per person —
+// take the unit from the dive's duration label when it says so.
+function priceUnit(d: Dive): string {
+  const l = (d.duration_label ?? '').toLowerCase();
+  if (l.includes('per couple')) return 'per couple';
+  if (l.includes('per group')) return 'per group';
+  if (l.includes('private boat')) return 'per boat';
+  return 'per person';
+}
+
 export default function CuratedPicks({ dives, whatsapp }: { dives: Dive[]; whatsapp: string }) {
   const picks = curate(dives);
   if (!picks.length) return null;
@@ -65,7 +75,7 @@ export default function CuratedPicks({ dives, whatsapp }: { dives: Dive[]; whats
               <div className="pk-foot">
                 <span className="pk-price">
                   {formatPrice(d.price, d.on_request)}
-                  <small>{d.on_request ? 'contact us' : 'per person'}</small>
+                  <small>{d.on_request ? 'contact us' : priceUnit(d)}</small>
                 </span>
                 <a
                   className="pk-book"
@@ -80,7 +90,7 @@ export default function CuratedPicks({ dives, whatsapp }: { dives: Dive[]; whats
                 </a>
               </div>
               <Link href={`/dives/${kindToCategorySlug(inferDiveKind(d))}`} className="pk-more">
-                See all {DIVE_CATEGORIES.find((c) => c.kinds.includes(inferDiveKind(d)))?.nav ?? 'dives'}
+                See all {DIVE_CATEGORIES.find((c) => c.kinds.includes(inferDiveKind(d)))?.plural ?? 'dives'}
               </Link>
             </div>
           ))}
