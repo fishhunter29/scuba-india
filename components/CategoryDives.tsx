@@ -6,14 +6,10 @@ import Image from 'next/image';
 import type { Dive } from '@/lib/types';
 import { inferDiveKind } from '@/lib/types';
 import type { DiveCategoryPage } from '@/lib/categories';
+import { diveImage } from '@/lib/categories';
 import { formatPrice, diveDuration } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
-const KIND_IMG: Record<string, string> = {
-  try_shore: 'type-tryshore', discover: 'type-dsdboat', fun: 'type-fun',
-  night: 'type-night', snorkel: 'type-snorkel', island: 'type-island', charter: 'type-dsdboat',
-};
-const cardImage = (d: Dive) => d.image_url ?? `/images/${KIND_IMG[inferDiveKind(d)] ?? 'type-dsdboat'}.jpg`;
 
 // Some products are priced per couple / per group rather than per person —
 // take the unit from the dive's duration label when it says so.
@@ -128,7 +124,7 @@ export default function CategoryDives({
         {list.map((d) => (
           <div className="pk" key={d.id}>
             <div className="pk-img">
-              <Image src={cardImage(d)} alt={d.name} fill sizes="(max-width: 768px) 100vw, 300px" />
+              <Image src={diveImage(d, inferDiveKind(d))} alt={d.name} fill sizes="(max-width: 768px) 100vw, 300px" />
             </div>
             {d.tier && <span className="tier">{d.tier.toUpperCase()}</span>}
             <span className="dur">{diveDuration(d)}</span>

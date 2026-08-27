@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { DIVE_CATEGORIES } from '@/lib/categories';
 import type { Settings } from '@/lib/types';
 import { Seal } from '@/components/BrandMark';
 import { waGeneral } from '@/lib/whatsapp';
@@ -57,8 +58,12 @@ export default function Footer({ settings }: { settings: Settings }) {
           </div>
           <div className="foot-col">
             <h4>Dive</h4>
-            <Link href="/dives/try-dive">Try Dive</Link>
-            <Link href="/dives/fun-dive">Fun Dives</Link>
+            {DIVE_CATEGORIES.map((c) => (
+              <Link key={c.slug} href={`/dives/${c.slug}`}>
+                {c.nav}
+              </Link>
+            ))}
+            <Link href="/reefs">Reef Dives</Link>
             <Link href="/courses">PADI Courses</Link>
             <Link href="/learn-to-dive">New to diving?</Link>
           </div>

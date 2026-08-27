@@ -133,6 +133,20 @@ export function getCategory(slug: string): DiveCategoryPage | undefined {
   return DIVE_CATEGORIES.find((c) => c.slug === slug);
 }
 
+// Card/thumbnail image for a dive, by kind — one map, used by every card.
+const KIND_IMG: Record<DiveKind, string> = {
+  try_shore: 'type-tryshore',
+  discover: 'type-dsdboat',
+  fun: 'type-fun',
+  night: 'type-night',
+  snorkel: 'type-snorkel',
+  island: 'type-island',
+  charter: 'type-dsdboat',
+};
+export function diveImage(d: { image_url: string | null; category: DiveKind | null }, kind: DiveKind): string {
+  return d.image_url ?? `/images/${KIND_IMG[kind] ?? 'type-dsdboat'}.jpg`;
+}
+
 // Which category page a given dive kind belongs to.
 export function kindToCategorySlug(kind: DiveKind): string {
   return DIVE_CATEGORIES.find((c) => c.kinds.includes(kind))?.slug ?? 'try-dive';

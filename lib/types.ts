@@ -114,26 +114,12 @@ export interface Settings {
   google_url: string | null;
 }
 
-export const SITE_TABS: { key: SiteKey; label: string; depth?: string }[] = [
-  { key: 'tribe', label: 'Tribe Gate', depth: '12m' },
-  { key: 'red', label: 'Red Pillar', depth: '14m' },
-  { key: 'light', label: 'Lighthouse', depth: '18m' },
-  { key: 'turtle', label: 'Turtle Beach', depth: '16m' },
-  { key: 'multi', label: 'Multi-site' },
-];
 
-export const SITE_INTRO: Record<SiteKey, { title: string; meta: string }> = {
-  tribe: { title: 'Tribe Gate', meta: '12m · shallow reef · ideal for first-timers' },
-  red: { title: 'Red Pillar', meta: '14m · coral & snorkelling · best value' },
-  light: { title: 'Lighthouse', meta: '18m · deeper reef · for the more confident' },
-  turtle: { title: 'Turtle Beach', meta: '16m · turtles & coral · group dives' },
-  multi: { title: 'Multi-site & Experiences', meta: 'across Havelock' },
-};
 
 // Fine-grained dive type — set explicitly in admin via a friendly dropdown.
-// This is the single source of truth that drives homepage grouping, the /prices
-// page sections and the "ways to dive" cards, so a novice only sets it in one
-// place. `kindToGroup` collapses it to the broad homepage tab.
+// This is the single source of truth: it decides which category page a dive
+// appears on, which tab it lands in there, its section on /prices and its card
+// on the homepage. Admin sets this one field and everything follows.
 export type DiveKind =
   | 'discover' // Discover Scuba from boat (beginners)
   | 'try_shore' // Try Dive, shore/beach entry (beginners)
@@ -145,13 +131,13 @@ export type DiveKind =
 
 // Friendly options for the admin "What kind of dive is this?" dropdown.
 export const DIVE_KINDS: { value: DiveKind; label: string; help: string }[] = [
-  { value: 'discover', label: 'Discover Scuba — boat (beginners)', help: 'First-timer dive from the boat. Shows under “Discover Scuba”.' },
-  { value: 'try_shore', label: 'Try Dive — shore / beach (beginners)', help: 'First-timer dive entered from the beach. Shows under “Discover Scuba”.' },
-  { value: 'fun', label: 'Fun Dive (certified divers)', help: 'For certified divers. Shows under “Fun Dives”.' },
-  { value: 'night', label: 'Night Dive (certified divers)', help: 'After-dark dive for certified divers. Shows under “Fun Dives”.' },
-  { value: 'snorkel', label: 'Snorkelling', help: 'No diving needed. Shows under “Experiences”.' },
-  { value: 'island', label: 'Island Hopping', help: 'Full-day trip. Shows under “Experiences”.' },
-  { value: 'charter', label: 'Boat Charter (private hire)', help: 'Private boat hire. Shows under “Experiences”.' },
+  { value: 'discover', label: 'Discover Scuba — boat (beginners)', help: 'First-timer dive from the boat. Appears on the Boat Dive page.' },
+  { value: 'try_shore', label: 'Try Dive — shore / beach (beginners)', help: 'First-timer dive entered from the beach. Appears on the Try Dive page.' },
+  { value: 'fun', label: 'Fun Dive (certified divers)', help: 'For certified divers. Appears on the Fun Dive page, “Day dives” tab.' },
+  { value: 'night', label: 'Night Dive (certified divers)', help: 'After-dark dive for certified divers. Appears on the Fun Dive page, “Night dives” tab.' },
+  { value: 'snorkel', label: 'Snorkelling', help: 'No diving needed. Appears on the Boat Experience page, “Snorkelling” tab.' },
+  { value: 'island', label: 'Island Hopping', help: 'Full-day trip. Appears on the Boat Experience page, “Island hopping” tab.' },
+  { value: 'charter', label: 'Boat Charter (private hire)', help: 'Private boat hire. Appears on the Boat Experience page, “Boat charters” tab.' },
 ];
 
 // Homepage packages are grouped by what kind of dive it is (matching the rate
@@ -187,17 +173,4 @@ export function inferDiveKind(d: {
   return 'discover';
 }
 
-export const CATEGORY_TABS: { key: DiveCategory; label: string }[] = [
-  { key: 'discover', label: 'Discover Scuba' },
-  { key: 'fun', label: 'Fun Dives' },
-  { key: 'experience', label: 'Experiences' },
-];
 
-export const CATEGORY_INTRO: Record<DiveCategory, { title: string; meta: string }> = {
-  discover: {
-    title: 'Discover Scuba Diving',
-    meta: 'For beginners · no experience needed · with PADI online DSD registration',
-  },
-  fun: { title: 'Fun Dives', meta: 'For certified divers · bring your certification card' },
-  experience: { title: 'Experiences', meta: 'Snorkelling, island hopping & private boat charters' },
-};

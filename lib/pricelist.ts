@@ -5,6 +5,7 @@
 // `category` and each course's `kind`.
 
 import type { Dive, Course, DiveKind } from './types';
+import { DIVE_CATEGORIES } from './categories';
 import { inferDiveKind } from './types';
 
 export interface PriceItem {
@@ -48,53 +49,33 @@ export function buildPriceSections(dives: Dive[], courses: Course[]): PriceSecti
       .sort((a, b) => a.sort - b.sort)
       .map(diveToItem);
 
-  const single = courses
-    .filter((c) => (c.kind ?? 'course') !== 'combo')
-    .sort((a, b) => a.sort - b.sort)
-    .map(courseToItem);
-  const combos = courses
-    .filter((c) => c.kind === 'combo')
-    .sort((a, b) => a.sort - b.sort)
-    .map(courseToItem);
+  const byKind = (kind: 'course' | 'combo') =>
+    courses
+      .filter((c) => (c.kind ?? 'course') === kind)
+      .sort((a, b) => a.sort - b.sort)
+      .map(courseToItem);
 
+  // One section per dive category — same taxonomy, order and wording as the
+  // nav, the homepage grid and the /dives/<category> pages, so a visitor sees
+  // the identical structure wherever they look. Courses follow.
   const sections: PriceSection[] = [
-    {
-      id: 'discover',
-      title: 'Dive Experiences for Beginners',
-      subtitle: 'Discover Scuba Diving — with PADI online DSD registration. No experience needed.',
-      note: 'Boat dives include HD photos and video, free. Shore dive is an indicative starting rate — confirm with us.',
-      items: inCats(['try_shore', 'discover']),
-    },
+    ...DIVE_CATEGORIES.map((c) => ({
+      id: c.slug,
+      title: c.nav,
+      subtitle: c.audience,
+      items: inCats(c.kinds),
+    })),
     {
       id: 'courses',
       title: 'PADI Courses',
       subtitle: 'Internationally recognised certifications, beginner to professional.',
-      items: single,
+      items: byKind('course'),
     },
     {
       id: 'combos',
       title: 'Course Combos',
       subtitle: 'Bundle courses and save — the fastest route to your next certification.',
-      items: combos,
-    },
-    {
-      id: 'fun-dives',
-      title: 'Fun Dives',
-      subtitle: 'For certified divers only. Bring your certification card.',
-      items: inCats(['fun', 'night']),
-    },
-    {
-      id: 'charters',
-      title: 'Boat Charters',
-      subtitle: 'Private boat hire for your group, by the hour or half day.',
-      items: inCats(['charter']),
-    },
-    {
-      id: 'experiences',
-      title: 'Snorkelling & Island Hopping',
-      subtitle: 'Open-sea experiences around Havelock (Swaraj Dweep) — no diving needed.',
-      note: 'Open-sea snorkelling is an indicative starting rate — confirm with us.',
-      items: inCats(['snorkel', 'island']),
+      items: byKind('combo'),
     },
   ];
 
