@@ -18,6 +18,9 @@ export interface DiveCategoryPage {
   slug: string;
   nav: string; // short label for the nav
   plural: string; // natural plural for "see all …" links
+  icon: 'try' | 'boat' | 'fun' | 'night' | 'snorkel' | 'island' | 'reef';
+  entry: string; // shore / boat badge on the homepage card
+  hook: string; // one-line hook for the homepage browse card
   title: string; // page H1
   eyebrow: string;
   tagline: string; // hero paragraph
@@ -34,6 +37,9 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'try-dive',
     nav: 'Try Dive',
+    icon: 'try',
+    entry: 'shore',
+    hook: 'Your first breath underwater, walking in from the beach.',
     plural: 'try dives',
     title: 'Try Dive — your first breath underwater',
     eyebrow: 'Beginners · no experience needed',
@@ -51,6 +57,9 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'boat-dive',
     nav: 'Boat Dive',
+    icon: 'boat',
+    entry: 'boat',
+    hook: 'A short boat ride to quieter reefs, then your first dive.',
     plural: 'boat dives',
     title: 'Boat Dives — Discover Scuba from the water',
     eyebrow: 'Beginners · from the boat',
@@ -72,6 +81,9 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'fun-dive',
     nav: 'Fun Dive',
+    icon: 'fun',
+    entry: 'boat',
+    hook: 'Explore Havelock’s best reefs, led by our divemasters.',
     plural: 'fun dives',
     title: 'Fun Dives — for certified divers',
     eyebrow: 'Certified divers · bring your card',
@@ -93,6 +105,9 @@ export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
     slug: 'boat-experience',
     nav: 'Boat Experience',
+    icon: 'island',
+    entry: 'boat',
+    hook: 'Snorkel, island-hop or take the whole boat — no diving needed.',
     plural: 'boat experiences',
     title: 'Boat Experiences — snorkelling, island hopping & charters',
     eyebrow: 'Everyone · no diving needed',

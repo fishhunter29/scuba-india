@@ -306,6 +306,8 @@ section{position:relative;z-index:3}
 .dt-from{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ash);text-transform:uppercase}
 .dt-unit{font-family:var(--mono);font-size:10px;font-weight:400;color:var(--ash)}
 .dt-approx{color:var(--ash)}
+.dt-explore{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--indigo)}
+.dt-card:hover .dt-explore{color:var(--vermilion)}
 .dt-note{font-family:var(--mono);font-size:12px;color:var(--sumi-soft);margin-top:24px}
 .dt-note span{color:var(--vermilion);font-weight:700}
 @media(max-width:900px){.dt-grid{grid-template-columns:1fr 1fr}}
