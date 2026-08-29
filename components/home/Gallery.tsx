@@ -3,13 +3,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import shots from '@/lib/gallery.json';
+import type { Photo, Section } from '@/lib/types';
 
 type Shot = { src: string; w: number; h: number; alt: string };
-const PHOTOS = shots as Shot[];
-const N = PHOTOS.length;
+const BUNDLED = shots as Shot[];
 const VIS = 3.4; // how many cards each side stay visible
 
-export default function Gallery() {
+export default function Gallery({ photos = [], section }: { photos?: Photo[]; section?: Section }) {
+  // Photos uploaded in admin win; otherwise show the bundled gallery. Admin
+  // photos are full URLs, bundled ones are base paths with .webp/.jpg variants.
+  const PHOTOS: (Shot & { url?: string })[] = photos.length
+    ? photos.map((p) => ({ src: p.url, url: p.url, w: 1200, h: 900, alt: p.alt ?? '' }))
+    : BUNDLED;
+  const N = PHOTOS.length;
+  const eyebrow = section?.eyebrow || 'Gallery';
+  const heading = section?.title || 'Beneath the surface';
+  const intro = section?.subtitle || 'Moments from our dives around Havelock.';
   // pos = fractional focused index; drag/inertia move it, snap to whole numbers
   const [pos, setPos] = useState(0);
   const [d, setD] = useState({ cw: 300, ch: 360, gap: 188, depth: 170, tilt: 50 });
@@ -119,10 +128,10 @@ export default function Gallery() {
       <div className="wrap">
         <div className="sec-head reveal" style={{ marginInline: 'auto', textAlign: 'center', maxWidth: 640 }}>
           <div className="sec-eyebrow" style={{ justifyContent: 'center' }}>
-            Gallery
+            {eyebrow}
           </div>
-          <h2>Beneath the surface</h2>
-          <p>Moments from our dives around Havelock.</p>
+          <h2>{heading}</h2>
+          <p>{intro}</p>
         </div>
 
         <div className="coliseum">
@@ -166,8 +175,9 @@ export default function Gallery() {
                   >
                     <span className="cf-inner">
                       <picture>
-                        <source type="image/webp" srcSet={`${p.src}.webp`} />
-                        <img src={`${p.src}.jpg`} alt={p.alt} loading="lazy" decoding="async" draggable={false} />
+                        {!p.url && <source type="image/webp" srcSet={`${p.src}.webp`} />}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.url ?? `${p.src}.jpg`} alt={p.alt} loading="lazy" decoding="async" draggable={false} />
                       </picture>
                     </span>
                   </button>
@@ -210,9 +220,9 @@ export default function Gallery() {
             </button>
             <figure className="lb-figure">
               <picture>
-                <source type="image/webp" srcSet={`${cur.src}.webp`} />
+                {!cur.url && <source type="image/webp" srcSet={`${cur.src}.webp`} />}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${cur.src}.jpg`} alt={cur.alt} />
+                <img src={cur.url ?? `${cur.src}.jpg`} alt={cur.alt} />
               </picture>
               <figcaption className="lb-count">
                 {(open as number) + 1} / {N}

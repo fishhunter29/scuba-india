@@ -1,16 +1,21 @@
+import type { Section } from '@/lib/types';
+
 // "Meet the team" — real photos of the Scuba India crew and boat, for trust.
-export default function Team() {
+// Copy is editable in /admin -> Sections.
+export default function Team({ section }: { section?: Section }) {
+  const eyebrow = section?.eyebrow || 'Our team';
+  const title = section?.title || 'Meet the Scuba India crew';
+  const body =
+    section?.subtitle ||
+    'Every dive is run by our own PADI & SSI-certified instructors and local Havelock boat crew — the people who know these reefs best. Small groups, careful guiding and a genuine welcome, on our own boat.';
+
   return (
     <section className="band team" id="team">
       <div className="wrap">
         <div className="sec-head reveal">
-          <div className="sec-eyebrow">Our team</div>
-          <h2>Meet the Scuba India crew</h2>
-          <p>
-            Every dive is run by our own PADI &amp; SSI-certified instructors and local Havelock
-            boat crew — the people who know these reefs best. Small groups, careful guiding and a
-            genuine welcome, on our own boat.
-          </p>
+          <div className="sec-eyebrow">{eyebrow}</div>
+          <h2>{title}</h2>
+          <p>{body}</p>
         </div>
 
         <figure className="team-hero reveal">

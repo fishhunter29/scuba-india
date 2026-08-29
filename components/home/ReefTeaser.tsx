@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import type { Reef, Section } from '@/lib/types';
 
-const REEFS = [
+const FALLBACK = [
   { name: 'Tribe Gate', meta: '12m · Beginner-friendly', image: '/images/reef-tribe' },
   { name: 'Red Pillar', meta: '14m · All levels', image: '/images/reef-red' },
   { name: 'Lighthouse', meta: '18m · Confident divers', image: '/images/reef-light' },
@@ -8,21 +9,30 @@ const REEFS = [
 ];
 
 // Homepage teaser only — the full interactive explorer lives at /reefs.
-export default function ReefTeaser() {
+export default function ReefTeaser({ reefs = [], section }: { reefs?: Reef[]; section?: Section }) {
+  const list = reefs.length
+    ? reefs.map((r) => ({
+        name: r.name,
+        meta: `${r.depth_m}m · ${r.level}`,
+        image: r.image_url || `/images/reef-${r.key}`,
+      }))
+    : FALLBACK;
+  const eyebrow = section?.eyebrow || "Where you'll dive";
+  const title = section?.title || 'Four reefs. Every level of diver.';
+  const body =
+    section?.subtitle ||
+    "Havelock's (Swaraj Dweep's) healthiest sites, matched to your experience — gentle shallow coral for your first breath, deeper drifts for the certified.";
   return (
     <section className="band sites" id="sites">
       <div className="wrap">
         <div className="sec-head reveal" style={{ maxWidth: 620 }}>
-          <div className="sec-eyebrow">Where you&apos;ll dive</div>
-          <h2>Four reefs. Every level of diver.</h2>
-          <p>
-            Havelock&apos;s (Swaraj Dweep&apos;s) healthiest sites, matched to your experience —
-            gentle shallow coral for your first breath, deeper drifts for the certified.
-          </p>
+          <div className="sec-eyebrow">{eyebrow}</div>
+          <h2>{title}</h2>
+          <p>{body}</p>
         </div>
 
         <div className="reef-teaser-grid reveal">
-          {REEFS.map((r) => (
+          {list.map((r) => (
             <Link href="/reefs" className="reef-teaser" key={r.name}>
               <span className="reef-teaser-img">
                 <picture>

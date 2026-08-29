@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
 import PageBanner from '@/components/PageBanner';
 import ReefExplorer from '@/components/home/ReefExplorer';
-import { getDives, getSettings } from '@/lib/data';
+import { getDives, getSettings, getReefs } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { DIVE_CATEGORIES, REEF_CATEGORY } from '@/lib/categories';
 import { waLink } from '@/lib/whatsapp';
@@ -28,10 +28,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ReefsPage() {
-  const [dives, rawSettings, google] = await Promise.all([
+  const [dives, rawSettings, google, reefs] = await Promise.all([
     getDives(),
     getSettings(),
     getGoogleReviews(),
+    getReefs(),
   ]);
   const settings = withLiveRating(rawSettings, google);
 
@@ -63,7 +64,7 @@ export default async function ReefsPage() {
         </section>
 
         <div className="detail-body" style={{ paddingTop: 0 }}>
-          <ReefExplorer whatsapp={settings.whatsapp} dives={dives} showHeading={false} />
+          <ReefExplorer whatsapp={settings.whatsapp} dives={dives} reefs={reefs} showHeading={false} />
 
           <div className="wrap">
             <div className="cat-more">
