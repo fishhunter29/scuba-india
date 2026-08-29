@@ -28,6 +28,7 @@ export interface Dive {
   steps: DiveStep[];
   image_url: string | null;
   category: DiveKind | null; // explicit type, set in admin; drives all grouping
+  featured: boolean; // show on the homepage "most booked" row
   active: boolean;
   sort: number;
   updated_at: string;
@@ -48,6 +49,41 @@ export interface Course {
 }
 
 export type CourseKind = 'course' | 'combo';
+
+// A reef we dive — editable in admin (/admin/reefs).
+export interface Reef {
+  id: string;
+  key: string;
+  name: string;
+  depth_m: number;
+  level: string;
+  best_for: string | null;
+  blurb: string | null;
+  image_url: string | null;
+  life: string[];
+  kinds: DiveKind[];
+  active: boolean;
+  sort: number;
+}
+
+// A generic editable copy block for a page section (/admin/sections).
+export interface SectionItem {
+  title: string;
+  body: string;
+}
+export interface Section {
+  id: string;
+  key: string;
+  label: string;
+  eyebrow: string | null;
+  title: string | null;
+  subtitle: string | null;
+  body: string | null;
+  image_url: string | null;
+  items: SectionItem[];
+  active: boolean;
+  sort: number;
+}
 
 export interface Post {
   id: string;

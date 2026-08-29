@@ -7,11 +7,15 @@ import { formatPrice, diveDuration } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
 
-// The homepage shows a curated handful — not the whole catalogue. Picks come
-// from CURATED_SLUGS; if one isn't in the DB we fall back to the cheapest dive
-// in that category so the row is never short.
+// The homepage shows a curated handful — not the whole catalogue.
+// Priority: dives ticked "Feature on homepage" in admin; then the built-in
+// CURATED_SLUGS; then the cheapest dive per category, so the row is never
+// short and never empty.
 function curate(dives: Dive[]): Dive[] {
   const active = dives.filter((d) => d.active !== false);
+  const featured = active.filter((d) => d.featured).sort((a, b) => a.sort - b.sort);
+  if (featured.length) return featured.slice(0, 4);
+
   const picked: Dive[] = [];
   for (const slug of CURATED_SLUGS) {
     const hit = active.find((d) => d.slug === slug);

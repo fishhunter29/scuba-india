@@ -24,6 +24,7 @@ const EMPTY: Partial<Dive> = {
   site: 'Havelock',
   site_key: 'multi',
   category: 'discover',
+  featured: false,
   depth_m: null,
   dive_min: null,
   train_min: null,
@@ -162,6 +163,7 @@ export default function DivesAdmin() {
                 <th>Name</th>
                 <th>Type</th>
                 <th>Price</th>
+                <th>Homepage</th>
                 <th>Shown?</th>
                 <th></th>
               </tr>
@@ -174,6 +176,7 @@ export default function DivesAdmin() {
                   </td>
                   <td>{kindLabel(d.category)}</td>
                   <td>{d.on_request ? 'On request' : d.price ? '₹' + d.price.toLocaleString('en-IN') : '—'}</td>
+                  <td>{d.featured ? '★ Featured' : '—'}</td>
                   <td>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => toggleActive(d)}>
                       {d.active ? 'Shown' : 'Hidden'}
@@ -237,6 +240,17 @@ export default function DivesAdmin() {
                   onChange={(e) => field('price', numOrNull(e.target.value))}
                 />
                 <Help>Leave blank or tick “price on request” below if there’s no fixed price.</Help>
+              </div>
+              <div className="a-field">
+                <label>Feature on the homepage?</label>
+                <select
+                  value={editing.featured ? 'yes' : 'no'}
+                  onChange={(e) => field('featured', e.target.value === 'yes')}
+                >
+                  <option value="no">No</option>
+                  <option value="yes">Yes — show in “Most booked”</option>
+                </select>
+                <Help>Ticked dives fill the homepage “Our most popular dives” row (up to 4).</Help>
               </div>
               <div className="a-field">
                 <label>Price on request?</label>

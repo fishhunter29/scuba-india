@@ -19,6 +19,10 @@ returned" is the correct result for these.
 - [ ] `supabase/migrations/0018_dive_category_course_kind.sql` — adds the
       `category` / `kind` columns, the shore Try Dive, and aligns island
       hopping. **Required** — the price list & reef prices key off these.
+- [ ] `supabase/migrations/0019_editable_sections.sql` — makes the rest of the
+      site editable from admin: adds `dives.featured` (homepage “Most booked”),
+      the `reefs` table and the `sections` table (page wording), seeded with the
+      current live text so nothing changes visually until you edit it.
 
 > If 0017/0018 haven't run, the homepage/prices fall back to inference and may
 > not match the intended catalogue exactly.
@@ -85,10 +89,21 @@ Log in at `/admin`. Empty fields render visible placeholders like
 
 ---
 
+### What you can edit in `/admin`
+
+| Screen | Controls |
+|---|---|
+| **Dives** | Every dive/experience: name, price, what's included, photos, which category it belongs to, and **“Feature on the homepage”** for the “Most booked” row |
+| **Courses** | PADI courses and combos |
+| **Reefs** | The four reefs: name, depth, level, description, marine life, photo, and which dives run there |
+| **Page Sections** | The wording of each block — Why Scuba India, Meet the crew, the reef heading, the gallery heading and the closing call-to-action |
+| **Photos** | Upload gallery photos (category `gallery`) — these replace the bundled gallery |
+| **Reviews / Bookings / Guides / Settings** | As before |
+
 ### Notes for whoever maintains this
 
-- **All content is managed from `/admin`** (dives, courses, reviews, photos,
-  settings) — no code changes needed to update prices, add dives, etc.
+- **All content is managed from `/admin`** — no code changes needed to update
+  prices, add dives, change section wording, or swap the reefs.
 - **Deploys are automatic**: pushing to the `main` branch on GitHub triggers a
   Vercel build. Edits in `/admin` appear within ~1 minute (no deploy needed).
 - Setup, env vars and DB details are in the root [`README.md`](./README.md);

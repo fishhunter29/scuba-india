@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import type { Dive, DiveKind } from '@/lib/types';
+import type { Dive, DiveKind, Reef as DbReef } from '@/lib/types';
 import { inferDiveKind } from '@/lib/types';
 import { formatPrice } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
@@ -102,14 +102,30 @@ const MAX_DEPTH = 25; // visual scale for the depth bar
 export default function ReefExplorer({
   whatsapp,
   dives = [],
+  reefs = [],
   showHeading = true,
 }: {
   whatsapp?: string;
   dives?: Dive[];
+  reefs?: DbReef[];
   showHeading?: boolean;
 }) {
+  // Reefs come from admin; fall back to the built-in four before migration 0019.
+  const list: Reef[] = reefs.length
+    ? reefs.map((x) => ({
+        key: x.key,
+        name: x.name,
+        depth: x.depth_m,
+        level: x.level,
+        bestFor: x.best_for ?? '',
+        blurb: x.blurb ?? '',
+        image: x.image_url || `/images/reef-${x.key}`,
+        life: Array.isArray(x.life) ? x.life : [],
+        kinds: (Array.isArray(x.kinds) ? x.kinds : []) as DiveKind[],
+      }))
+    : REEFS;
   const [active, setActive] = useState(0);
-  const r = REEFS[active];
+  const r = list[Math.min(active, list.length - 1)];
 
   // The full explorable list of dive options at a reef — every priced dive of
   // the reef's types, from the live DB (rate sheet), falling back to the known
@@ -235,7 +251,7 @@ export default function ReefExplorer({
 
           {/* Selector — the four reefs */}
           <div className="reef-selectors" role="tablist" aria-label="Choose a reef">
-            {REEFS.map((reef, i) => (
+            {list.map((reef, i) => (
               <button
                 key={reef.key}
                 role="tab"

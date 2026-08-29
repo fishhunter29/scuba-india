@@ -389,3 +389,8 @@ a.pl-name-link:hover{color:var(--vermilion)}
 .cc-stats{list-style:none;display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 16px;padding:0}
 .cc-stats li{font-family:var(--mono);font-size:13px;color:var(--sumi)}
 .cc-stats li span{display:block;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);margin-bottom:2px}
+
+/* admin: checkbox group (e.g. which dive kinds run at a reef) */
+.a-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px 18px;margin:10px 0 4px}
+.a-check{display:flex;align-items:center;gap:9px;font-size:14.5px;color:var(--sumi);cursor:pointer}
+.a-check input{width:16px;height:16px;accent-color:var(--vermilion);cursor:pointer}

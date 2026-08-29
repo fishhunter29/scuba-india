@@ -18,12 +18,13 @@ async function count(table: string, filter?: { col: string; val: string }) {
 }
 
 export default async function AdminDashboard() {
-  const [dives, courses, reviews, newBookings, photos] = await Promise.all([
+  const [dives, courses, reviews, newBookings, photos, reefs] = await Promise.all([
     count('dives'),
     count('courses'),
     count('reviews'),
     count('bookings', { col: 'status', val: 'new' }),
     count('photos'),
+    count('reefs'),
   ]);
 
   return (
@@ -49,6 +50,10 @@ export default async function AdminDashboard() {
           <div className="n">{photos}</div>
           <div className="l">Photos</div>
         </div>
+        <div className="a-stat">
+          <div className="n">{reefs}</div>
+          <div className="l">Reefs</div>
+        </div>
       </div>
 
       <div className="admin-card">
@@ -56,6 +61,12 @@ export default async function AdminDashboard() {
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Link href="/admin/dives" className="a-btn a-btn-ghost">
             Manage dives
+          </Link>
+          <Link href="/admin/reefs" className="a-btn a-btn-ghost">
+            Edit reefs
+          </Link>
+          <Link href="/admin/sections" className="a-btn a-btn-ghost">
+            Edit page text
           </Link>
           <Link href="/admin/bookings" className="a-btn a-btn-ghost">
             View enquiries
@@ -71,8 +82,10 @@ export default async function AdminDashboard() {
 
       <div className="admin-card">
         <p style={{ color: 'var(--sumi-soft)', fontSize: 14.5 }}>
-          Edits here save to Supabase and appear on the public site immediately. Upload your own
-          Havelock photos under <strong>Photos</strong> to replace the placeholder art, and keep the{' '}
+          Everything on the website is editable here. <strong>Dives</strong>, <strong>Courses</strong>{' '}
+          and <strong>Reefs</strong> are the products and sites; <strong>Page Sections</strong> is the
+          wording of each block on the pages; <strong>Photos</strong> feeds the homepage gallery.
+          Tick “Feature on the homepage” on a dive to put it in the “Most booked” row. Keep the{' '}
           <strong>Settings</strong> review count &amp; dives-guided numbers up to date — they feed
           the trust bar and Google rich results.
         </p>

@@ -5,7 +5,7 @@ import { createPublicClient } from './supabase/public';
 import { isSupabaseConfigured } from './supabase/server';
 import { FALLBACK_SETTINGS } from './constants';
 import { courseSlug } from './format';
-import type { Dive, Course, Post, Review, Settings, SiteKey, DiveCategory } from './types';
+import type { Dive, Course, Post, Review, Settings, SiteKey, DiveCategory, Reef, Section, Photo } from './types';
 import { kindToGroup } from './types';
 
 const createClient = createPublicClient;
@@ -186,4 +186,53 @@ export async function getSettings(): Promise<Settings> {
     return FALLBACK_SETTINGS;
   }
   return data as Settings;
+}
+
+// ---------------------------------------------------------------------------
+// Reefs + editable page sections (admin-managed). Both return [] when Supabase
+// isn't configured so the components can fall back to their built-in defaults.
+// ---------------------------------------------------------------------------
+export async function getReefs(): Promise<Reef[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('reefs')
+    .select('*')
+    .eq('active', true)
+    .order('sort', { ascending: true });
+  if (error) {
+    console.error('getReefs', error.message);
+    return [];
+  }
+  return (data ?? []) as Reef[];
+}
+
+export async function getSections(): Promise<Record<string, Section>> {
+  if (!isSupabaseConfigured()) return {};
+  const supabase = createClient();
+  const { data, error } = await supabase.from('sections').select('*').eq('active', true);
+  if (error) {
+    console.error('getSections', error.message);
+    return {};
+  }
+  const out: Record<string, Section> = {};
+  for (const s of (data ?? []) as Section[]) out[s.key] = s;
+  return out;
+}
+
+// Gallery photos uploaded in /admin -> Photos. Empty => the homepage gallery
+// falls back to the bundled shots in lib/gallery.json.
+export async function getGalleryPhotos(): Promise<Photo[]> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('photos')
+    .select('*')
+    .eq('category', 'gallery')
+    .order('sort', { ascending: true });
+  if (error) {
+    console.error('getGalleryPhotos', error.message);
+    return [];
+  }
+  return (data ?? []) as Photo[];
 }

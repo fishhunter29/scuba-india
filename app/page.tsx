@@ -14,7 +14,7 @@ import Team from '@/components/home/Team';
 import Reviews from '@/components/home/Reviews';
 import Gallery from '@/components/home/Gallery';
 import FinalCTA from '@/components/home/FinalCTA';
-import { getDives, getCourses, getFeaturedReviews, getSettings, diveCategory } from '@/lib/data';
+import { getDives, getCourses, getFeaturedReviews, getSettings, getReefs, getSections, getGalleryPhotos, diveCategory } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { diveCentreSchema } from '@/lib/schema';
 import { fromPrice, cheapestDive } from '@/lib/format';
@@ -23,12 +23,15 @@ import { fromPrice, cheapestDive } from '@/lib/format';
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [dives, courses, reviews, rawSettings, google] = await Promise.all([
+  const [dives, courses, reviews, rawSettings, google, reefs, sections, galleryPhotos] = await Promise.all([
     getDives(),
     getCourses(),
     getFeaturedReviews(),
     getSettings(),
     getGoogleReviews(),
+    getReefs(),
+    getSections(),
+    getGalleryPhotos(),
   ]);
   // Once Google Places is configured, every "[XX]+ reviews" trust line and the
   // AggregateRating schema below reflect the real live count, not just whatever
@@ -53,14 +56,14 @@ export default async function HomePage() {
         <DiveTypes dives={dives} />
         <CuratedPicks dives={dives} whatsapp={settings.whatsapp} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <ReefTeaser />
-        <WhyUs />
-        <Team />
+        <ReefTeaser reefs={reefs} section={sections.reefs} />
+        <WhyUs section={sections.why} />
+        <Team section={sections.team} />
         <Reviews reviews={reviews} settings={settings} google={google} />
-        <Gallery />
+        <Gallery photos={galleryPhotos} section={sections.gallery} />
       </div>
 
-      <FinalCTA settings={settings} />
+      <FinalCTA settings={settings} section={sections.final_cta} />
       <Footer settings={settings} />
       <WhatsAppFloat whatsapp={settings.whatsapp} phone={settings.phone} />
 
