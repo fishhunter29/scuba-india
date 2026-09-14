@@ -10,7 +10,7 @@ import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions — Scuba India',
-  description: 'The terms that apply when you book a try dive, fun dive or PADI course with Scuba India on Havelock Island.',
+  description: 'The terms that apply when you book a Discover Scuba dive, fun dive or PADI course with Scuba India on Havelock Island.',
   alternates: { canonical: `${SITE_URL}/terms-conditions` },
 };
 
@@ -46,7 +46,7 @@ export default async function TermsPage() {
               <div className="panel">
                 <h3>1. About these terms</h3>
                 <p>
-                  These terms apply to all try dives, fun dives, PADI courses and other services booked
+                  These terms apply to all Discover Scuba dives, fun dives, PADI courses and other services booked
                   with {SITE_NAME}, a PADI dive centre operating on Havelock Island, Andaman, India. By
                   enquiring, booking or diving with us, you agree to these terms.
                 </p>
@@ -56,7 +56,7 @@ export default async function TermsPage() {
                 <h3>2. Eligibility, health &amp; fitness to dive</h3>
                 <p>Scuba diving has minimum age, swimming ability and health requirements:</p>
                 <ul>
-                  <li>Try dives and beginner courses generally require a minimum age of 10, with parental/guardian consent required for divers under 18.</li>
+                  <li>Discover Scuba dives and beginner courses generally require a minimum age of 10, with parental/guardian consent required for divers under 18.</li>
                   <li>Before any dive, you must truthfully complete a PADI medical statement. If you answer &quot;yes&quot; to any question on it, you will need written clearance from a doctor before you can dive.</li>
                   <li>We reserve the right to refuse or postpone a dive for anyone we reasonably believe is medically unfit, intoxicated, or otherwise unable to dive safely, with no liability to us for doing so.</li>
                 </ul>

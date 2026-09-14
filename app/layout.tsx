@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    'PADI dive centre in Havelock, Swaraj Dweep, Andaman. Try dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
+    'PADI dive centre in Havelock, Swaraj Dweep, Andaman. Discover Scuba dives, fun dives & certification courses at Tribe Gate, Red Pillar, Lighthouse & Turtle Beach. 4.8★ on Google.',
   alternates: { canonical: SITE_URL },
   openGraph: {
     title: `${SITE_NAME} | PADI Diving in Havelock (Swaraj Dweep), Andaman`,
     description:
-      'Try dives, fun dives & PADI certification in Havelock, Swaraj Dweep, Andaman. Free HD photos & GoPro video with every dive.',
+      'Discover Scuba dives, fun dives & PADI certification in Havelock, Swaraj Dweep, Andaman. Free HD photos & GoPro video with every dive.',
     url: SITE_URL,
     siteName: SITE_NAME,
     type: 'website',

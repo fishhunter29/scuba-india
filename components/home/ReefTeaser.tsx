@@ -5,7 +5,7 @@ import { formatPrice, reefImage } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
 const FALLBACK: Pick<Reef, 'key' | 'name' | 'depth_m' | 'level' | 'best_for' | 'life' | 'kinds' | 'price' | 'duration_label'>[] = [
-  { key: 'tribe', name: 'Tribe Gate', depth_m: 12, level: 'Beginner-friendly', best_for: 'First dives', life: ['Clownfish', 'Green turtles'], kinds: ['try_shore', 'discover'], price: null, duration_label: null },
+  { key: 'tribe', name: 'Tribe Gate', depth_m: 12, level: 'Beginner-friendly', best_for: 'First dives', life: ['Clownfish', 'Green turtles'], kinds: ['discover'], price: null, duration_label: null },
   { key: 'red', name: 'Red Pillar', depth_m: 14, level: 'All levels', best_for: 'Discover Scuba & snorkelling', life: ['Fusiliers', 'Coral pillars'], kinds: ['discover', 'snorkel'], price: null, duration_label: null },
   { key: 'light', name: 'Lighthouse', depth_m: 18, level: 'Confident divers', best_for: 'Fun & night dives', life: ['Snapper schools', 'Reef sharks'], kinds: ['fun', 'night'], price: null, duration_label: null },
   { key: 'turtle', name: 'Turtle Beach', depth_m: 16, level: 'All levels', best_for: 'Turtle encounters', life: ['Green turtles', 'Stingrays'], kinds: ['discover', 'fun'], price: null, duration_label: null },
@@ -16,14 +16,14 @@ const HOMEPAGE_MAX = 4; // keep the row to one tidy line; the rest live on /reef
 // The one dive this reef's card advertises. Diving leads over snorkelling, so
 // a reef that offers both is never sold on its (cheaper) snorkel price. The
 // badge and the price both come from this, so they can never disagree.
-const HEADLINE_ORDER: DiveKind[] = ['try_shore', 'discover', 'fun', 'night', 'snorkel', 'island', 'charter'];
+const HEADLINE_ORDER: DiveKind[] = ['discover', 'fun', 'night', 'snorkel', 'island', 'charter', 'try_shore'];
 
 function headlineKind(kinds: DiveKind[]): DiveKind {
   return HEADLINE_ORDER.find((k) => kinds.includes(k)) ?? 'discover';
 }
 
 const BADGE: Record<DiveKind, string> = {
-  try_shore: 'Shore dive',
+  try_shore: 'Boat dive', // legacy
   discover: 'Boat dive',
   fun: 'Boat dive',
   night: 'Night dive',

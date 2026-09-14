@@ -24,6 +24,11 @@ const nextConfig = {
       { source: '/padi-adventure-diver-course', destination: '/courses/padi-adventure-diver', permanent: true },
       { source: '/padi-advanced-open-water-course', destination: '/courses/padi-advanced-open-water', permanent: true },
       { source: '/emergency-first-responder-course', destination: '/courses/emergency-first-responder-efr', permanent: true },
+      // Shore/beach try dives are no longer permitted in Havelock (all diving is
+      // now boat-accompanied), so that category page is gone — send its traffic
+      // to Discover Scuba, which is the beginner dive now.
+      { source: '/dives/try-dive', destination: '/dives/boat-dive', permanent: true },
+      { source: '/try-shore', destination: '/dives/boat-dive', permanent: true },
       // Real dives at old root-level URLs.
       { source: '/snorkelling', destination: '/red-pillar-snorkelling', permanent: true },
       { source: '/fun-dive', destination: '/fun-dives', permanent: true },

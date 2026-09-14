@@ -4,7 +4,7 @@
 export const FEAR_CHECKS = [
   {
     q: "I can't swim.",
-    a: "You don't need to. On a try dive you're not swimming — you're floating, and your instructor controls that for you the whole time. Some of our happiest divers can't swim a stroke.",
+    a: "You don't need to. On a Discover Scuba dive you're not swimming — you're floating, and your instructor controls that for you the whole time. Some of our happiest divers can't swim a stroke.",
   },
   {
     q: 'I wear glasses / contacts.',
@@ -20,6 +20,6 @@ export const FEAR_CHECKS = [
   },
   {
     q: 'Can my kids do it?',
-    a: "Yes — try dives are open from age 10. It's one of the best things a family can do together in the Andamans.",
+    a: "Yes — Discover Scuba dives are open from age 10. It's one of the best things a family can do together in the Andamans.",
   },
 ];

@@ -58,8 +58,8 @@ export default function Hero({
           {tryFromSite ? ` at ${tryFromSite}` : ''}.
         </p>
         <div className="hero-cta">
-          <Link href="/dives/try-dive" className="btn btn-primary">
-            Book a Try Dive from {tryFrom} →
+          <Link href="/dives/boat-dive" className="btn btn-primary">
+            Book a Discover Scuba dive from {tryFrom} →
           </Link>
           <a
             href={waGeneral(settings.whatsapp)}

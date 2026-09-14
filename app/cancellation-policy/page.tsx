@@ -10,7 +10,7 @@ import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Cancellation & Refund Policy — Scuba India',
-  description: 'Our cancellation, rescheduling and refund policy for try dives, fun dives and PADI courses booked with Scuba India.',
+  description: 'Our cancellation, rescheduling and refund policy for Discover Scuba dives, fun dives and PADI courses booked with Scuba India.',
   alternates: { canonical: `${SITE_URL}/cancellation-policy` },
 };
 

@@ -38,7 +38,7 @@ export default async function HomePage() {
   // was last typed into admin → Settings.
   const settings = withLiveRating(rawSettings, google);
   // cheapest Discover Scuba dive for the hero price hook ("from ₹X")
-  const tryDives = dives.filter((d) => diveCategory(d) === 'discover');
+  const tryDives = dives.filter((d) => d.active !== false && diveCategory(d) === 'discover');
   const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
   const cheapestTry = cheapestDive(tryDives.length ? tryDives : dives);
   const tryFromSite = cheapestTry?.site ?? null;
@@ -53,7 +53,7 @@ export default async function HomePage() {
       <Hero settings={settings} tryFrom={tryFrom} tryFromSite={tryFromSite} />
 
       <div className="sheet">
-        <DiveTypes dives={dives} />
+        <DiveTypes dives={dives} reefs={reefs} />
         <CuratedPicks dives={dives} whatsapp={settings.whatsapp} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
         <ReefTeaser reefs={reefs} dives={dives} section={sections.reefs} whatsapp={settings.whatsapp} />

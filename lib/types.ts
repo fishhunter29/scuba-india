@@ -161,7 +161,7 @@ export interface Settings {
 // on the homepage. Admin sets this one field and everything follows.
 export type DiveKind =
   | 'discover' // Discover Scuba from boat (beginners)
-  | 'try_shore' // Try Dive, shore/beach entry (beginners)
+  | 'try_shore' // LEGACY — shore entry is no longer permitted in Havelock; kept only so old rows still resolve
   | 'fun' // Fun dive (certified)
   | 'night' // Night dive (certified)
   | 'snorkel' // Snorkelling (everyone)
@@ -170,8 +170,7 @@ export type DiveKind =
 
 // Friendly options for the admin "What kind of dive is this?" dropdown.
 export const DIVE_KINDS: { value: DiveKind; label: string; help: string }[] = [
-  { value: 'discover', label: 'Discover Scuba — boat (beginners)', help: 'First-timer dive from the boat. Appears on the Boat Dive page.' },
-  { value: 'try_shore', label: 'Try Dive — shore / beach (beginners)', help: 'First-timer dive entered from the beach. Appears on the Try Dive page.' },
+  { value: 'discover', label: 'Discover Scuba — beginners', help: 'First-timer dive, guided from the boat. Appears on the Discover Scuba page.' },
   { value: 'fun', label: 'Fun Dive (certified divers)', help: 'For certified divers. Appears on the Fun Dive page, “Day dives” tab.' },
   { value: 'night', label: 'Night Dive (certified divers)', help: 'After-dark dive for certified divers. Appears on the Fun Dive page, “Night dives” tab.' },
   { value: 'snorkel', label: 'Snorkelling', help: 'No diving needed. Appears on the Boat Experience page, “Snorkelling” tab.' },
@@ -185,7 +184,7 @@ export type DiveCategory = 'discover' | 'fun' | 'experience';
 
 // Collapse a fine dive kind to its broad homepage group.
 export function kindToGroup(kind: DiveKind): DiveCategory {
-  if (kind === 'discover' || kind === 'try_shore') return 'discover';
+  if (kind === 'discover' || kind === 'try_shore') return 'discover'; // try_shore is legacy
   if (kind === 'fun' || kind === 'night') return 'fun';
   return 'experience'; // snorkel | island | charter
 }
@@ -200,6 +199,9 @@ export function inferDiveKind(d: {
   train_min: number | null;
   on_request: boolean;
 }): DiveKind {
+  // Shore entry is no longer permitted in Havelock — every dive runs from the
+  // boat — so any legacy shore row is treated as a Discover Scuba dive.
+  if (d.category === 'try_shore') return 'discover';
   if (d.category) return d.category;
   const slug = d.slug || '';
   if (slug.startsWith('charter')) return 'charter';
@@ -207,7 +209,6 @@ export function inferDiveKind(d: {
   if (slug.includes('snorkel')) return 'snorkel';
   if (slug.includes('night')) return 'night';
   if (d.tier === 'Certified') return 'fun';
-  if (slug.includes('shore')) return 'try_shore';
   if (d.train_min != null && !d.on_request) return 'discover';
   return 'discover';
 }

@@ -9,7 +9,7 @@ export function diveCentreSchema(settings: Settings) {
     '@type': 'SportsActivityLocation',
     name: SITE_NAME,
     description:
-      'PADI dive centre on Havelock Island (Swaraj Dweep), Andaman. Try dives, fun dives and PADI certification courses.',
+      'PADI dive centre on Havelock Island (Swaraj Dweep), Andaman. Discover Scuba dives, fun dives and PADI certification courses.',
     url: SITE_URL,
     telephone: settings.phone,
     email: settings.email,

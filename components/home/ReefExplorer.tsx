@@ -13,7 +13,7 @@ type Option = { name: string; price: number | null; onRequest?: boolean; unit?: 
 // the price list). Used only when the live DB has nothing for that type yet —
 // on the live site the full list comes straight from the database.
 const FALLBACK_DIVES: Record<DiveKind, Option[]> = {
-  try_shore: [{ name: 'Try Dive — Shore (45 min)', price: 3500 }],
+  try_shore: [], // legacy — shore entry no longer permitted
   discover: [
     { name: '30-Min Discover Scuba Dive', price: 3800 },
     { name: '45-Min Discover Scuba Dive', price: 4500 },
@@ -59,7 +59,7 @@ const REEFS: Reef[] = [
     blurb:
       'A shallow, sunlit coral garden in calm, sheltered water — the easiest place to take your very first breath underwater.',
     life: ['Clownfish', 'Parrotfish', 'Green turtles', 'Coral gardens'],
-    kinds: ['try_shore', 'discover'],
+    kinds: ['discover'],
   },
   {
     key: 'red',
@@ -72,7 +72,7 @@ const REEFS: Reef[] = [
     blurb:
       'Standing coral pillars wrapped in clouds of reef fish — our most colourful and best-value site, brilliant on every dive.',
     life: ['Fusiliers', 'Angelfish', 'Coral pillars', 'Moray eels'],
-    kinds: ['try_shore', 'discover', 'snorkel'],
+    kinds: ['discover', 'snorkel'],
   },
   {
     key: 'light',
