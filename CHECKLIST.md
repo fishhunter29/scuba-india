@@ -19,6 +19,9 @@ returned" is the correct result for these.
 - [ ] `supabase/migrations/0018_dive_category_course_kind.sql` — adds the
       `category` / `kind` columns, the shore Try Dive, and aligns island
       hopping. **Required** — the price list & reef prices key off these.
+- [ ] `supabase/migrations/0022_reef_prices_from_rate_sheet.sql` — clears the
+      hand-typed reef prices so every reef is priced from the rate sheet. Run
+      **last**.
 - [ ] `supabase/migrations/0021_boat_only_diving.sql` — retires the shore Try
       Dive (shore entry is no longer permitted in Havelock) and re-tags any
       shore rows as Discover Scuba. Run **last**.

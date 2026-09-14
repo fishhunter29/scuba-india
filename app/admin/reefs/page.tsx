@@ -20,7 +20,7 @@ const EMPTY: Partial<Reef> = {
   life: [],
   kinds: [],
   price: null,
-  duration_label: '30 min underwater',
+  duration_label: null,
   featured: false,
   active: true,
   sort: 0,
@@ -116,9 +116,9 @@ export default function ReefsAdmin() {
     >
       <Toast />
       <p className="a-intro">
-        Every reef you dive. The ones ticked “Show on the homepage” appear there as bookable
-        package cards; all of them appear on the Reef Dives page, where visitors can explore each
-        reef and see every dive and price available at it.
+        Every reef you dive. Each one offers a single package, priced from the dive you actually
+        book there — so reef prices follow your rate sheet automatically. The ones ticked “Show on
+        the homepage” appear there as cards; all of them appear on the Reef Dives page.
       </p>
 
       {loading ? (
@@ -145,7 +145,7 @@ export default function ReefsAdmin() {
                   </td>
                   <td>{r.depth_m}m</td>
                   <td>{r.level}</td>
-                  <td>{r.price ? '₹' + r.price.toLocaleString('en-IN') : 'from dives'}</td>
+                  <td>{r.price ? '₹' + r.price.toLocaleString('en-IN') + ' (override)' : 'Rate sheet'}</td>
                   <td>{r.featured ? '★ Featured' : '—'}</td>
                   <td>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => toggleActive(r)}>
@@ -201,10 +201,11 @@ export default function ReefsAdmin() {
               </div>
             </div>
 
-            <div className="a-section-title">Homepage package</div>
+            <div className="a-section-title">The package at this reef</div>
             <Help>
-              This is the single price shown on the reef card on the homepage. Leave the price blank
-              to use the cheapest dive that runs at this reef instead.
+              <strong>Leave the price blank</strong> and this reef is priced from the dive you run
+              there, straight off your rate sheet — change a dive price and the reef follows. Only
+              type a price here if this reef genuinely costs more than the standard dive.
             </Help>
             <div className="a-grid2">
               <div className="a-field">
@@ -212,7 +213,7 @@ export default function ReefsAdmin() {
                 <input
                   type="number"
                   value={editing.price ?? ''}
-                  placeholder="e.g. 5500 — blank uses the cheapest dive"
+                  placeholder="Blank = use the rate sheet (recommended)"
                   onChange={(e) => field('price', e.target.value === '' ? null : Number(e.target.value))}
                 />
               </div>
@@ -220,7 +221,7 @@ export default function ReefsAdmin() {
                 <label>What the price buys</label>
                 <input
                   value={editing.duration_label ?? ''}
-                  placeholder="e.g. 30 min underwater"
+                  placeholder="Blank = the dive's own duration"
                   onChange={(e) => field('duration_label', e.target.value)}
                 />
               </div>

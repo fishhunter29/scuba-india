@@ -451,3 +451,13 @@ footer{position:relative;z-index:3;background:var(--sumi);padding:80px 0;color:v
 .reef-pk-life span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);margin-bottom:3px}
 @media(max-width:1080px){.reef-pk-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.reef-pk-grid{grid-template-columns:1fr}}
+
+/* one package per reef, shown in the explorer */
+.reef-pkg{margin:20px 0 4px}
+.reef-pkg-row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  border:1px solid rgba(0,0,0,.14);background:var(--paper);padding:16px 18px;margin-top:10px}
+.reef-pkg-name{display:block;font-family:var(--disp);font-size:17px;font-weight:600;color:var(--sumi)}
+.reef-pkg-dur{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ash);margin-top:4px}
+.reef-pkg-price{font-family:var(--disp);font-size:27px;font-weight:700;color:var(--vermilion);line-height:1;text-align:right;white-space:nowrap}
+.reef-pkg-price small{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--ash);margin-top:5px;letter-spacing:.04em}
+@media(max-width:520px){.reef-pkg-row{padding:14px}.reef-pkg-price{font-size:24px}}
