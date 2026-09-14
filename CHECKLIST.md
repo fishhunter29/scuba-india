@@ -19,6 +19,9 @@ returned" is the correct result for these.
 - [ ] `supabase/migrations/0018_dive_category_course_kind.sql` — adds the
       `category` / `kind` columns, the shore Try Dive, and aligns island
       hopping. **Required** — the price list & reef prices key off these.
+- [ ] `supabase/migrations/0020_reef_packages.sql` — adds three more reefs
+      (Nemo Reef, Aquarium, The Wall), plus a headline price, duration and
+      “show on homepage” tick per reef. Run **after** 0019.
 - [ ] `supabase/migrations/0019_editable_sections.sql` — makes the rest of the
       site editable from admin: adds `dives.featured` (homepage “Most booked”),
       the `reefs` table and the `sections` table (page wording), seeded with the
@@ -95,7 +98,7 @@ Log in at `/admin`. Empty fields render visible placeholders like
 |---|---|
 | **Dives** | Every dive/experience: name, price, what's included, photos, which category it belongs to, and **“Feature on the homepage”** for the “Most booked” row |
 | **Courses** | PADI courses and combos |
-| **Reefs** | The four reefs: name, depth, level, description, marine life, photo, and which dives run there |
+| **Reefs** | Every reef: name, depth, level, description, marine life, photo, which dives run there, its homepage package price, and whether it shows on the homepage |
 | **Page Sections** | The wording of each block — Why Scuba India, Meet the crew, the reef heading, the gallery heading and the closing call-to-action |
 | **Photos** | Upload gallery photos (category `gallery`) — these replace the bundled gallery |
 | **Reviews / Bookings / Guides / Settings** | As before |

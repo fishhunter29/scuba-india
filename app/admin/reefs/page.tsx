@@ -19,6 +19,9 @@ const EMPTY: Partial<Reef> = {
   image_url: null,
   life: [],
   kinds: [],
+  price: null,
+  duration_label: '30 min underwater',
+  featured: false,
   active: true,
   sort: 0,
 };
@@ -127,6 +130,8 @@ export default function ReefsAdmin() {
                 <th>Reef</th>
                 <th>Depth</th>
                 <th>Level</th>
+                <th>Price</th>
+                <th>Homepage</th>
                 <th>Shown?</th>
                 <th></th>
               </tr>
@@ -139,6 +144,8 @@ export default function ReefsAdmin() {
                   </td>
                   <td>{r.depth_m}m</td>
                   <td>{r.level}</td>
+                  <td>{r.price ? '₹' + r.price.toLocaleString('en-IN') : 'from dives'}</td>
+                  <td>{r.featured ? '★ Featured' : '—'}</td>
                   <td>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => toggleActive(r)}>
                       {r.active ? 'Shown' : 'Hidden'}
@@ -193,6 +200,40 @@ export default function ReefsAdmin() {
               </div>
             </div>
 
+            <div className="a-section-title">Homepage package</div>
+            <Help>
+              This is the single price shown on the reef card on the homepage. Leave the price blank
+              to use the cheapest dive that runs at this reef instead.
+            </Help>
+            <div className="a-grid2">
+              <div className="a-field">
+                <label>Price (₹ per person)</label>
+                <input
+                  type="number"
+                  value={editing.price ?? ''}
+                  placeholder="e.g. 5500 — blank uses the cheapest dive"
+                  onChange={(e) => field('price', e.target.value === '' ? null : Number(e.target.value))}
+                />
+              </div>
+              <div className="a-field">
+                <label>What the price buys</label>
+                <input
+                  value={editing.duration_label ?? ''}
+                  placeholder="e.g. 30 min underwater"
+                  onChange={(e) => field('duration_label', e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="a-field">
+              <label>Show on the homepage?</label>
+              <select value={editing.featured ? 'yes' : 'no'} onChange={(e) => field('featured', e.target.value === 'yes')}>
+                <option value="no">No — only on the Reef Dives page</option>
+                <option value="yes">Yes — show its card on the homepage</option>
+              </select>
+              <Help>The homepage shows the first 4 ticked reefs. All reefs always appear on the Reef Dives page.</Help>
+            </div>
+
+            <div className="a-section-title">On the reef page</div>
             <div className="a-field">
               <label>Description</label>
               <textarea value={editing.blurb ?? ''} placeholder="What this reef is like to dive." onChange={(e) => field('blurb', e.target.value)} />
