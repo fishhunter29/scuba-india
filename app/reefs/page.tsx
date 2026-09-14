@@ -36,6 +36,17 @@ export default async function ReefsPage() {
   ]);
   const settings = withLiveRating(rawSettings, google);
 
+  // Heading and stats come from the live reef list — hardcoding "Four reefs"
+  // went stale the moment a reef was added in admin.
+  const shown = reefs.filter((r) => r.active !== false);
+  const count = shown.length || 4;
+  const WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+  const countWord = WORDS[count] ?? String(count);
+  const depths = shown.map((r) => r.depth_m).filter((d) => typeof d === 'number');
+  const depthRange = depths.length
+    ? `${Math.min(...depths)}\u2013${Math.max(...depths)} m`
+    : '12\u201318 m';
+
   return (
     <>
       <InkBackground />
@@ -49,14 +60,15 @@ export default async function ReefsPage() {
           <div className="wrap">
             <Link href="/" className="detail-back">← Back to home</Link>
             <div className="detail-eyebrow">Where you&apos;ll dive</div>
-            <h1>Four reefs. Every level of diver.</h1>
+            <h1>{countWord} reefs. Every level of diver.</h1>
             <p className="detail-pitch">
               We dive Havelock&apos;s (Swaraj Dweep&apos;s) healthiest sites and match each to you —
-              gentle shallow coral for your first breath, deeper drifts for the certified. Warm
-              water 27–30°C, visibility 15–25m. Tap a reef below to explore it and book.
+              gentle shallow coral for your first breath, deeper drifts for the certified. Every
+              dive goes out by boat. Warm water 27–30°C, visibility 15–25m. Tap a reef below to
+              explore it and book.
             </p>
             <div className="cat-meta">
-              <span>4 reefs · 12–18 m</span>
+              <span>{count} reefs · {depthRange}</span>
               <span>Beginner to certified</span>
               <span>Calmest October–May</span>
             </div>

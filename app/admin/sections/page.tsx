@@ -13,7 +13,7 @@ const SHAPE: Record<string, { sub?: string; items?: string; hint: string }> = {
   why: { items: 'Reasons', hint: 'The three reasons shown under “Why Scuba India” on the homepage.' },
   team: { sub: 'Intro paragraph', hint: 'The “Meet the crew” block on the homepage. Photos are managed under Photos.' },
   final_cta: { sub: 'Sub-line', hint: 'The big closing call-to-action at the bottom of every page. The last word of the title is highlighted.' },
-  reefs: { sub: 'Intro paragraph', hint: 'The heading above the four reefs on the homepage. The reefs themselves are under Reefs.' },
+  reefs: { sub: 'Intro paragraph', hint: 'The heading above the reef cards on the homepage. The reefs themselves are under Reefs.' },
   gallery: { sub: 'Intro paragraph', hint: 'The heading above the photo gallery on the homepage.' },
 };
 

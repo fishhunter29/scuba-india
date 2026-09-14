@@ -9,7 +9,7 @@ import { DIVE_CATEGORIES } from '@/lib/categories';
 // and expands inline in the mobile drawer.
 const DIVE_MENU = [
   ...DIVE_CATEGORIES.map((c) => ({ href: `/dives/${c.slug}`, label: c.nav, meta: c.audience })),
-  { href: '/reefs', label: 'Reef Dives', meta: 'The four reefs we dive' },
+  { href: '/reefs', label: 'Reef Dives', meta: 'The reefs we dive' },
 ];
 
 const LINKS = [
