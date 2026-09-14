@@ -19,6 +19,9 @@ returned" is the correct result for these.
 - [ ] `supabase/migrations/0018_dive_category_course_kind.sql` — adds the
       `category` / `kind` columns, the shore Try Dive, and aligns island
       hopping. **Required** — the price list & reef prices key off these.
+- [ ] `supabase/migrations/0021_boat_only_diving.sql` — retires the shore Try
+      Dive (shore entry is no longer permitted in Havelock) and re-tags any
+      shore rows as Discover Scuba. Run **last**.
 - [ ] `supabase/migrations/0020_reef_packages.sql` — adds three more reefs
       (Nemo Reef, Aquarium, The Wall), plus a headline price, duration and
       “show on homepage” tick per reef. Run **after** 0019.
@@ -71,7 +74,7 @@ Log in at `/admin`. Empty fields render visible placeholders like
 
 - [ ] Homepage loads; hero, all sections and images render.
 - [ ] Nav → **Dives** menu opens; each category page loads:
-      `/dives/try-dive`, `/dives/boat-dive`, `/dives/fun-dive`,
+      `/dives/boat-dive`, `/dives/fun-dive`,
       `/dives/boat-experience`, `/reefs`, `/courses`.
 - [ ] Option tabs on each category page filter the list correctly.
 - [ ] Tapping a dive-type card on the homepage opens its category page.

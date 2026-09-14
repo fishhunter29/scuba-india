@@ -168,7 +168,7 @@ export default async function LearnToDivePage() {
           <div className="detail-eyebrow reveal">What the day looks like</div>
           <h2 className="reveal">From pickup to the grin afterward.</h2>
           <p className="lead reveal">
-            No guesswork. Here&apos;s exactly how a try dive day unfolds.
+            No guesswork. Here&apos;s exactly how your first dive day unfolds.
           </p>
           <div className="day-timeline reveal">
             <div className="day-step">

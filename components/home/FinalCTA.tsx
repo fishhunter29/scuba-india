@@ -19,7 +19,7 @@ export default function FinalCTA({ settings, section }: { settings: Settings; se
           </h2>
           <p>{body}</p>
           <div className="hero-cta">
-            <Link href="/dives/try-dive" className="btn btn-primary">
+            <Link href="/dives/boat-dive" className="btn btn-primary">
               Book a Dive →
             </Link>
             <a

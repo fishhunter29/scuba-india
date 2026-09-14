@@ -13,20 +13,20 @@ import { waLink } from '@/lib/whatsapp';
 // short and never empty.
 function curate(dives: Dive[]): Dive[] {
   const active = dives.filter((d) => d.active !== false);
-  const featured = active.filter((d) => d.featured).sort((a, b) => a.sort - b.sort);
-  if (featured.length) return featured.slice(0, 4);
-
-  const picked: Dive[] = [];
-  for (const slug of CURATED_SLUGS) {
-    const hit = active.find((d) => d.slug === slug);
-    if (hit) picked.push(hit);
-  }
+  // Admin's ticked dives lead, then the built-in picks, then the cheapest in
+  // each category — so the row is always full even if only one dive is ticked.
+  const picked: Dive[] = active.filter((d) => d.featured).sort((a, b) => a.sort - b.sort);
+  const add = (d: Dive | undefined) => {
+    if (d && !picked.some((p) => p.id === d.id)) picked.push(d);
+  };
+  for (const slug of CURATED_SLUGS) add(active.find((d) => d.slug === slug));
   for (const cat of DIVE_CATEGORIES) {
     if (picked.some((p) => cat.kinds.includes(inferDiveKind(p)))) continue;
-    const cheapest = active
-      .filter((d) => cat.kinds.includes(inferDiveKind(d)) && d.price != null && !d.on_request)
-      .sort((a, b) => (a.price ?? 0) - (b.price ?? 0))[0];
-    if (cheapest) picked.push(cheapest);
+    add(
+      active
+        .filter((d) => cat.kinds.includes(inferDiveKind(d)) && d.price != null && !d.on_request)
+        .sort((a, b) => (a.price ?? 0) - (b.price ?? 0))[0],
+    );
   }
   return picked.slice(0, 4);
 }

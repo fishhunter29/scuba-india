@@ -17,11 +17,11 @@ export default function DiveChooser({
   funFrom: string;
 }) {
   const REC_TRY: Rec = {
-    title: 'A Try Scuba Dive',
+    title: 'A Discover Scuba Dive',
     blurb:
-      'You don\'t need any experience or certification. An instructor guides you the whole way on a calm, shallow reef — the perfect first taste of diving.',
+      'You don\'t need any experience or certification. A short boat ride out, then an instructor guides you the whole way on a calm, shallow reef — the perfect first taste of diving.',
     href: tryHref,
-    cta: 'See the Try Dive →',
+    cta: 'See Discover Scuba dives →',
     price: `From ${tryFrom} per person`,
   };
   const REC_COURSE: Rec = {

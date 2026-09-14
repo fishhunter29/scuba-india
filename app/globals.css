@@ -287,7 +287,7 @@ section{position:relative;z-index:3}
 }
 
 /* ways to dive — dive-types grid (engagement entry point) */
-.dt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:8px}
+.dt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:8px}
 .dt-card{display:flex;flex-direction:column;background:var(--paper-deep);border:1px solid rgba(0,0,0,.12);border-radius:16px;overflow:hidden;color:var(--sumi);text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.07);transition:transform .3s,box-shadow .3s,border-color .3s}
 .dt-card:hover{transform:translateY(-6px);box-shadow:0 22px 50px rgba(0,0,0,.16);border-color:var(--vermilion)}
 .dt-photo{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--sumi)}
@@ -310,7 +310,7 @@ section{position:relative;z-index:3}
 .dt-card:hover .dt-explore{color:var(--vermilion)}
 .dt-note{font-family:var(--mono);font-size:12px;color:var(--sumi-soft);margin-top:24px}
 .dt-note span{color:var(--vermilion);font-weight:700}
-@media(max-width:900px){.dt-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:1080px){.dt-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.dt-grid{grid-template-columns:1fr}}
 
 /* meet the team */
@@ -417,7 +417,7 @@ footer{position:relative;z-index:3;background:var(--sumi);padding:80px 0;color:v
 /* =========================================================================
    CURATED PICKS / shared product-card extras
    ========================================================================= */
-.curated .pk-grid{grid-template-columns:repeat(4,1fr)}
+.curated .pk-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
 @media(max-width:1100px){.curated .pk-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.curated .pk-grid{grid-template-columns:1fr}}
 .pk-name{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--sumi);margin-bottom:8px;line-height:1.25}
@@ -443,7 +443,7 @@ footer{position:relative;z-index:3;background:var(--sumi);padding:80px 0;color:v
 @media(max-width:900px){.reef-teaser-grid{grid-template-columns:1fr 1fr}}
 
 /* homepage reef packages — one bookable card per reef (shares the .pk card) */
-.reef-pk-grid{grid-template-columns:repeat(4,1fr)}
+.reef-pk-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
 .reef-pk .pk-img picture{display:block;width:100%;height:100%}
 .reef-pk .pk-img img{width:100%;height:100%;object-fit:cover;display:block}
 .reef-pk-meta{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ash);margin:-4px 0 10px}

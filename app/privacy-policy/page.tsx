@@ -113,7 +113,7 @@ export default async function PrivacyPolicyPage() {
               <div className="panel">
                 <h3>7. Minors</h3>
                 <p>
-                  PADI courses and try dives have minimum age requirements, and divers under 18 must dive with the
+                  PADI courses and Discover Scuba dives have minimum age requirements, and divers under 18 must dive with the
                   consent of a parent or guardian. Where we collect information about a minor, we do so with the
                   involvement and consent of their parent or guardian.
                 </p>

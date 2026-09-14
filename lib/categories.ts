@@ -35,48 +35,31 @@ export interface DiveCategoryPage {
 
 export const DIVE_CATEGORIES: DiveCategoryPage[] = [
   {
-    slug: 'try-dive',
-    nav: 'Try Dive',
+    // The beginner entry point. Shore/beach try dives are no longer permitted
+    // in Havelock — every dive now runs from the boat — so this category holds
+    // all first-timer diving and keeps the "try dive" search intent.
+    slug: 'boat-dive',
+    nav: 'Discover Scuba',
     icon: 'try',
-    entry: 'shore',
-    hook: 'Your first breath underwater, walking in from the beach.',
-    plural: 'try dives',
-    title: 'Try Dive — your first breath underwater',
+    entry: 'boat',
+    hook: 'Your first breath underwater, guided every second.',
+    plural: 'Discover Scuba dives',
+    title: 'Discover Scuba — your first breath underwater',
     eyebrow: 'Beginners · no experience needed',
     tagline:
-      'Walk in from the beach and breathe underwater for the first time, with a PADI instructor holding you the whole way. No experience, no swimming skill, no certification needed — just come as you are.',
-    banner: '/images/banner-learn',
-    card: '/images/type-tryshore',
-    kinds: ['try_shore'],
-    audience: 'First-timers · non-swimmers welcome',
-    tabs: [{ key: 'all', label: 'All try dives' }],
-    seoTitle: 'Try Scuba Diving in Havelock — Shore Dive for Beginners',
-    seoDescription:
-      'Try scuba diving in Havelock (Swaraj Dweep) from the beach. No experience needed, PADI instructor at your side, HD photos and video included.',
-  },
-  {
-    slug: 'boat-dive',
-    nav: 'Boat Dive',
-    icon: 'boat',
-    entry: 'boat',
-    hook: 'A short boat ride to quieter reefs, then your first dive.',
-    plural: 'boat dives',
-    title: 'Boat Dives — Discover Scuba from the water',
-    eyebrow: 'Beginners · from the boat',
-    tagline:
-      'A short boat ride out to quieter, richer reefs, then your guided dive. Our signature Discover Scuba experience — more coral, better fish life, and free HD photos and GoPro video to take home.',
+      'Breathe underwater for the first time with a PADI instructor holding you the whole way — no experience, no swimming skill, no certification needed. Every dive goes out by boat to quieter, richer reefs, and the HD photos and GoPro video are free.',
     banner: '/images/banner-courses',
     card: '/images/type-dsdboat',
     kinds: ['discover'],
-    audience: 'First-timers · no experience needed',
+    audience: 'First-timers · non-swimmers welcome',
     tabs: [
-      { key: 'all', label: 'All boat dives' },
+      { key: 'all', label: 'All Discover Scuba dives' },
       { key: 'single', label: 'Single dive', nameReNot: '2 ×|\\+' },
       { key: 'double', label: 'Two dives', nameRe: '2 ×|\\+' },
     ],
-    seoTitle: 'Discover Scuba Boat Dives in Havelock — Scuba India',
+    seoTitle: 'Try Scuba Diving in Havelock — Discover Scuba Dives for Beginners',
     seoDescription:
-      'Discover Scuba boat dives in Havelock (Swaraj Dweep), Andaman. 30 to 45 minutes underwater, PADI instructors, HD photos and GoPro video free.',
+      'Try scuba diving in Havelock (Swaraj Dweep), Andaman. No experience needed, PADI instructor at your side, 30 to 45 minutes underwater, HD photos and GoPro video free.',
   },
   {
     slug: 'fun-dive',
@@ -135,7 +118,7 @@ export function getCategory(slug: string): DiveCategoryPage | undefined {
 
 // Card/thumbnail image for a dive, by kind — one map, used by every card.
 const KIND_IMG: Record<DiveKind, string> = {
-  try_shore: 'type-tryshore',
+  try_shore: 'type-dsdboat', // legacy: shore dives are no longer offered
   discover: 'type-dsdboat',
   fun: 'type-fun',
   night: 'type-night',
@@ -149,14 +132,13 @@ export function diveImage(d: { image_url: string | null; category: DiveKind | nu
 
 // Which category page a given dive kind belongs to.
 export function kindToCategorySlug(kind: DiveKind): string {
-  return DIVE_CATEGORIES.find((c) => c.kinds.includes(kind))?.slug ?? 'try-dive';
+  return DIVE_CATEGORIES.find((c) => c.kinds.includes(kind))?.slug ?? 'boat-dive';
 }
 
 // Homepage curation. Hand-picked for now — this is the list that will later be
 // driven from admin ("feature this on the homepage").
 export const CURATED_SLUGS = [
   'discover-30', // the flagship beginner boat dive
-  'try-shore', // cheapest way in
   'fun-single', // for certified divers
   'boat-snorkelling', // non-divers
 ];
@@ -166,8 +148,8 @@ export const CURATED_SLUGS = [
 export const REEF_CATEGORY = {
   slug: 'reefs',
   nav: 'Reef Dives',
-  title: 'Reef Dives — the four reefs we dive',
-  seoTitle: 'Havelock Dive Sites — Four Reefs for Every Level of Diver',
+  title: 'Reef Dives — the reefs we dive',
+  seoTitle: 'Havelock Dive Sites — Reefs for Every Level of Diver',
   seoDescription:
-    'Tribe Gate, Red Pillar, Lighthouse and Turtle Beach — the four reefs Scuba India dives in Havelock (Swaraj Dweep), with depths, marine life and prices.',
+    'Tribe Gate, Red Pillar, Lighthouse, Turtle Beach, Nemo Reef, Aquarium and The Wall — the reefs Scuba India dives in Havelock (Swaraj Dweep), with depths, marine life and prices.',
 };

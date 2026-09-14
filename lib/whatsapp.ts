@@ -22,7 +22,7 @@ export function waGeneral(number = DEFAULT_WHATSAPP): string {
 export function waTryDive(number = DEFAULT_WHATSAPP): string {
   return waLink(
     number,
-    "Hi Scuba India, I'm new to diving and would like to book a Try Scuba Dive.",
+    "Hi Scuba India, I'm new to diving and would like to book a Discover Scuba Dive.",
   );
 }
 
