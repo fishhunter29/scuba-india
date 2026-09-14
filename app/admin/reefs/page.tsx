@@ -116,8 +116,9 @@ export default function ReefsAdmin() {
     >
       <Toast />
       <p className="a-intro">
-        The reefs shown in the “Four reefs” section on the homepage and on the Reef Dives page.
-        Each reef lists the kinds of dive you run there, and its prices come from those dives.
+        Every reef you dive. The ones ticked “Show on the homepage” appear there as bookable
+        package cards; all of them appear on the Reef Dives page, where visitors can explore each
+        reef and see every dive and price available at it.
       </p>
 
       {loading ? (
