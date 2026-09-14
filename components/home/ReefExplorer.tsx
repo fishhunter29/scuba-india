@@ -132,6 +132,8 @@ export default function ReefExplorer({
     : REEFS;
   const [active, setActive] = useState(0);
   const r = list[Math.min(active, list.length - 1)];
+  const COUNT_WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+  const countWord = COUNT_WORDS[list.length] ?? String(list.length);
 
   // The full explorable list of dive options at a reef — every priced dive of
   // the reef's types, from the live DB (rate sheet), falling back to the known
@@ -166,7 +168,7 @@ export default function ReefExplorer({
         {showHeading && (
           <div className="sec-head reveal" style={{ maxWidth: 620 }}>
             <div className="sec-eyebrow">Where you&apos;ll dive</div>
-            <h2>Four reefs. Every level of diver.</h2>
+            <h2>{countWord} reefs. Every level of diver.</h2>
             <p>
               We dive Havelock&apos;s (Swaraj Dweep&apos;s) healthiest sites and match each to you —
               gentle shallow coral for your first breath, deeper drifts for the certified. Warm
@@ -257,7 +259,7 @@ export default function ReefExplorer({
             </div>
           </div>
 
-          {/* Selector — the four reefs */}
+          {/* Selector — every reef */}
           <div className="reef-selectors" role="tablist" aria-label="Choose a reef">
             {list.map((reef, i) => (
               <button

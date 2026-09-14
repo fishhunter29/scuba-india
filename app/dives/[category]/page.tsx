@@ -100,7 +100,7 @@ export default async function DiveCategoryPage({ params }: { params: { category:
                 ))}
                 <Link href="/reefs" className="cat-more-card">
                   <span className="cat-more-name">Reef Dives</span>
-                  <span className="cat-more-aud">The four reefs we dive</span>
+                  <span className="cat-more-aud">The reefs we dive</span>
                 </Link>
               </div>
             </div>
