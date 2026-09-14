@@ -3,36 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { Dive, DiveKind, Reef as DbReef } from '@/lib/types';
-import { inferDiveKind } from '@/lib/types';
+import { reefPackage } from '@/lib/reefs';
 import { formatPrice, reefImage } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
-
-type Option = { name: string; price: number | null; onRequest?: boolean; unit?: string };
-
-// Every dive option per type, priced from the rate sheet (same as Packages /
-// the price list). Used only when the live DB has nothing for that type yet —
-// on the live site the full list comes straight from the database.
-const FALLBACK_DIVES: Record<DiveKind, Option[]> = {
-  try_shore: [], // legacy — shore entry no longer permitted
-  discover: [
-    { name: '30-Min Discover Scuba Dive', price: 3800 },
-    { name: '45-Min Discover Scuba Dive', price: 4500 },
-    { name: '2 × 30-Min Discover Scuba Dives', price: 7500 },
-    { name: '30 + 45 Min Discover Scuba Dives', price: 9000 },
-  ],
-  fun: [
-    { name: 'Single Fun Dive', price: 4000 },
-    { name: 'Fun Dives — 1 Day, 2 Dives', price: 7500 },
-    { name: 'Fun Dives — 2 Days, 4 Dives', price: 14500 },
-  ],
-  night: [{ name: 'Night Dive', price: 4500 }],
-  snorkel: [{ name: 'Open-Sea Snorkelling', price: 2000 }],
-  island: [{ name: 'Island Hopping Trip', price: 25000, unit: 'per couple' }],
-  charter: [
-    { name: 'Boat Charter — 1 Hour', price: 13500 },
-    { name: 'Boat Charter — Half Day', price: 45000 },
-  ],
-};
 
 type Reef = {
   key: string;
@@ -45,6 +18,8 @@ type Reef = {
   imgKey: string;
   life: string[];
   kinds: DiveKind[]; // dive types offered here (priced from the rate sheet)
+  price?: number | null; // admin override; blank => the rate-sheet dive price
+  durationLabel?: string | null;
 };
 
 const REEFS: Reef[] = [
@@ -128,39 +103,15 @@ export default function ReefExplorer({
         imgKey: x.key,
         life: Array.isArray(x.life) ? x.life : [],
         kinds: (Array.isArray(x.kinds) ? x.kinds : []) as DiveKind[],
+        price: x.price ?? null,
+        durationLabel: x.duration_label ?? null,
       }))
     : REEFS;
   const [active, setActive] = useState(0);
   const r = list[Math.min(active, list.length - 1)];
   const COUNT_WORDS = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
   const countWord = COUNT_WORDS[list.length] ?? String(list.length);
-
-  // The full explorable list of dive options at a reef — every priced dive of
-  // the reef's types, from the live DB (rate sheet), falling back to the known
-  // rate-sheet catalogue when the DB has nothing for that type yet.
-  const reefDives = (kinds: DiveKind[]): Option[] => {
-    const out: Option[] = [];
-    for (const kind of kinds) {
-      const fromDb = dives
-        .filter((d) => d.active !== false && inferDiveKind(d) === kind && (d.price != null || d.on_request))
-        .sort((a, b) => a.sort - b.sort || (a.price ?? 0) - (b.price ?? 0));
-      if (fromDb.length) {
-        for (const d of fromDb) {
-          out.push({
-            name: d.name,
-            price: d.price,
-            onRequest: d.on_request,
-            unit: d.duration_label && /per couple|per person/i.test(d.duration_label)
-              ? d.duration_label.replace(/·.*$/, '').trim()
-              : undefined,
-          });
-        }
-      } else {
-        out.push(...FALLBACK_DIVES[kind]);
-      }
-    }
-    return out;
-  };
+  const pkg = reefPackage({ kinds: r.kinds, price: r.price ?? null, duration_label: r.durationLabel ?? null }, dives);
 
   return (
     <section className="band sites" id="sites">
@@ -215,42 +166,34 @@ export default function ReefExplorer({
                 </ul>
               </div>
 
-              {/* every dive option at this reef — rate-sheet prices, book any one */}
-              <div className="reef-dives">
-                <span className="reef-see-label">Dives &amp; prices at {r.name}</span>
-                <ul className="reef-dive-list">
-                  {reefDives(r.kinds).map((d) => (
-                    <li className="reef-dive" key={d.name}>
-                      <span className="rd-name">{d.name}</span>
-                      <span className="rd-dots" aria-hidden="true" />
-                      <span className="rd-price">
-                        {formatPrice(d.price, d.onRequest)}
-                        {d.unit ? <span className="rd-unit"> {d.unit}</span> : null}
-                      </span>
-                      <a
-                        className="rd-book"
-                        href={waLink(
-                          whatsapp || '',
-                          `Hi Scuba India, I'd like to book the ${d.name} at ${r.name}${d.price != null && !d.onRequest ? ` (₹${d.price.toLocaleString('en-IN')})` : ''}.`,
-                        )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Book
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+              {/* one package per reef — priced from the rate sheet */}
+              <div className="reef-pkg">
+                <span className="reef-see-label">Your dive at {r.name}</span>
+                <div className="reef-pkg-row">
+                  <div className="reef-pkg-what">
+                    <span className="reef-pkg-name">{pkg.name}</span>
+                    <span className="reef-pkg-dur">
+                      {pkg.badge} · {pkg.duration}
+                    </span>
+                  </div>
+                  <span className="reef-pkg-price">
+                    {formatPrice(pkg.price, pkg.price == null)}
+                    <small>{pkg.price == null ? 'contact us' : pkg.unit}</small>
+                  </span>
+                </div>
               </div>
 
               <div className="reef-cta-row">
                 <a
                   className="btn btn-primary"
-                  href={waLink(whatsapp || '', `Hi Scuba India, I'd like to dive at ${r.name}.`)}
+                  href={waLink(
+                    whatsapp || '',
+                    `Hi Scuba India, I'd like to dive at ${r.name}${pkg.price != null ? ` — ${pkg.name} (₹${pkg.price.toLocaleString('en-IN')})` : ''}.`,
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Enquire about {r.name} →
+                  Book {r.name} on WhatsApp →
                 </a>
                 <Link href="/prices" className="reef-cta-secondary">
                   Compare all dives
