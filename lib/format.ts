@@ -47,3 +47,16 @@ export function courseSlug(name: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
+
+// A reef photo is either a bundled base path (/images/reef-tribe, which has
+// .webp and .jpg variants alongside it) or a full URL uploaded in admin, which
+// already carries its extension. Without this the uploaded ones would be
+// requested as "photo.jpg.webp" and 404.
+export function reefImage(
+  image: string | null | undefined,
+  key: string,
+): { src: string; webp: string | null } {
+  const base = image || `/images/reef-${key}`;
+  const hasExt = /\.(jpe?g|png|webp|avif|gif)$/i.test(base);
+  return hasExt ? { src: base, webp: null } : { src: `${base}.jpg`, webp: `${base}.webp` };
+}

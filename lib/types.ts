@@ -62,6 +62,9 @@ export interface Reef {
   image_url: string | null;
   life: string[];
   kinds: DiveKind[];
+  price: number | null; // headline package price; blank => cheapest dive here
+  duration_label: string | null; // what that price buys, e.g. "30 min underwater"
+  featured: boolean; // show on the homepage reef row
   active: boolean;
   sort: number;
 }

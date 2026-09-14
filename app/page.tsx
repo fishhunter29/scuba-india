@@ -56,7 +56,7 @@ export default async function HomePage() {
         <DiveTypes dives={dives} />
         <CuratedPicks dives={dives} whatsapp={settings.whatsapp} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
-        <ReefTeaser reefs={reefs} section={sections.reefs} />
+        <ReefTeaser reefs={reefs} dives={dives} section={sections.reefs} whatsapp={settings.whatsapp} />
         <WhyUs section={sections.why} />
         <Team section={sections.team} />
         <Reviews reviews={reviews} settings={settings} google={google} />

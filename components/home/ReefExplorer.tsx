@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { Dive, DiveKind, Reef as DbReef } from '@/lib/types';
 import { inferDiveKind } from '@/lib/types';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, reefImage } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
 type Option = { name: string; price: number | null; onRequest?: boolean; unit?: string };
@@ -41,7 +41,8 @@ type Reef = {
   level: string;
   bestFor: string;
   blurb: string;
-  image: string;
+  image: string | null;
+  imgKey: string;
   life: string[];
   kinds: DiveKind[]; // dive types offered here (priced from the rate sheet)
 };
@@ -53,7 +54,8 @@ const REEFS: Reef[] = [
     depth: 12,
     level: 'Beginner-friendly',
     bestFor: 'Discover Scuba & first dives',
-    image: '/images/reef-tribe',
+    image: null,
+    imgKey: 'tribe',
     blurb:
       'A shallow, sunlit coral garden in calm, sheltered water — the easiest place to take your very first breath underwater.',
     life: ['Clownfish', 'Parrotfish', 'Green turtles', 'Coral gardens'],
@@ -65,7 +67,8 @@ const REEFS: Reef[] = [
     depth: 14,
     level: 'All levels',
     bestFor: 'Discover Scuba, fun dives & snorkelling',
-    image: '/images/reef-red',
+    image: null,
+    imgKey: 'red',
     blurb:
       'Standing coral pillars wrapped in clouds of reef fish — our most colourful and best-value site, brilliant on every dive.',
     life: ['Fusiliers', 'Angelfish', 'Coral pillars', 'Moray eels'],
@@ -77,7 +80,8 @@ const REEFS: Reef[] = [
     depth: 18,
     level: 'Confident divers',
     bestFor: 'Fun dives & night dives (certified)',
-    image: '/images/reef-light',
+    image: null,
+    imgKey: 'light',
     blurb:
       'Deeper, more open water with bigger fish — schooling snapper, groupers and the occasional reef shark cruising the blue.',
     life: ['Snapper schools', 'Groupers', 'Reef sharks', 'Sweetlips'],
@@ -89,7 +93,8 @@ const REEFS: Reef[] = [
     depth: 16,
     level: 'All levels',
     bestFor: 'Fun dives & turtle encounters',
-    image: '/images/reef-turtle',
+    image: null,
+    imgKey: 'turtle',
     blurb:
       'Green sea turtles grazing the seagrass and rays gliding over the sand — an unhurried, wonderfully life-rich reef.',
     life: ['Green turtles', 'Stingrays', 'Seagrass beds', 'Hard coral'],
@@ -119,7 +124,8 @@ export default function ReefExplorer({
         level: x.level,
         bestFor: x.best_for ?? '',
         blurb: x.blurb ?? '',
-        image: x.image_url || `/images/reef-${x.key}`,
+        image: x.image_url,
+        imgKey: x.key,
         life: Array.isArray(x.life) ? x.life : [],
         kinds: (Array.isArray(x.kinds) ? x.kinds : []) as DiveKind[],
       }))
@@ -174,9 +180,11 @@ export default function ReefExplorer({
           <div className="reef-feature" key={r.key}>
             <div className="reef-feature-img">
               <picture>
-                <source type="image/webp" srcSet={`${r.image}.webp`} />
+                {reefImage(r.image, r.imgKey).webp && (
+                  <source type="image/webp" srcSet={reefImage(r.image, r.imgKey).webp!} />
+                )}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${r.image}.jpg`} alt={`${r.name} reef, Havelock`} decoding="async" />
+                <img src={reefImage(r.image, r.imgKey).src} alt={`${r.name} reef, Havelock`} decoding="async" />
               </picture>
               <div className="reef-feature-badges">
                 <span className="reef-badge reef-badge-depth">{r.depth}m max</span>
@@ -261,9 +269,11 @@ export default function ReefExplorer({
               >
                 <span className="reef-sel-thumb">
                   <picture>
-                    <source type="image/webp" srcSet={`${reef.image}.webp`} />
+                    {reefImage(reef.image, reef.imgKey).webp && (
+                      <source type="image/webp" srcSet={reefImage(reef.image, reef.imgKey).webp!} />
+                    )}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`${reef.image}.jpg`} alt="" loading="lazy" decoding="async" />
+                    <img src={reefImage(reef.image, reef.imgKey).src} alt="" loading="lazy" decoding="async" />
                   </picture>
                 </span>
                 <span className="reef-sel-text">
