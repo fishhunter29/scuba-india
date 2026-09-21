@@ -12,7 +12,7 @@ const FALLBACK: Pick<Reef, 'key' | 'name' | 'depth_m' | 'level' | 'best_for' | '
   { key: 'slope', name: 'Slope', depth_m: 12, level: 'All levels', best_for: 'Boat dives', image_url: '/images/gallery/g25', life: ['Mantis shrimp', 'Batfish', 'Staghorn coral'], kinds: ['discover'], price: 4500, duration_label: null },
   { key: 'juvis', name: "Juvi's", depth_m: 12, level: 'All levels', best_for: 'Bigger encounters', image_url: '/images/gallery/g27', life: ['White-tip reef sharks', 'Potato coral'], kinds: ['discover'], price: 5000, duration_label: null },
   { key: 'aquarium', name: 'Aquarium', depth_m: 12, level: 'All levels', best_for: 'Boat dives & snorkelling', image_url: '/images/gallery/g08', life: ['Snapper schools', 'Fusiliers', 'Coral bommies'], kinds: ['discover'], price: 6500, duration_label: null },
-  { key: 'turtle', name: 'Turtle Beach', depth_m: 12, level: 'All levels', best_for: 'Turtle encounters', image_url: null, life: ['Green turtles', 'Stingrays', 'Seagrass'], kinds: ['discover'], price: 7500, duration_label: null },
+  { key: 'turtle', name: 'Turtle Beach', depth_m: 12, level: 'All levels', best_for: 'Turtle encounters', image_url: '/images/gallery/g06', life: ['Green turtles', 'Stingrays', 'Seagrass'], kinds: ['discover'], price: 7500, duration_label: null },
 ];
 
 // Homepage: one simple bookable package per reef. The admin price wins; with
