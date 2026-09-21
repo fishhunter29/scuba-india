@@ -19,6 +19,9 @@ returned" is the correct result for these.
 - [ ] `supabase/migrations/0018_dive_category_course_kind.sql` — adds the
       `category` / `kind` columns, the shore Try Dive, and aligns island
       hopping. **Required** — the price list & reef prices key off these.
+- [ ] `supabase/migrations/0024_aquarium_and_real_reef_photos.sql` — brings
+      Aquarium back and points every reef at a real gallery photo. Run
+      **last**, and confirm Aquarium's ₹6,500 in admin.
 - [ ] `supabase/migrations/0023_client_reef_list_and_prices.sql` — the client's
       seven reefs with their own prices, all capped at 12 m, all on the
       homepage. Run **last**.
