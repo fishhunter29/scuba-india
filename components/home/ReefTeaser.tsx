@@ -5,13 +5,14 @@ import { formatPrice, reefImage } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
 const FALLBACK: Pick<Reef, 'key' | 'name' | 'depth_m' | 'level' | 'best_for' | 'life' | 'kinds' | 'price' | 'duration_label'>[] = [
-  { key: 'tribe', name: 'Tribe Gate', depth_m: 12, level: 'Beginner-friendly', best_for: 'First dives', life: ['Clownfish', 'Green turtles'], kinds: ['discover'], price: null, duration_label: null },
-  { key: 'red', name: 'Red Pillar', depth_m: 14, level: 'All levels', best_for: 'Discover Scuba & snorkelling', life: ['Fusiliers', 'Coral pillars'], kinds: ['discover', 'snorkel'], price: null, duration_label: null },
-  { key: 'light', name: 'Lighthouse', depth_m: 18, level: 'Confident divers', best_for: 'Fun & night dives', life: ['Snapper schools', 'Reef sharks'], kinds: ['fun', 'night'], price: null, duration_label: null },
-  { key: 'turtle', name: 'Turtle Beach', depth_m: 16, level: 'All levels', best_for: 'Turtle encounters', life: ['Green turtles', 'Stingrays'], kinds: ['discover', 'fun'], price: null, duration_label: null },
+  { key: 'red', name: 'Red Pillar', depth_m: 12, level: 'All levels', best_for: 'First dives & snorkelling', life: ['Fusiliers', 'Coral pillars'], kinds: ['discover'], price: 3000, duration_label: null },
+  { key: 'tribe', name: 'Tribe Gate', depth_m: 12, level: 'All levels', best_for: 'First dives', life: ['Clownfish', 'Green turtles'], kinds: ['discover'], price: 3500, duration_label: null },
+  { key: 'purple', name: 'Purple Ledge', depth_m: 12, level: 'All levels', best_for: 'Boat dives & photography', life: ['Soft corals', 'Sea fans'], kinds: ['discover'], price: 4000, duration_label: null },
+  { key: 'light', name: 'Lighthouse', depth_m: 12, level: 'All levels', best_for: 'Fun & night dives', life: ['Snapper schools', 'Reef sharks'], kinds: ['discover'], price: 4500, duration_label: null },
+  { key: 'slope', name: 'Slope', depth_m: 12, level: 'All levels', best_for: 'Boat dives', life: ['Mantis shrimp', 'Batfish'], kinds: ['discover'], price: 4500, duration_label: null },
+  { key: 'juvis', name: "Juvi's", depth_m: 12, level: 'All levels', best_for: 'Bigger encounters', life: ['White-tip reef sharks', 'Potato coral'], kinds: ['discover'], price: 5000, duration_label: null },
+  { key: 'turtle', name: 'Turtle Beach', depth_m: 12, level: 'All levels', best_for: 'Turtle encounters', life: ['Green turtles', 'Stingrays'], kinds: ['discover'], price: 7500, duration_label: null },
 ];
-
-const HOMEPAGE_MAX = 4; // keep the row to one tidy line; the rest live on /reefs
 
 // Homepage: one simple bookable package per reef. The admin price wins; with
 // none set we show the cheapest real dive that runs there, so the card always
@@ -27,16 +28,17 @@ export default function ReefTeaser({
   section?: Section;
   whatsapp?: string;
 }) {
-  const source = reefs.length ? reefs : (FALLBACK as Reef[]);
+  // Every reef shows here — choosing the reef is the first decision a visitor
+  // makes. A reef can still be kept off the homepage by unticking it in admin.
+  const source = (reefs.length ? reefs : (FALLBACK as Reef[])).filter((r) => r.active !== false);
   const featured = source.filter((r) => r.featured);
-  const list = (featured.length ? featured : source).slice(0, HOMEPAGE_MAX);
-  const more = source.length - list.length;
+  const list = featured.length ? featured : source;
 
   const eyebrow = section?.eyebrow || "Where you'll dive";
-  const title = section?.title || 'Pick your reef. Book in a minute.';
+  const title = section?.title || 'Choose your reef';
   const body =
     section?.subtitle ||
-    "Havelock's (Swaraj Dweep's) healthiest sites, matched to your experience — gentle shallow coral for your first breath, deeper drifts for the certified.";
+    "Every dive we run goes out by boat to one of these reefs, to a maximum depth of 12 metres. Pick the one you like and book it in a minute — no experience needed at any of them.";
 
   return (
     <section className="band sites" id="sites">
@@ -104,7 +106,7 @@ export default function ReefTeaser({
 
         <div className="reef-teaser-cta reveal">
           <Link href="/reefs" className="btn btn-primary">
-            {more > 0 ? `See all ${source.length} reefs →` : 'Explore the reefs →'}
+            Compare every reef →
           </Link>
         </div>
       </div>
