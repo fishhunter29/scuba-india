@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Dive, DiveKind, Reef } from '@/lib/types';
+import type { Dive, DiveKind } from '@/lib/types';
 import { inferDiveKind } from '@/lib/types';
 import { DIVE_CATEGORIES } from '@/lib/categories';
 
@@ -77,12 +77,7 @@ function TypeIcon({ icon }: { icon: IconName }) {
 
 // One card per real category — the same five that are in the nav and have their
 // own pages, so browsing here matches the site structure exactly.
-export default function DiveTypes({ dives, reefs = [] }: { dives: Dive[]; reefs?: Reef[] }) {
-  // Reef count and names come from the live data so this card can never go
-  // stale when reefs are added or removed in admin.
-  const reefNames = reefs.filter((r) => r.active !== false).map((r) => r.name);
-  const reefCount = reefNames.length || 4;
-  const reefList = (reefNames.length ? reefNames : ['Tribe Gate', 'Red Pillar', 'Lighthouse', 'Turtle Beach']).slice(0, 4).join(', ');
+export default function DiveTypes({ dives }: { dives: Dive[] }) {
   const fromPrice = (kinds: DiveKind[]): number | null => {
     const prices = dives
       .filter(
@@ -105,31 +100,18 @@ export default function DiveTypes({ dives, reefs = [] }: { dives: Dive[]; reefs?
       image: c.card,
       from: fromPrice(c.kinds),
     })),
-    {
-      key: 'reefs',
-      href: '/reefs',
-      name: 'Reef Dives',
-      icon: 'reef' as IconName,
-      entry: 'boat',
-      hook: `${reefCount} reefs, matched to your level — pick where you dive.`,
-      detail:
-        `${reefList} and more — shallow coral gardens through to deeper water with bigger fish. Explore each reef, its marine life and what it costs.`,
-      audience: 'Beginner to certified',
-      image: '/images/reef-red',
-      from: null,
-    },
   ];
 
   return (
     <section className="band divetypes" id="experiences">
       <div className="wrap">
         <div className="sec-head reveal">
-          <div className="sec-eyebrow">Ways to dive</div>
-          <h2>Find your way into the water</h2>
+          <div className="sec-eyebrow">More ways to dive</div>
+          <h2>Stay longer in the water</h2>
           <p>
-            However you like to dive — your very first breath underwater, a guided dive on Havelock’s
-            best reefs, or a day on the water without a tank. Every dive goes out by boat. Pick a
-            category to explore it, or see the{' '}
+            A reef above gets you one guided dive. These are everything beyond that — multi-dive
+            packages that work out cheaper per dive, PADI certifications, the reef after dark, and
+            days on the water without a tank. Pick a category to explore it, or see the{' '}
             <Link href="/prices">full price list</Link>.
           </p>
         </div>
