@@ -56,7 +56,7 @@ export default async function HomePage() {
         {/* Reefs lead the page — picking where you dive is the decision most
             visitors want to make first. */}
         <ReefTeaser reefs={reefs} dives={dives} section={sections.reefs} whatsapp={settings.whatsapp} />
-        <DiveTypes dives={dives} reefs={reefs} />
+        <DiveTypes dives={dives} />
         <CuratedPicks dives={dives} whatsapp={settings.whatsapp} />
         <Courses courses={courses} whatsapp={settings.whatsapp} />
         <WhyUs section={sections.why} />

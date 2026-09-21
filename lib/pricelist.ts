@@ -81,14 +81,19 @@ export function buildPriceSections(
     {
       id: 'reefs',
       title: 'Dive by Reef',
-      subtitle: 'One guided boat dive, per person. Pick the reef you like the look of.',
-      note: 'Every reef is dived from the boat with an instructor, to a maximum depth of 12 metres — no experience needed at any of them.',
+      subtitle: 'One guided boat dive, per person — this is what a single dive costs.',
+      note: 'Every reef is dived from the boat with an instructor, to a maximum depth of 12 metres, and no experience is needed at any of them. Diving more than once? The multi-dive packages below work out cheaper per dive.',
       items: reefItems,
     },
     ...DIVE_CATEGORIES.map((c) => ({
       id: c.slug,
       title: c.nav,
       subtitle: c.audience,
+      // Single dives are priced by reef above; these are the packages.
+      note:
+        c.slug === 'boat-dive' || c.slug === 'fun-dive'
+          ? 'Packages covering more than one dive. For a single dive, see Dive by Reef above.'
+          : undefined,
       items: inCats(c.kinds),
     })),
     {
