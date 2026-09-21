@@ -6,7 +6,7 @@ import Nav from '@/components/Nav';
 import PageBanner from '@/components/PageBanner';
 import Footer from '@/components/Footer';
 import WhatsAppFloat from '@/components/WhatsAppFloat';
-import { getSettings, getDives, getCourses } from '@/lib/data';
+import { getSettings, getDives, getCourses, getReefs } from '@/lib/data';
 import { getGoogleReviews, withLiveRating } from '@/lib/google-reviews';
 import { buildPriceSections } from '@/lib/pricelist';
 import { formatPrice } from '@/lib/format';
@@ -35,15 +35,16 @@ function CheckIcon() {
 }
 
 export default async function PricesPage() {
-  const [rawSettings, google, dives, courses] = await Promise.all([
+  const [rawSettings, google, dives, courses, reefs] = await Promise.all([
     getSettings(),
     getGoogleReviews(),
     getDives(),
     getCourses(),
+    getReefs(),
   ]);
   const settings = withLiveRating(rawSettings, google);
   const wa = settings.whatsapp;
-  const sections = buildPriceSections(dives, courses);
+  const sections = buildPriceSections(dives, courses, reefs);
 
   return (
     <>

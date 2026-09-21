@@ -75,10 +75,14 @@ export function reefPackage(
 
   const price = reef.price ?? dive?.price ?? null;
 
+  // A reef carrying its own price is sold as itself, not as a rate-sheet SKU —
+  // borrowing the dive's name would imply the same product at two prices.
+  const name = reef.price != null ? 'Guided boat dive' : dive?.name ?? 'Guided dive';
+
   return {
     kind,
     badge: BADGE[kind] ?? 'Boat dive',
-    name: dive?.name ?? 'Guided dive',
+    name,
     price,
     onRequest: price == null && (dive?.on_request ?? true),
     duration:
