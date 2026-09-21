@@ -4,14 +4,15 @@ import { reefPackage } from '@/lib/reefs';
 import { formatPrice, reefImage } from '@/lib/format';
 import { waLink } from '@/lib/whatsapp';
 
-const FALLBACK: Pick<Reef, 'key' | 'name' | 'depth_m' | 'level' | 'best_for' | 'life' | 'kinds' | 'price' | 'duration_label'>[] = [
-  { key: 'red', name: 'Red Pillar', depth_m: 12, level: 'All levels', best_for: 'First dives & snorkelling', life: ['Fusiliers', 'Coral pillars'], kinds: ['discover'], price: 3000, duration_label: null },
-  { key: 'tribe', name: 'Tribe Gate', depth_m: 12, level: 'All levels', best_for: 'First dives', life: ['Clownfish', 'Green turtles'], kinds: ['discover'], price: 3500, duration_label: null },
-  { key: 'purple', name: 'Purple Ledge', depth_m: 12, level: 'All levels', best_for: 'Boat dives & photography', life: ['Soft corals', 'Sea fans'], kinds: ['discover'], price: 4000, duration_label: null },
-  { key: 'light', name: 'Lighthouse', depth_m: 12, level: 'All levels', best_for: 'Fun & night dives', life: ['Snapper schools', 'Reef sharks'], kinds: ['discover'], price: 4500, duration_label: null },
-  { key: 'slope', name: 'Slope', depth_m: 12, level: 'All levels', best_for: 'Boat dives', life: ['Mantis shrimp', 'Batfish'], kinds: ['discover'], price: 4500, duration_label: null },
-  { key: 'juvis', name: "Juvi's", depth_m: 12, level: 'All levels', best_for: 'Bigger encounters', life: ['White-tip reef sharks', 'Potato coral'], kinds: ['discover'], price: 5000, duration_label: null },
-  { key: 'turtle', name: 'Turtle Beach', depth_m: 12, level: 'All levels', best_for: 'Turtle encounters', life: ['Green turtles', 'Stingrays'], kinds: ['discover'], price: 7500, duration_label: null },
+const FALLBACK: Pick<Reef, 'key' | 'name' | 'depth_m' | 'level' | 'best_for' | 'image_url' | 'life' | 'kinds' | 'price' | 'duration_label'>[] = [
+  { key: 'red', name: 'Red Pillar', depth_m: 12, level: 'All levels', best_for: 'First dives', image_url: '/images/gallery/g28', life: ['Ruby snapper', 'Fusiliers', 'Coral pillars'], kinds: ['discover'], price: 3000, duration_label: null },
+  { key: 'tribe', name: 'Tribe Gate', depth_m: 12, level: 'All levels', best_for: 'First dives', image_url: '/images/gallery/g29', life: ['Clownfish', 'Green turtles', 'Anemones'], kinds: ['discover'], price: 3500, duration_label: null },
+  { key: 'purple', name: 'Purple Ledge', depth_m: 12, level: 'All levels', best_for: 'Boat dives & photography', image_url: '/images/gallery/g17', life: ['Soft corals', 'Lionfish', 'Sea fans'], kinds: ['discover'], price: 4000, duration_label: null },
+  { key: 'light', name: 'Lighthouse', depth_m: 12, level: 'All levels', best_for: 'Bigger fish', image_url: '/images/gallery/g26', life: ['Trevally', 'Moorish idols', 'Snapper schools'], kinds: ['discover'], price: 4500, duration_label: null },
+  { key: 'slope', name: 'Slope', depth_m: 12, level: 'All levels', best_for: 'Boat dives', image_url: '/images/gallery/g25', life: ['Mantis shrimp', 'Batfish', 'Staghorn coral'], kinds: ['discover'], price: 4500, duration_label: null },
+  { key: 'juvis', name: "Juvi's", depth_m: 12, level: 'All levels', best_for: 'Bigger encounters', image_url: '/images/gallery/g27', life: ['White-tip reef sharks', 'Potato coral'], kinds: ['discover'], price: 5000, duration_label: null },
+  { key: 'aquarium', name: 'Aquarium', depth_m: 12, level: 'All levels', best_for: 'Boat dives & snorkelling', image_url: '/images/gallery/g08', life: ['Snapper schools', 'Fusiliers', 'Coral bommies'], kinds: ['discover'], price: 6500, duration_label: null },
+  { key: 'turtle', name: 'Turtle Beach', depth_m: 12, level: 'All levels', best_for: 'Turtle encounters', image_url: null, life: ['Green turtles', 'Stingrays', 'Seagrass'], kinds: ['discover'], price: 7500, duration_label: null },
 ];
 
 // Homepage: one simple bookable package per reef. The admin price wins; with
