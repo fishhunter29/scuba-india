@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import type { Settings } from '@/lib/types';
 import { waGeneral } from '@/lib/whatsapp';
 import { HERO_BLUR } from '@/lib/heroBlur';
@@ -58,9 +57,10 @@ export default function Hero({
           {tryFromSite ? ` at ${tryFromSite}` : ''}.
         </p>
         <div className="hero-cta">
-          <Link href="/dives/boat-dive" className="btn btn-primary">
-            Book a Discover Scuba dive from {tryFrom} →
-          </Link>
+          {/* Lands on the reef cards directly below, where that price is bookable. */}
+          <a href="#sites" className="btn btn-primary">
+            Book a dive from {tryFrom} →
+          </a>
           <a
             href={waGeneral(settings.whatsapp)}
             className="btn btn-ghost"

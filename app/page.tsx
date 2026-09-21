@@ -37,11 +37,18 @@ export default async function HomePage() {
   // AggregateRating schema below reflect the real live count, not just whatever
   // was last typed into admin → Settings.
   const settings = withLiveRating(rawSettings, google);
-  // cheapest Discover Scuba dive for the hero price hook ("from ₹X")
+  // The hero quotes the cheapest thing a visitor can actually book, which is a
+  // single dive at our cheapest reef. Falls back to the dive catalogue if no
+  // reef carries a price.
+  const cheapestReef = reefs
+    .filter((r) => r.active !== false && r.price != null)
+    .sort((a, b) => (a.price ?? 0) - (b.price ?? 0))[0];
   const tryDives = dives.filter((d) => d.active !== false && diveCategory(d) === 'discover');
-  const tryFrom = fromPrice(tryDives.length ? tryDives : dives);
-  const cheapestTry = cheapestDive(tryDives.length ? tryDives : dives);
-  const tryFromSite = cheapestTry?.site ?? null;
+  const tryFrom = cheapestReef?.price
+    ? `₹${cheapestReef.price.toLocaleString('en-IN')}`
+    : fromPrice(tryDives.length ? tryDives : dives);
+  const tryFromSite =
+    cheapestReef?.name ?? cheapestDive(tryDives.length ? tryDives : dives)?.site ?? null;
 
   return (
     <>
