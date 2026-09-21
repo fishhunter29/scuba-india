@@ -29,11 +29,13 @@ export default function ReefTeaser({
   section?: Section;
   whatsapp?: string;
 }) {
-  // Every reef shows here — choosing the reef is the first decision a visitor
-  // makes. A reef can still be kept off the homepage by unticking it in admin.
-  const source = (reefs.length ? reefs : (FALLBACK as Reef[])).filter((r) => r.active !== false);
-  const featured = source.filter((r) => r.featured);
-  const list = featured.length ? featured : source;
+  // Every reef shows here, in admin's order — choosing the reef is the first
+  // decision a visitor makes, and the client wants the full list. Hiding one is
+  // done by unticking "Shown" in admin, which is the same switch that takes it
+  // off the reef page: one control, not two that can disagree.
+  const list = (reefs.length ? reefs : (FALLBACK as Reef[]))
+    .filter((r) => r.active !== false)
+    .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0));
 
   const eyebrow = section?.eyebrow || "Where you'll dive";
   const title = section?.title || 'Choose your reef';

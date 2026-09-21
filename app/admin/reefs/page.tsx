@@ -117,8 +117,8 @@ export default function ReefsAdmin() {
       <Toast />
       <p className="a-intro">
         Every reef you dive, each with its own price. These are the first thing visitors see on
-        the homepage, so keep the prices and photos current. Untick “Show on the homepage” to keep
-        a reef off the front page — it still appears on the Reef Dives page.
+        the homepage, so keep the prices and photos current. “Shown” puts a reef on the site;
+        “Hidden” takes it off the homepage and the Reef Dives page together.
       </p>
 
       {loading ? (
@@ -132,7 +132,6 @@ export default function ReefsAdmin() {
                 <th>Depth</th>
                 <th>Level</th>
                 <th>Price</th>
-                <th>Homepage</th>
                 <th>Shown?</th>
                 <th></th>
               </tr>
@@ -146,7 +145,6 @@ export default function ReefsAdmin() {
                   <td>{r.depth_m}m</td>
                   <td>{r.level}</td>
                   <td>{r.price ? '₹' + r.price.toLocaleString('en-IN') : 'From rate sheet'}</td>
-                  <td>{r.featured ? '★ Featured' : '—'}</td>
                   <td>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => toggleActive(r)}>
                       {r.active ? 'Shown' : 'Hidden'}
@@ -226,15 +224,6 @@ export default function ReefsAdmin() {
                 />
               </div>
             </div>
-            <div className="a-field">
-              <label>Show on the homepage?</label>
-              <select value={editing.featured ? 'yes' : 'no'} onChange={(e) => field('featured', e.target.value === 'yes')}>
-                <option value="no">No — only on the Reef Dives page</option>
-                <option value="yes">Yes — show its card on the homepage</option>
-              </select>
-              <Help>The homepage shows the first 4 ticked reefs. All reefs always appear on the Reef Dives page.</Help>
-            </div>
-
             <div className="a-section-title">On the reef page</div>
             <div className="a-field">
               <label>Description</label>
