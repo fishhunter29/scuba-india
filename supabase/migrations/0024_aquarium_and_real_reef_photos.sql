@@ -36,5 +36,9 @@ update public.reefs set image_url = '/images/gallery/g17' where key = 'purple'; 
 update public.reefs set image_url = '/images/gallery/g25' where key = 'slope';    -- staghorn coral spreading across the reef
 update public.reefs set image_url = '/images/gallery/g27' where key = 'juvis';    -- moorish idols over a big coral mound
 
--- Turtle Beach keeps its existing image: no gallery shot shows a turtle there.
--- Swap it in /admin -> Reefs as soon as there is one.
+-- Turtle Beach: the only gallery photo with a turtle in it (g29) was taken at
+-- Tribe Gate, and using one reef's photo for another would be a lie on our
+-- priciest card. So it gets a real shot of the sandy, coral-strewn seabed it is
+-- actually known for — swap in a genuine turtle photo from here the day we have
+-- one, in /admin -> Reefs.
+update public.reefs set image_url = '/images/gallery/g06' where key = 'turtle';

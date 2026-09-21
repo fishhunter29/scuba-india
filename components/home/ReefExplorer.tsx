@@ -52,7 +52,7 @@ const REEFS: Reef[] = [
     blurb: 'Coral bommies rising from clean sand, with so much fish in the water column that you swim through the schools rather than towards them.',
     life: ['Snapper schools', 'Fusiliers', 'Damselfish', 'Coral bommies'], kinds: ['discover', 'fun'] },
   { key: 'turtle', name: 'Turtle Beach', depth: 12, level: 'All levels', bestFor: 'Turtle encounters',
-    image: null, imgKey: 'turtle', price: 7500, durationLabel: null,
+    image: '/images/gallery/g06', imgKey: 'turtle', price: 7500, durationLabel: null,
     blurb: 'Green sea turtles grazing the seagrass and rays gliding over the sand — an unhurried, wonderfully life-rich reef.',
     life: ['Green turtles', 'Stingrays', 'Seagrass beds', 'Hard coral'], kinds: ['discover', 'fun'] },
 ];
