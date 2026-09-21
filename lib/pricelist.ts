@@ -4,7 +4,7 @@
 // order live here; every row comes from the DB, grouped by each dive's
 // `category` and each course's `kind`.
 
-import type { Dive, Course, DiveKind } from './types';
+import type { Dive, Course, DiveKind, Reef } from './types';
 import { DIVE_CATEGORIES } from './categories';
 import { inferDiveKind } from './types';
 
@@ -42,7 +42,21 @@ function courseToItem(c: Course): PriceItem {
   return { name: c.name, sub: bits.join(' · ') || undefined, price: c.price, onRequest: c.on_request };
 }
 
-export function buildPriceSections(dives: Dive[], courses: Course[]): PriceSection[] {
+// Reefs are priced individually and are the headline product, so they lead the
+// price list exactly as they lead the homepage.
+function reefToItem(r: Reef): PriceItem {
+  const bits: string[] = [`${r.depth_m}m max`];
+  if (r.duration_label) bits.push(r.duration_label);
+  const life = (Array.isArray(r.life) ? r.life : []).slice(0, 2).join(', ');
+  if (life) bits.push(life);
+  return { name: r.name, sub: bits.join(' · '), price: r.price, onRequest: r.price == null };
+}
+
+export function buildPriceSections(
+  dives: Dive[],
+  courses: Course[],
+  reefs: Reef[] = [],
+): PriceSection[] {
   const inCats = (cats: DiveKind[]) =>
     dives
       .filter((d) => d.active !== false && cats.includes(inferDiveKind(d)))
@@ -58,7 +72,19 @@ export function buildPriceSections(dives: Dive[], courses: Course[]): PriceSecti
   // One section per dive category — same taxonomy, order and wording as the
   // nav, the homepage grid and the /dives/<category> pages, so a visitor sees
   // the identical structure wherever they look. Courses follow.
+  const reefItems = reefs
+    .filter((r) => r.active !== false && r.price != null)
+    .sort((a, b) => a.sort - b.sort)
+    .map(reefToItem);
+
   const sections: PriceSection[] = [
+    {
+      id: 'reefs',
+      title: 'Dive by Reef',
+      subtitle: 'One guided boat dive, per person. Pick the reef you like the look of.',
+      note: 'Every reef is dived from the boat with an instructor, to a maximum depth of 12 metres — no experience needed at any of them.',
+      items: reefItems,
+    },
     ...DIVE_CATEGORIES.map((c) => ({
       id: c.slug,
       title: c.nav,
