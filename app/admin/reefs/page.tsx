@@ -116,9 +116,9 @@ export default function ReefsAdmin() {
     >
       <Toast />
       <p className="a-intro">
-        Every reef you dive. Each one offers a single package, priced from the dive you actually
-        book there — so reef prices follow your rate sheet automatically. The ones ticked “Show on
-        the homepage” appear there as cards; all of them appear on the Reef Dives page.
+        Every reef you dive, each with its own price. These are the first thing visitors see on
+        the homepage, so keep the prices and photos current. Untick “Show on the homepage” to keep
+        a reef off the front page — it still appears on the Reef Dives page.
       </p>
 
       {loading ? (
@@ -145,7 +145,7 @@ export default function ReefsAdmin() {
                   </td>
                   <td>{r.depth_m}m</td>
                   <td>{r.level}</td>
-                  <td>{r.price ? '₹' + r.price.toLocaleString('en-IN') + ' (override)' : 'Rate sheet'}</td>
+                  <td>{r.price ? '₹' + r.price.toLocaleString('en-IN') : 'From rate sheet'}</td>
                   <td>{r.featured ? '★ Featured' : '—'}</td>
                   <td>
                     <button className="a-btn a-btn-sm a-btn-ghost" onClick={() => toggleActive(r)}>
@@ -203,9 +203,9 @@ export default function ReefsAdmin() {
 
             <div className="a-section-title">The package at this reef</div>
             <Help>
-              <strong>Leave the price blank</strong> and this reef is priced from the dive you run
-              there, straight off your rate sheet — change a dive price and the reef follows. Only
-              type a price here if this reef genuinely costs more than the standard dive.
+              The price for one dive at this reef, per person. This is what shows on the homepage
+              card and on the Reef Dives page. Leave it blank only if you want this reef priced
+              from your rate sheet dive instead.
             </Help>
             <div className="a-grid2">
               <div className="a-field">
@@ -213,7 +213,7 @@ export default function ReefsAdmin() {
                 <input
                   type="number"
                   value={editing.price ?? ''}
-                  placeholder="Blank = use the rate sheet (recommended)"
+                  placeholder="e.g. 3500"
                   onChange={(e) => field('price', e.target.value === '' ? null : Number(e.target.value))}
                 />
               </div>
